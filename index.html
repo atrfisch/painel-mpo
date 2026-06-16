@@ -1,421 +1,163 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monitor MPO - Requerimentos Legislativos</title>
-    <!-- Tailwind CSS para estilização rápida e moderna -->
+    <title>Dashboard Legislativo MPO</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chart.js para os gráficos -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- FontAwesome para ícones -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        .chart-container { position: relative; height: 300px; width: 100%; }
+        .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800">
+<body class="bg-gray-100 min-h-screen p-4 md:p-8">
 
-    <!-- Header -->
-    <header class="bg-indigo-700 text-white p-6 shadow-md">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div>
-                <h1 class="text-2xl font-bold"><i class="fa-solid fa-landmark mr-2"></i> Monitor Legislativo</h1>
-                <p class="text-indigo-200 text-sm mt-1">Requerimentos de Informação ao Ministério do Planejamento e Orçamento</p>
-            </div>
-            <div class="text-sm bg-indigo-800 py-2 px-4 rounded-lg">
-                Atualizado em: <span id="data-atualizacao" class="font-bold">Carregando...</span>
-            </div>
-        </div>
-    </header>
+    <div class="max-w-7xl mx-auto">
+        <header class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900">Dashboard Legislativo - MPO</h1>
+            <p class="text-gray-600">Monitoramento em tempo real (Atualizado em: <span id="data-atualizacao">-</span>)</p>
+        </header>
 
-    <!-- Main Content -->
-    <main class="max-w-7xl mx-auto p-6 mt-6">
-        
-        <!-- KPIs (Cards Superiores) -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center">
-                <div class="bg-blue-100 text-blue-600 p-4 rounded-lg mr-4"><i class="fa-solid fa-file-lines text-xl"></i></div>
-                <div>
-                    <p class="text-sm text-slate-500 font-medium">Total de Requerimentos</p>
-                    <p class="text-2xl font-bold" id="kpi-total">-</p>
-                </div>
+        <!-- KPIs -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white rounded-xl shadow p-6 border-l-4 border-blue-600">
+                <h3 class="text-gray-500 text-sm font-semibold uppercase">Total de Requerimentos</h3>
+                <p class="text-3xl font-bold text-gray-800" id="kpi-total">-</p>
             </div>
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center">
-                <div class="bg-green-100 text-green-600 p-4 rounded-lg mr-4"><i class="fa-solid fa-users text-xl"></i></div>
-                <div>
-                    <p class="text-sm text-slate-500 font-medium">Parlamentares Ativos</p>
-                    <p class="text-2xl font-bold" id="kpi-parlamentares">-</p>
-                </div>
+            <div class="bg-white rounded-xl shadow p-6 border-l-4 border-emerald-500">
+                <h3 class="text-gray-500 text-sm font-semibold uppercase">Aprovados / Encaminhados</h3>
+                <p class="text-3xl font-bold text-emerald-600" id="kpi-aprovados">-</p>
             </div>
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center">
-                <div class="bg-purple-100 text-purple-600 p-4 rounded-lg mr-4"><i class="fa-solid fa-tags text-xl"></i></div>
-                <div>
-                    <p class="text-sm text-slate-500 font-medium">Principais Temas</p>
-                    <p class="text-2xl font-bold" id="kpi-temas">-</p>
-                </div>
-            </div>
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center">
-                <div class="bg-amber-100 text-amber-600 p-4 rounded-lg mr-4"><i class="fa-solid fa-gavel text-xl"></i></div>
-                <div>
-                    <p class="text-sm text-slate-500 font-medium">Comissões Envolvidas</p>
-                    <p class="text-2xl font-bold" id="kpi-comissoes">-</p>
-                </div>
+            <div class="bg-white rounded-xl shadow p-6 border-l-4 border-indigo-600">
+                <h3 class="text-gray-500 text-sm font-semibold uppercase">Autores Únicos</h3>
+                <p class="text-3xl font-bold text-gray-800" id="kpi-autores">-</p>
             </div>
         </div>
 
-        <!-- Gráficos -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            
-            <!-- Linha do Tempo -->
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-                <h2 class="text-lg font-bold mb-4">Evolução de Requerimentos (Últimos 12 meses)</h2>
-                <div class="chart-container">
-                    <canvas id="chartTimeline"></canvas>
-                </div>
-            </div>
+        <!-- Filtros e Busca -->
+        <div class="bg-white p-4 rounded-xl shadow mb-6 flex flex-wrap gap-4 items-center">
+            <input type="text" id="search-input" placeholder="Buscar por número, autor ou tema..." class="border rounded px-4 py-2 w-full md:w-1/3">
+            <select id="theme-filter" class="border rounded px-4 py-2">
+                <option value="">Todos os Temas</option>
+            </select>
+        </div>
 
-            <!-- Top Parlamentares -->
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-                <h2 class="text-lg font-bold mb-4">Parlamentares que mais questionam</h2>
-                <div class="chart-container">
-                    <canvas id="chartAutores"></canvas>
-                </div>
-            </div>
-
-            <!-- Temas Relevantes -->
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-                <h2 class="text-lg font-bold mb-4">Temas Mais Abordados</h2>
-                <div class="chart-container">
-                    <canvas id="chartTemas"></canvas>
-                </div>
-            </div>
-
-            <!-- Comissões -->
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-                <h2 class="text-lg font-bold mb-4">Distribuição por Comissões</h2>
-                <div class="chart-container">
-                    <canvas id="chartComissoes"></canvas>
-                </div>
+        <div class="bg-white rounded-xl shadow p-6 mb-8">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">Linha do Tempo: Apresentados vs. Aprovados</h2>
+            <div class="h-64">
+                <canvas id="chart-timeline"></canvas>
             </div>
         </div>
 
-        <!-- Lista de Requerimentos e Filtros -->
-        <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 mt-8">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-                <h2 class="text-xl font-bold text-slate-800"><i class="fa-solid fa-list-ul mr-2"></i> Lista Completa de Requerimentos</h2>
-                
-                <!-- Área de Filtros -->
-                <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
-                    <div class="relative w-full sm:w-64">
-                        <i class="fa-solid fa-search absolute left-3 top-3 text-slate-400"></i>
-                        <input type="text" id="filter-busca" placeholder="Buscar palavra-chave ou autor..." class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
-                    </div>
-                    <select id="filter-tema" class="w-full sm:w-48 px-4 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 bg-white">
-                        <option value="">Todos os Temas</option>
-                        <!-- Options populadas via JS -->
-                    </select>
-                </div>
+        <div class="bg-white rounded-xl shadow overflow-hidden">
+            <div class="p-6 border-b border-gray-200">
+                <h2 class="text-xl font-bold text-gray-800">Requerimentos Detalhados</h2>
             </div>
-
-            <!-- Tabela Responsiva -->
-            <div class="overflow-x-auto rounded-lg border border-slate-200">
-                <table class="min-w-full text-left text-sm whitespace-nowrap">
-                    <thead class="uppercase tracking-wider border-b-2 border-slate-200 bg-slate-50 text-slate-500 font-semibold text-xs">
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
                         <tr>
-                            <th scope="col" class="px-6 py-4">Data</th>
-                            <th scope="col" class="px-6 py-4">Proposição</th>
-                            <th scope="col" class="px-6 py-4">Autor(es)</th>
-                            <th scope="col" class="px-6 py-4">Ementa / Resumo</th>
-                            <th scope="col" class="px-6 py-4 text-center">Documento</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Identificação</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Data</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Autor</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Resumo</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Ação</th>
                         </tr>
                     </thead>
-                    <tbody id="table-body" class="bg-white divide-y divide-slate-200">
-                        <!-- Linhas geradas dinamicamente via JS -->
-                    </tbody>
+                    <tbody id="table-body" class="bg-white divide-y divide-gray-200"></tbody>
                 </table>
             </div>
-            <!-- Indicador de resultados -->
-            <div class="mt-4 text-sm text-slate-500">
-                Mostrando <span id="tabela-count" class="font-bold text-slate-700">0</span> requerimentos.
-            </div>
         </div>
-
-    </main>
+    </div>
 
     <script>
-        // Cores padrão para os gráficos
-        const colors = {
-            primary: 'rgba(79, 70, 229, 0.8)',
-            secondary: 'rgba(16, 185, 129, 0.8)',
-            tertiary: 'rgba(245, 158, 11, 0.8)',
-            quaternary: 'rgba(139, 92, 246, 0.8)',
-            background: 'rgba(79, 70, 229, 0.1)',
-            border: 'rgba(79, 70, 229, 1)'
-        };
+        let globalDados = null;
 
-        // Variável global para guardar a lista e permitir filtragem
-        let globalRequerimentos = [];
-
-        // Função para inicializar o dashboard
         async function initDashboard() {
             try {
-                let dados;
-                try {
-                    // Tenta buscar o JSON real gerado pelo GitHub Actions
-                    const response = await fetch('dados.json');
-                    if (!response.ok) throw new Error('JSON não encontrado');
-                    dados = await response.json();
-                } catch (e) {
-                    console.warn("Usando dados de teste (mock) pois dados.json não foi encontrado.");
-                    dados = getMockData(); // Fallback para os dados falsos
-                }
-
-                // Preencher KPIs
-                document.getElementById('data-atualizacao').innerText = dados.ultima_atualizacao;
-                document.getElementById('kpi-total').innerText = dados.resumo.total_requerimentos;
-                document.getElementById('kpi-parlamentares').innerText = dados.resumo.total_autores;
-                document.getElementById('kpi-temas').innerText = Object.keys(dados.temas).length;
-                document.getElementById('kpi-comissoes').innerText = Object.keys(dados.comissoes).length;
-
-                // Renderizar Gráficos
-                renderTimelineChart(dados.timeline);
-                renderAutoresChart(dados.autores);
-                renderTemasChart(dados.temas);
-                renderComissoesChart(dados.comissoes);
-
-                // Tabela e Filtros
-                globalRequerimentos = dados.lista_requerimentos || [];
-                populateFilters(dados.temas);
-                renderTable(globalRequerimentos);
-
-                // Configurar eventos dos filtros
-                document.getElementById('filter-busca').addEventListener('input', applyFilters);
-                document.getElementById('filter-tema').addEventListener('change', applyFilters);
-
-            } catch (error) {
-                console.error("Erro ao carregar os dados:", error);
-                alert("Erro ao carregar o dashboard. Verifique o console.");
+                const response = await fetch('dados.json');
+                if (!response.ok) throw new Error();
+                globalDados = await response.json();
+            } catch (e) {
+                globalDados = getMockData();
             }
+            renderizar(globalDados);
+            setupFilters(globalDados);
         }
 
-        function renderTimelineChart(data) {
-            const ctx = document.getElementById('chartTimeline').getContext('2d');
+        function setupFilters(dados) {
+            const select = document.getElementById('theme-filter');
+            const temas = new Set(dados.lista_requerimentos.map(r => r.tema));
+            temas.forEach(t => {
+                const opt = document.createElement('option');
+                opt.value = t; opt.innerText = t;
+                select.appendChild(opt);
+            });
+
+            document.getElementById('search-input').addEventListener('input', filtrar);
+            select.addEventListener('change', filtrar);
+        }
+
+        function filtrar() {
+            const termo = document.getElementById('search-input').value.toLowerCase();
+            const tema = document.getElementById('theme-filter').value;
+            const filtrados = globalDados.lista_requerimentos.filter(r => 
+                (r.ementa.toLowerCase().includes(termo) || r.autor.toLowerCase().includes(termo) || `${r.sigla}${r.numero}`.includes(termo)) &&
+                (tema === "" || r.tema === tema)
+            );
+            renderizarTabela(filtrados);
+        }
+
+        function renderizar(dados) {
+            document.getElementById('data-atualizacao').innerText = dados.ultima_atualizacao;
+            document.getElementById('kpi-total').innerText = dados.resumo.total_requerimentos;
+            document.getElementById('kpi-aprovados').innerText = dados.resumo.total_aprovados || 0;
+            document.getElementById('kpi-autores').innerText = dados.resumo.total_autores;
+
+            const ctx = document.getElementById('chart-timeline').getContext('2d');
             new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: Object.keys(data),
-                    datasets: [{
-                        label: 'Requerimentos',
-                        data: Object.values(data),
-                        borderColor: colors.border,
-                        backgroundColor: colors.background,
-                        borderWidth: 2,
-                        fill: true,
-                        tension: 0.3
-                    }]
+                    labels: dados.timeline.labels,
+                    datasets: [
+                        { label: 'Apresentados', data: dados.timeline.apresentados, borderColor: '#3b82f6', tension: 0.3 },
+                        { label: 'Aprovados', data: dados.timeline.aprovados, borderColor: '#10b981', tension: 0.3 }
+                    ]
                 },
                 options: { responsive: true, maintainAspectRatio: false }
             });
+
+            renderizarTabela(dados.lista_requerimentos);
         }
 
-        function renderAutoresChart(data) {
-            const ctx = document.getElementById('chartAutores').getContext('2d');
-            // Pegar os top 5
-            const sortedData = Object.entries(data).sort((a, b) => b[1] - a[1]).slice(0, 5);
-            
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: sortedData.map(item => item[0]),
-                    datasets: [{
-                        label: 'Qtd de Requerimentos',
-                        data: sortedData.map(item => item[1]),
-                        backgroundColor: colors.secondary,
-                        borderRadius: 4
-                    }]
-                },
-                options: { 
-                    responsive: true, 
-                    maintainAspectRatio: false,
-                    indexAxis: 'y' // Gráfico de barras horizontais
-                }
-            });
-        }
-
-        function renderTemasChart(data) {
-            const ctx = document.getElementById('chartTemas').getContext('2d');
-            const sortedData = Object.entries(data).sort((a, b) => b[1] - a[1]).slice(0, 6);
-
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: sortedData.map(item => item[0]),
-                    datasets: [{
-                        label: 'Menções ao Tema',
-                        data: sortedData.map(item => item[1]),
-                        backgroundColor: colors.quaternary,
-                        borderRadius: 4
-                    }]
-                },
-                options: { responsive: true, maintainAspectRatio: false }
-            });
-        }
-
-        function renderComissoesChart(data) {
-            const ctx = document.getElementById('chartComissoes').getContext('2d');
-            const sortedData = Object.entries(data).sort((a, b) => b[1] - a[1]).slice(0, 5);
-
-            new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: sortedData.map(item => item[0]),
-                    datasets: [{
-                        data: sortedData.map(item => item[1]),
-                        backgroundColor: [
-                            colors.primary, colors.secondary, colors.tertiary, 
-                            colors.quaternary, '#ef4444'
-                        ],
-                        borderWidth: 0
-                    }]
-                },
-                options: { 
-                    responsive: true, 
-                    maintainAspectRatio: false,
-                    plugins: { legend: { position: 'right' } }
-                }
-            });
-        }
-
-        function populateFilters(temas) {
-            const select = document.getElementById('filter-tema');
-            Object.keys(temas).forEach(tema => {
-                select.innerHTML += `<option value="${tema}">${tema}</option>`;
-            });
-        }
-
-        function applyFilters() {
-            const busca = document.getElementById('filter-busca').value.toLowerCase();
-            const tema = document.getElementById('filter-tema').value;
-
-            const filtrados = globalRequerimentos.filter(req => {
-                const matchBusca = 
-                    req.ementa.toLowerCase().includes(busca) || 
-                    req.autor.toLowerCase().includes(busca) ||
-                    req.sigla.toLowerCase().includes(busca) ||
-                    req.numero.toString().includes(busca);
-                    
-                const matchTema = tema === "" || req.tema === tema;
-                return matchBusca && matchTema;
-            });
-
-            renderTable(filtrados);
-        }
-
-        function renderTable(dados) {
+        function renderizarTabela(lista) {
             const tbody = document.getElementById('table-body');
             tbody.innerHTML = '';
-            
-            document.getElementById('tabela-count').innerText = dados.length;
-
-            if (dados.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-slate-500">Nenhum requerimento encontrado para os filtros selecionados.</td></tr>`;
-                return;
-            }
-
-            dados.forEach(req => {
-                // Definindo a cor do badge dependendo da Casa (Câmara ou Senado)
-                const isCamara = req.casa === 'Camara';
-                const badgeColor = isCamara ? 'bg-green-100 text-green-700 border-green-200' : 'bg-blue-100 text-blue-700 border-blue-200';
-                const iconCasa = isCamara ? 'fa-landmark-dome' : 'fa-building-columns';
-
-                tbody.innerHTML += `
-                    <tr class="hover:bg-slate-50 transition-colors">
-                        <td class="px-6 py-4 text-slate-600">${req.data}</td>
-                        <td class="px-6 py-4">
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${badgeColor} mb-1">
-                                <i class="fa-solid ${iconCasa} mr-1"></i> ${req.casa}
-                            </span>
-                            <div class="font-bold text-indigo-700">${req.sigla} ${req.numero}/${req.ano}</div>
-                        </td>
-                        <td class="px-6 py-4 text-slate-800 font-medium">${req.autor}</td>
-                        <td class="px-6 py-4 whitespace-normal min-w-[300px] max-w-xl">
-                            <span class="inline-block bg-slate-100 text-slate-600 text-xs px-2 py-1 rounded mb-2">${req.tema}</span>
-                            <p class="text-slate-600 text-sm line-clamp-2" title="${req.ementa}">${req.ementa}</p>
-                        </td>
-                        <td class="px-6 py-4 text-center">
-                            <a href="${req.link}" target="_blank" class="inline-flex items-center justify-center bg-white border border-indigo-200 text-indigo-700 px-4 py-2 rounded-lg hover:bg-indigo-50 hover:border-indigo-300 transition-all shadow-sm text-sm font-medium">
-                                <i class="fa-solid fa-file-pdf mr-2 text-red-500"></i> Ver RIC
-                            </a>
-                        </td>
-                    </tr>
+            lista.forEach(req => {
+                const tr = document.createElement('tr');
+                const statusStyle = (req.status || '').includes('Aprovado') ? 'bg-emerald-100 text-emerald-800' : 'bg-blue-100 text-blue-800';
+                tr.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-900">${req.sigla} ${req.numero}/${req.ano}</td>
+                    <td class="px-6 py-4 text-sm text-gray-500">${req.data}</td>
+                    <td class="px-6 py-4 text-sm text-gray-900">${req.autor}</td>
+                    <td class="px-6 py-4 text-sm"><span class="px-2 py-1 rounded-full text-xs font-semibold ${statusStyle}">${req.status || 'Em Tramitação'}</span></td>
+                    <td class="px-6 py-4 text-sm text-gray-500"><div class="line-clamp-2 max-w-xs">${req.ementa}</div></td>
+                    <td class="px-6 py-4 text-right"><a href="${req.link}" target="_blank" class="text-indigo-600 font-bold">Ver RIC</a></td>
                 `;
+                tbody.appendChild(tr);
             });
         }
 
-        // --- DADOS FALSOS (MOCK) PARA TESTE NO GITHUB ---
-        // Quando você criar o script Python via GitHub Actions, ele criará um arquivo 
-        // "dados.json" com esta estrutura, e você trocará essa função por um fetch().
         function getMockData() {
             return {
-                "ultima_atualizacao": new Date().toLocaleDateString('pt-BR'),
-                "resumo": { "total_requerimentos": 142, "total_autores": 38 },
-                "timeline": {
-                    "Jul/25": 5, "Ago/25": 8, "Set/25": 12, "Out/25": 10, "Nov/25": 15, 
-                    "Dez/25": 7, "Jan/26": 2, "Fev/26": 18, "Mar/26": 22, "Abr/26": 14, 
-                    "Mai/26": 20, "Jun/26": 9
-                },
-                "autores": {
-                    "Dep. Kim Kataguiri (UNIÃO)": 15, "Sen. Marcos Rogério (PL)": 12,
-                    "Dep. Marcel van Hattem (NOVO)": 10, "Sen. Eduardo Girão (NOVO)": 8,
-                    "Dep. Adriana Ventura (NOVO)": 7, "Outros": 90
-                },
-                "temas": {
-                    "Cortes de Gastos": 45, "PAC": 38, "Emendas Parlamentares": 32,
-                    "Arcabouço Fiscal": 28, "Inflação": 15, "Concursos": 10
-                },
-                "comissoes": {
-                    "CFT (Finanças e Tributação)": 40, "CMO (Orçamento)": 35,
-                    "CAE (Assuntos Econômicos)": 25, "CDE (Desenv. Econômico)": 15,
-                    "Plenário": 27
-                },
-                "lista_requerimentos": [
-                    {
-                        "data": "15/06/2026", "casa": "Camara", "sigla": "RIC", "numero": 1450, "ano": 2026,
-                        "autor": "Dep. Kim Kataguiri (UNIÃO)", "tema": "Cortes de Gastos",
-                        "ementa": "Requer informações ao Ministro de Estado do Planejamento e Orçamento acerca do detalhamento do contingenciamento anunciado no 3º bimestre de 2026.",
-                        "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2422000"
-                    },
-                    {
-                        "data": "10/06/2026", "casa": "Senado", "sigla": "REQ", "numero": 85, "ano": 2026,
-                        "autor": "Sen. Marcos Rogério (PL)", "tema": "PAC",
-                        "ementa": "Requer informações detalhadas sobre a execução física e financeira das obras do Novo PAC nos Estados da Região Norte, especialmente Rondônia.",
-                        "link": "https://www25.senado.leg.br/web/atividade/materias/-/materia/160000"
-                    },
-                    {
-                        "data": "02/06/2026", "casa": "Camara", "sigla": "RIC", "numero": 1390, "ano": 2026,
-                        "autor": "Dep. Marcel van Hattem (NOVO)", "tema": "Emendas Parlamentares",
-                        "ementa": "Solicita informações do MPO sobre o cronograma de liberação das emendas de comissão (RP8) e restos a pagar do orçamento anterior.",
-                        "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2422001"
-                    },
-                    {
-                        "data": "28/05/2026", "casa": "Senado", "sigla": "REQ", "numero": 72, "ano": 2026,
-                        "autor": "Sen. Eduardo Girão (NOVO)", "tema": "Arcabouço Fiscal",
-                        "ementa": "Requer informações sobre o cumprimento das metas primárias estabelecidas pelo Novo Arcabouço Fiscal e projeções de dívida pública.",
-                        "link": "https://www25.senado.leg.br/web/atividade/materias/-/materia/160001"
-                    },
-                    {
-                        "data": "20/05/2026", "casa": "Camara", "sigla": "RIC", "numero": 1210, "ano": 2026,
-                        "autor": "Dep. Adriana Ventura (NOVO)", "tema": "Concursos",
-                        "ementa": "Requer informações referentes à autorização de novos provimentos e concursos públicos para o poder executivo federal, bem como o impacto orçamentário previsto.",
-                        "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2422002"
-                    }
-                ]
+                ultima_atualizacao: "Offline",
+                resumo: { total_requerimentos: 1, total_aprovados: 1, total_autores: 1 },
+                timeline: { labels: ["Jan/26"], apresentados: [1], aprovados: [1] },
+                lista_requerimentos: [{ sigla: "RIC", numero: 1, ano: 2026, data: "10/01/2026", autor: "Dep. Teste", status: "Aprovado / Encaminhado", ementa: "Teste MPO", tema: "Geral / Outros", link: "#" }]
             };
         }
 
-        // Inicializa o app quando a página carregar
         window.onload = initDashboard;
     </script>
 </body>
