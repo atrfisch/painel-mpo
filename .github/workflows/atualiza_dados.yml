@@ -1,0 +1,39 @@
+name: Atualizar Dados Legislativos MPO
+
+on:
+  schedule:
+    # Roda todos os dias às 03:00 da manhã (UTC)
+    - cron: '0 3 * * *'
+  workflow_dispatch: # Permite rodar manualmente clicando em um botão no GitHub
+
+permissions:
+  contents: write
+
+jobs:
+  atualizar-dados:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout do repositório
+      uses: actions/checkout@v4
+
+    - name: Configurar Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Instalar dependências
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests
+
+    - name: Rodar script de coleta (Câmara e Senado)
+      run: python atualizador.py
+
+    - name: Commit e Push do novo dados.json
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action Bot"
+        git add dados.json
+        git commit -m "Atualização automática dos requerimentos [skip ci]" || echo "Nenhuma mudança para commitar"
+        git push
