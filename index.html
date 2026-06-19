@@ -63,8 +63,22 @@
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100"><h2 class="text-lg font-bold mb-4">Evolução</h2><div class="chart-container"><canvas id="chartTimeline"></canvas></div></div>
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100"><h2 class="text-lg font-bold mb-4">Autores Ativos</h2><div class="chart-container"><canvas id="chartAutores"></canvas></div></div>
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                <h2 class="text-lg font-bold mb-4">Evolução</h2>
+                <div class="chart-container"><canvas id="chartTimeline"></canvas></div>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                <h2 class="text-lg font-bold mb-4">Autores Ativos</h2>
+                <div class="chart-container"><canvas id="chartAutores"></canvas></div>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                <h2 class="text-lg font-bold mb-4">Assuntos (Temas)</h2>
+                <div class="chart-container"><canvas id="chartTemas"></canvas></div>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                <h2 class="text-lg font-bold mb-4">Situação</h2>
+                <div class="chart-container"><canvas id="chartSituacao"></canvas></div>
+            </div>
         </div>
 
         <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
@@ -94,7 +108,14 @@
     </main>
 
     <script>
-        const chartColors = { blue: 'rgba(59, 130, 246, 0.8)', amber: 'rgba(245, 158, 11, 0.8)', indigoBorder: 'rgba(79, 70, 229, 1)', indigoFill: 'rgba(79, 70, 229, 0.1)' };
+        const chartColors = { 
+            blue: 'rgba(59, 130, 246, 0.8)', 
+            amber: 'rgba(245, 158, 11, 0.8)', 
+            purple: 'rgba(139, 92, 246, 0.8)', 
+            green: 'rgba(16, 185, 129, 0.8)',
+            indigoBorder: 'rgba(79, 70, 229, 1)', 
+            indigoFill: 'rgba(79, 70, 229, 0.1)' 
+        };
         let globalRequerimentos = [];
 
         async function initDashboard() {
@@ -112,11 +133,104 @@
             document.getElementById('kpi-temas').innerText = Object.keys(dados.temas || {}).length;
             document.getElementById('kpi-comissoes').innerText = Object.keys(dados.comissoes || {}).length;
 
+            renderizarGraficos(dados);
             renderizarTabela(globalRequerimentos);
             
             document.getElementById('filter-busca').addEventListener('input', (e) => {
                 const b = e.target.value.toLowerCase();
                 renderizarTabela(globalRequerimentos.filter(r => r.ementa.toLowerCase().includes(b) || r.autor.toLowerCase().includes(b)));
+            });
+        }
+
+        function ordenarTimeline(timelineDict) {
+            if (!timelineDict) return { labels: [], data: [] };
+            const monthMap = { 'Jan':0, 'Fev':1, 'Mar':2, 'Abr':3, 'Mai':4, 'Jun':5, 'Jul':6, 'Ago':7, 'Set':8, 'Out':9, 'Nov':10, 'Dez':11 };
+            const entries = Object.entries(timelineDict);
+            entries.sort((a, b) => {
+                const [mesA, anoA] = a[0].split('/');
+                const [mesB, anoB] = b[0].split('/');
+                return new Date(2000 + parseInt(anoA), monthMap[mesA]) - new Date(2000 + parseInt(anoB), monthMap[mesB]);
+            });
+            return { labels: entries.map(e => e[0]), data: entries.map(e => e[1]) };
+        }
+
+        function renderizarGraficos(dados) {
+            // 1. Timeline
+            const timelineData = ordenarTimeline(dados.timeline);
+            new Chart(document.getElementById('chartTimeline').getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: timelineData.labels,
+                    datasets: [{
+                        label: 'Apresentados',
+                        data: timelineData.data,
+                        borderColor: chartColors.indigoBorder,
+                        backgroundColor: chartColors.indigoFill,
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+            });
+
+            // 2. Autores Ativos
+            const autoresData = Object.entries(dados.autores || {}).sort((a, b) => b[1] - a[1]).slice(0, 5);
+            new Chart(document.getElementById('chartAutores').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: autoresData.map(a => a[0].length > 25 ? a[0].substring(0, 25) + '...' : a[0]),
+                    datasets: [{
+                        label: 'Requerimentos',
+                        data: autoresData.map(a => a[1]),
+                        backgroundColor: chartColors.amber,
+                        borderRadius: 4
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { display: false } } }
+            });
+
+            // 3. Assuntos (Temas)
+            const temasData = Object.entries(dados.temas || {}).sort((a, b) => b[1] - a[1]).slice(0, 5);
+            new Chart(document.getElementById('chartTemas').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: temasData.map(t => t[0].length > 20 ? t[0].substring(0, 20) + '...' : t[0]),
+                    datasets: [{
+                        label: 'Ocorrências',
+                        data: temasData.map(t => t[1]),
+                        backgroundColor: chartColors.purple,
+                        borderRadius: 4
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+            });
+
+            // 4. Situação (Agrupado Dinamicamente)
+            const situacoesCount = {};
+            (dados.lista_requerimentos || []).forEach(r => {
+                situacoesCount[r.status] = (situacoesCount[r.status] || 0) + 1;
+            });
+            const situacoesData = Object.entries(situacoesCount).sort((a, b) => b[1] - a[1]).slice(0, 5);
+
+            new Chart(document.getElementById('chartSituacao').getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: situacoesData.map(s => s[0]),
+                    datasets: [{
+                        data: situacoesData.map(s => s[1]),
+                        backgroundColor: [chartColors.blue, chartColors.amber, chartColors.purple, chartColors.green, '#ef4444'],
+                        borderWidth: 0
+                    }]
+                },
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false, 
+                    plugins: { 
+                        legend: { position: 'right', labels: { boxWidth: 12 } } 
+                    }, 
+                    cutout: '70%' 
+                }
             });
         }
 
@@ -149,4 +263,5 @@
         window.onload = initDashboard;
     </script>
 </body>
+</html>
 </html>
