@@ -36,9 +36,12 @@ MESES_BR = {1: 'Jan', 2: 'Fev', 3: 'Mar', 4: 'Abr', 5: 'Mai', 6: 'Jun',
 TERMOS_MPO = [
     'planejamento e orçamento',
     'ministério do planejamento',
+    'ministério do planejamento e orçamento',
     'ministro do planejamento',
+    'ministro do planejamento e orçamento',
+    'ministro de estado do planejamento e orçamento',
+    'ministro de estado do planejamento',
     'ministra do planejamento',
-    'mpo',
     'simone tebet'
 ]
 
