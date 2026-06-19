@@ -25,7 +25,9 @@ SITUACOES_ALVO = [
     "aguardando designação de relator",
     "aguardando encaminhamento",
     "aguardando envio ao executivo",
-    "aguardando resposta"
+    "aguardando resposta",
+    "aguardando recebimento", # Início da tramitação (adicionado)
+    "aguardando despacho do presidente da câmara dos deputados" # Início da tramitação (adicionado)
 ]
 
 MESES_BR = {1: 'Jan', 2: 'Fev', 3: 'Mar', 4: 'Abr', 5: 'Mai', 6: 'Jun', 
@@ -33,11 +35,11 @@ MESES_BR = {1: 'Jan', 2: 'Fev', 3: 'Mar', 4: 'Abr', 5: 'Mai', 6: 'Jun',
 
 TERMOS_MPO = [
     'planejamento e orçamento',
-    'ministério do planejamento e orçamento',
-    'ministro do planejamento e orçamento',
-    'ministro de estado do planejamento e orçamento',
+    'ministério do planejamento',
+    'ministro do planejamento',
+    'ministra do planejamento',
     'mpo',
-    'bruno moretti'
+    'simone tebet'
 ]
 
 def classificar_tema_oficial(ementa):
@@ -52,75 +54,92 @@ def classificar_tema_oficial(ementa):
     return "Outros"
 
 def buscar_dados_camara():
-    """Busca RICs da Câmara e filtra os relacionados ao MPO pendentes"""
+    """Busca RICs da Câmara iterando sobre todas as páginas de cada ano"""
     print("Buscando lista principal da Câmara (Legislatura atual)...")
     dados = []
     
     for ano in ANOS_BUSCA:
-        url = f"https://dadosabertos.camara.leg.br/api/v2/proposicoes?siglaTipo=RIC&ano={ano}&itens=1000&ordem=DESC&ordenarPor=id"
+        pagina = 1
+        total_parcial = 0
         
-        try:
-            response = session.get(url, timeout=30)
-            if response.status_code == 200:
-                proposicoes = response.json().get('dados', [])
-                print(f"Total de RICs brutos encontrados no ano {ano}: {len(proposicoes)}")
-                
-                for p in proposicoes:
-                    ementa = p.get('ementa', '').lower()
+        while True:
+            # Paginação adicionada: itens=100 (limite real da API) e iterando o parâmetro 'pagina'
+            url = f"https://dadosabertos.camara.leg.br/api/v2/proposicoes?siglaTipo=RIC&ano={ano}&itens=100&ordem=DESC&ordenarPor=id&pagina={pagina}"
+            
+            try:
+                response = session.get(url, timeout=30)
+                if response.status_code == 200:
+                    proposicoes = response.json().get('dados', [])
                     
-                    # FILTRO 1: Flexibilizado para os termos da lista TERMOS_MPO
-                    if any(termo in ementa for termo in TERMOS_MPO):
-                        id_prop = p.get('id')
+                    if not proposicoes:
+                        print(f"Fim das páginas para o ano {ano}. Total processado: {total_parcial}")
+                        break # Fim dos dados para este ano
                         
-                        # FILTRO 2: Busca a "Capa" da proposição para ver a Situação Oficial atual
-                        time.sleep(DELAY_API)
-                        detalhes_url = f"https://dadosabertos.camara.leg.br/api/v2/proposicoes/{id_prop}"
+                    total_parcial += len(proposicoes)
+                    
+                    for p in proposicoes:
+                        ementa = p.get('ementa', '').lower()
                         
-                        try:
-                            detalhes_res = session.get(detalhes_url, timeout=15).json().get('dados', {})
-                            situacao_real = detalhes_res.get('statusProposicao', {}).get('descricaoSituacao', '').lower()
-                            print(f"DEBUG: Analisando RIC {p.get('numero')}/{ano} - Situação: '{situacao_real}'")
+                        # FILTRO 1: Flexibilizado para os termos da lista TERMOS_MPO
+                        if any(termo in ementa for termo in TERMOS_MPO):
+                            id_prop = p.get('id')
                             
-                            # Verifica se a situação real está dentro da lista de alvos
-                            if any(alvo in situacao_real for alvo in SITUACOES_ALVO):
+                            # FILTRO 2: Busca a "Capa" da proposição para ver a Situação Oficial atual
+                            time.sleep(DELAY_API)
+                            detalhes_url = f"https://dadosabertos.camara.leg.br/api/v2/proposicoes/{id_prop}"
+                            
+                            try:
+                                detalhes_res = session.get(detalhes_url, timeout=15).json().get('dados', {})
+                                situacao_real = detalhes_res.get('statusProposicao', {}).get('descricaoSituacao', '').lower()
+                                print(f"DEBUG: Analisando RIC {p.get('numero')}/{ano} (Match MPO) - Situação: '{situacao_real}'")
                                 
-                                # BUSCA DETALHADA: Autor
-                                time.sleep(DELAY_API)
-                                url_autores = f"https://dadosabertos.camara.leg.br/api/v2/proposicoes/{id_prop}/autores"
-                                res_autores = session.get(url_autores, timeout=15).json().get('dados', [])
-                                autor_formatado = "Dep. Desconhecido"
-                                if res_autores:
-                                    a = res_autores[0]
-                                    autor_formatado = f"Dep. {a.get('nome')} ({a.get('siglaPartido', '')}-{a.get('siglaUf', '')})"
-                                
-                                # BUSCA DETALHADA: Comissão/Local
-                                time.sleep(DELAY_API)
-                                url_tram = f"https://dadosabertos.camara.leg.br/api/v2/proposicoes/{id_prop}/tramitacoes"
-                                res_tram = session.get(url_tram, timeout=15).json().get('dados', [])
-                                comissao_atual = res_tram[-1].get('siglaOrgao', 'MESA') if res_tram else 'MESA'
+                                # Verifica se a situação real está dentro da lista de alvos
+                                if any(alvo in situacao_real for alvo in SITUACOES_ALVO):
+                                    
+                                    # BUSCA DETALHADA: Autor
+                                    time.sleep(DELAY_API)
+                                    url_autores = f"https://dadosabertos.camara.leg.br/api/v2/proposicoes/{id_prop}/autores"
+                                    res_autores = session.get(url_autores, timeout=15).json().get('dados', [])
+                                    autor_formatado = "Dep. Desconhecido"
+                                    if res_autores:
+                                        a = res_autores[0]
+                                        autor_formatado = f"Dep. {a.get('nome')} ({a.get('siglaPartido', '')}-{a.get('siglaUf', '')})"
+                                    
+                                    # BUSCA DETALHADA: Comissão/Local
+                                    time.sleep(DELAY_API)
+                                    url_tram = f"https://dadosabertos.camara.leg.br/api/v2/proposicoes/{id_prop}/tramitacoes"
+                                    res_tram = session.get(url_tram, timeout=15).json().get('dados', [])
+                                    comissao_atual = res_tram[-1].get('siglaOrgao', 'MESA') if res_tram else 'MESA'
 
-                                data_str = p.get('dataApresentacao', f'{ano}-01-01T00:00').split('T')[0]
-                                data_obj = datetime.strptime(data_str, '%Y-%m-%d')
-                                mes_ano = f"{MESES_BR[data_obj.month]}/{str(data_obj.year)[2:]}"
+                                    data_str = p.get('dataApresentacao', f'{ano}-01-01T00:00').split('T')[0]
+                                    data_obj = datetime.strptime(data_str, '%Y-%m-%d')
+                                    mes_ano = f"{MESES_BR[data_obj.month]}/{str(data_obj.year)[2:]}"
 
-                                dados.append({
-                                    "data": data_obj.strftime('%d/%m/%Y'),
-                                    "mes_ano": mes_ano,
-                                    "casa": "Camara",
-                                    "sigla": p.get('siglaTipo'),
-                                    "numero": p.get('numero'),
-                                    "ano": p.get('ano'),
-                                    "autor": autor_formatado,
-                                    "comissao": comissao_atual,
-                                    "tema": classificar_tema_oficial(ementa),
-                                    "ementa": p.get('ementa'),
-                                    "status": detalhes_res.get('statusProposicao', {}).get('descricaoSituacao', 'Em Tramitação'),
-                                    "link": f"https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao={id_prop}"
-                                })
-                        except Exception as e:
-                            print(f"Erro ao detalhar RIC {id_prop}: {e}")
-        except Exception as e:
-            print(f"Erro fatal na conexão com a Câmara no ano {ano}: {e}")
+                                    dados.append({
+                                        "data": data_obj.strftime('%d/%m/%Y'),
+                                        "mes_ano": mes_ano,
+                                        "casa": "Camara",
+                                        "sigla": p.get('siglaTipo'),
+                                        "numero": p.get('numero'),
+                                        "ano": p.get('ano'),
+                                        "autor": autor_formatado,
+                                        "comissao": comissao_atual,
+                                        "tema": classificar_tema_oficial(ementa),
+                                        "ementa": p.get('ementa'),
+                                        "status": detalhes_res.get('statusProposicao', {}).get('descricaoSituacao', 'Em Tramitação'),
+                                        "link": f"https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao={id_prop}"
+                                    })
+                            except Exception as e:
+                                print(f"Erro ao detalhar RIC {id_prop}: {e}")
+                else:
+                    print(f"Erro na API da Câmara ao acessar página {pagina} do ano {ano}. Código: {response.status_code}")
+                    break
+            except Exception as e:
+                print(f"Erro fatal na conexão com a Câmara no ano {ano}, página {pagina}: {e}")
+                break
+            
+            # Avança para a próxima página de resultados
+            pagina += 1
 
     return dados
 
