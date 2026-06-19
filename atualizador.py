@@ -23,28 +23,29 @@ def buscar_dados():
     print("DEBUG: Iniciando busca com retentativas...")
     session = get_session()
     
-    # Filtros que você pediu
+    # Filtros simplificados e em minúsculo para evitar erros de digitação da API
     SITUACOES_ALVO = [
-        "Aguardando Designação de Relator(a)",
-        "Aguardando Encaminhamento",
-        "Aguardando Envio ao Executivo",
-        "Aguardando Resposta"
+        "aguardando designação de relator",
+        "aguardando encaminhamento",
+        "aguardando envio ao executivo",
+        "aguardando resposta"
     ]
     
-    url = "https://dadosabertos.camara.leg.br/api/v2/proposicoes?siglaTipo=RIC&ano=2026&itens=100&ordem=DESC"
+    # Aumentamos o limite para 1000 para ler o ano inteiro, não apenas os 100 últimos
+    url = "https://dadosabertos.camara.leg.br/api/v2/proposicoes?siglaTipo=RIC&ano=2026&itens=1000&ordem=DESC"
     
     try:
         # Usando o timeout explícito de 30 segundos
         response = session.get(url, timeout=30)
         response.raise_for_status()
         proposicoes = response.json().get('dados', [])
-        print(f"DEBUG: Encontrados {len(proposicoes)} RICs iniciais.")
+        print(f"DEBUG: Encontrados {len(proposicoes)} RICs em 2026. Analisando...")
         
         lista_final = []
         for p in proposicoes:
-            # Filtro por Ministério do Planejamento
+            # Filtro pelo termo exato solicitado
             ementa = p.get('ementa', '').lower()
-            if any(term in ementa for term in ['planejamento', 'mpo', 'orçamento']):
+            if 'planejamento e orçamento' in ementa or 'mpo' in ementa:
                 
                 # Busca tramitação detalhada
                 id_prop = p.get('id')
@@ -56,9 +57,11 @@ def buscar_dados():
                 
                 if tram_res:
                     ultima = tram_res[-1]
-                    situacao = ultima.get('descricaoSituacao', '')
+                    situacao = ultima.get('descricaoSituacao', '').lower()
+                    print(f"DEBUG: Analisando RIC {p.get('numero')} - Situação na API: '{situacao}'")
                     
-                    if situacao in SITUACOES_ALVO:
+                    # Checa se alguma das situações alvo faz parte da situação retornada
+                    if any(alvo in situacao for alvo in SITUACOES_ALVO):
                         # Busca autor
                         aut_url = f"https://dadosabertos.camara.leg.br/api/v2/proposicoes/{id_prop}/autores"
                         autores = session.get(aut_url, timeout=15).json().get('dados', [])
