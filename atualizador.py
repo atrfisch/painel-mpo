@@ -18,7 +18,7 @@ session.mount('https://', adapter)
 # ==========================================
 # PARÂMETROS E FILTROS ALVO
 # ==========================================
-ANO_BUSCA = 2026
+ANOS_BUSCA = [2023, 2024, 2025, 2026] # Busca toda a legislatura atual (RICs antigos são arquivados - Art 105 RICD)
 DELAY_API = 0.5 # Respiro para a API da Câmara (evita bloqueios)
 
 SITUACOES_ALVO = [
@@ -30,6 +30,15 @@ SITUACOES_ALVO = [
 
 MESES_BR = {1: 'Jan', 2: 'Fev', 3: 'Mar', 4: 'Abr', 5: 'Mai', 6: 'Jun', 
             7: 'Jul', 8: 'Ago', 9: 'Set', 10: 'Out', 11: 'Nov', 12: 'Dez'}
+
+TERMOS_MPO = [
+    'planejamento e orçamento',
+    'ministério do planejamento e orçamento',
+    'ministro do planejamento e orçamento',
+    'ministro de estado do planejamento e orçamento',
+    'mpo',
+    'bruno moretti'
+]
 
 def classificar_tema_oficial(ementa):
     """Classifica o tema baseado nas áreas temáticas da Câmara"""
@@ -44,139 +53,143 @@ def classificar_tema_oficial(ementa):
 
 def buscar_dados_camara():
     """Busca RICs da Câmara e filtra os relacionados ao MPO pendentes"""
-    print("Buscando lista principal da Câmara (até 1000 RICs)...")
-    url = f"https://dadosabertos.camara.leg.br/api/v2/proposicoes?siglaTipo=RIC&ano={ANO_BUSCA}&itens=1000&ordem=DESC&ordenarPor=id"
-    
+    print("Buscando lista principal da Câmara (Legislatura atual)...")
     dados = []
-    try:
-        response = session.get(url, timeout=30)
-        if response.status_code == 200:
-            proposicoes = response.json().get('dados', [])
-            print(f"Total de RICs brutos encontrados no ano: {len(proposicoes)}")
-            
-            for p in proposicoes:
-                ementa = p.get('ementa', '').lower()
+    
+    for ano in ANOS_BUSCA:
+        url = f"https://dadosabertos.camara.leg.br/api/v2/proposicoes?siglaTipo=RIC&ano={ano}&itens=1000&ordem=DESC&ordenarPor=id"
+        
+        try:
+            response = session.get(url, timeout=30)
+            if response.status_code == 200:
+                proposicoes = response.json().get('dados', [])
+                print(f"Total de RICs brutos encontrados no ano {ano}: {len(proposicoes)}")
                 
-                # FILTRO 1: Deve tratar exatamente de Planejamento e Orçamento (ou MPO)
-                if 'planejamento e orçamento' in ementa or 'mpo' in ementa:
-                    id_prop = p.get('id')
+                for p in proposicoes:
+                    ementa = p.get('ementa', '').lower()
                     
-                    # FILTRO 2: Busca a "Capa" da proposição para ver a Situação Oficial atual
-                    time.sleep(DELAY_API)
-                    detalhes_url = f"https://dadosabertos.camara.leg.br/api/v2/proposicoes/{id_prop}"
-                    
-                    try:
-                        detalhes_res = session.get(detalhes_url, timeout=15).json().get('dados', {})
-                        situacao_real = detalhes_res.get('statusProposicao', {}).get('descricaoSituacao', '').lower()
-                        print(f"DEBUG: Analisando RIC {p.get('numero')} - Situação: '{situacao_real}'")
+                    # FILTRO 1: Flexibilizado para os termos da lista TERMOS_MPO
+                    if any(termo in ementa for termo in TERMOS_MPO):
+                        id_prop = p.get('id')
                         
-                        # Verifica se a situação real está dentro da lista de alvos
-                        if any(alvo in situacao_real for alvo in SITUACOES_ALVO):
+                        # FILTRO 2: Busca a "Capa" da proposição para ver a Situação Oficial atual
+                        time.sleep(DELAY_API)
+                        detalhes_url = f"https://dadosabertos.camara.leg.br/api/v2/proposicoes/{id_prop}"
+                        
+                        try:
+                            detalhes_res = session.get(detalhes_url, timeout=15).json().get('dados', {})
+                            situacao_real = detalhes_res.get('statusProposicao', {}).get('descricaoSituacao', '').lower()
+                            print(f"DEBUG: Analisando RIC {p.get('numero')}/{ano} - Situação: '{situacao_real}'")
                             
-                            # BUSCA DETALHADA: Autor
-                            time.sleep(DELAY_API)
-                            url_autores = f"https://dadosabertos.camara.leg.br/api/v2/proposicoes/{id_prop}/autores"
-                            res_autores = session.get(url_autores, timeout=15).json().get('dados', [])
-                            autor_formatado = "Dep. Desconhecido"
-                            if res_autores:
-                                a = res_autores[0]
-                                autor_formatado = f"Dep. {a.get('nome')} ({a.get('siglaPartido', '')}-{a.get('siglaUf', '')})"
-                            
-                            # BUSCA DETALHADA: Comissão/Local
-                            time.sleep(DELAY_API)
-                            url_tram = f"https://dadosabertos.camara.leg.br/api/v2/proposicoes/{id_prop}/tramitacoes"
-                            res_tram = session.get(url_tram, timeout=15).json().get('dados', [])
-                            comissao_atual = res_tram[-1].get('siglaOrgao', 'MESA') if res_tram else 'MESA'
+                            # Verifica se a situação real está dentro da lista de alvos
+                            if any(alvo in situacao_real for alvo in SITUACOES_ALVO):
+                                
+                                # BUSCA DETALHADA: Autor
+                                time.sleep(DELAY_API)
+                                url_autores = f"https://dadosabertos.camara.leg.br/api/v2/proposicoes/{id_prop}/autores"
+                                res_autores = session.get(url_autores, timeout=15).json().get('dados', [])
+                                autor_formatado = "Dep. Desconhecido"
+                                if res_autores:
+                                    a = res_autores[0]
+                                    autor_formatado = f"Dep. {a.get('nome')} ({a.get('siglaPartido', '')}-{a.get('siglaUf', '')})"
+                                
+                                # BUSCA DETALHADA: Comissão/Local
+                                time.sleep(DELAY_API)
+                                url_tram = f"https://dadosabertos.camara.leg.br/api/v2/proposicoes/{id_prop}/tramitacoes"
+                                res_tram = session.get(url_tram, timeout=15).json().get('dados', [])
+                                comissao_atual = res_tram[-1].get('siglaOrgao', 'MESA') if res_tram else 'MESA'
 
-                            data_str = p.get('dataApresentacao', f'{ANO_BUSCA}-01-01T00:00').split('T')[0]
-                            data_obj = datetime.strptime(data_str, '%Y-%m-%d')
-                            mes_ano = f"{MESES_BR[data_obj.month]}/{str(data_obj.year)[2:]}"
+                                data_str = p.get('dataApresentacao', f'{ano}-01-01T00:00').split('T')[0]
+                                data_obj = datetime.strptime(data_str, '%Y-%m-%d')
+                                mes_ano = f"{MESES_BR[data_obj.month]}/{str(data_obj.year)[2:]}"
 
-                            dados.append({
-                                "data": data_obj.strftime('%d/%m/%Y'),
-                                "mes_ano": mes_ano,
-                                "casa": "Camara",
-                                "sigla": p.get('siglaTipo'),
-                                "numero": p.get('numero'),
-                                "ano": p.get('ano'),
-                                "autor": autor_formatado,
-                                "comissao": comissao_atual,
-                                "tema": classificar_tema_oficial(ementa),
-                                "ementa": p.get('ementa'),
-                                "status": detalhes_res.get('statusProposicao', {}).get('descricaoSituacao', 'Em Tramitação'),
-                                "link": f"https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao={id_prop}"
-                            })
-                    except Exception as e:
-                        print(f"Erro ao detalhar RIC {id_prop}: {e}")
-    except Exception as e:
-        print(f"Erro fatal na conexão com a Câmara: {e}")
+                                dados.append({
+                                    "data": data_obj.strftime('%d/%m/%Y'),
+                                    "mes_ano": mes_ano,
+                                    "casa": "Camara",
+                                    "sigla": p.get('siglaTipo'),
+                                    "numero": p.get('numero'),
+                                    "ano": p.get('ano'),
+                                    "autor": autor_formatado,
+                                    "comissao": comissao_atual,
+                                    "tema": classificar_tema_oficial(ementa),
+                                    "ementa": p.get('ementa'),
+                                    "status": detalhes_res.get('statusProposicao', {}).get('descricaoSituacao', 'Em Tramitação'),
+                                    "link": f"https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao={id_prop}"
+                                })
+                        except Exception as e:
+                            print(f"Erro ao detalhar RIC {id_prop}: {e}")
+        except Exception as e:
+            print(f"Erro fatal na conexão com a Câmara no ano {ano}: {e}")
 
     return dados
 
 def buscar_dados_senado():
     """Busca REQs do Senado e filtra por MPO"""
     print("Buscando lista principal do Senado...")
-    url = f"https://legis.senado.leg.br/dadosabertos/materia/pesquisa/lista?sigla=REQ&ano={ANO_BUSCA}"
     headers = {"Accept": "application/json"}
     dados = []
     
-    try:
-        response = session.get(url, headers=headers, timeout=30)
-        if response.status_code == 200:
-            materias = response.json().get('PesquisaBasicaMateria', {}).get('Materias', {}).get('Materia', [])
-            if isinstance(materias, dict): materias = [materias]
-                
-            for m in materias:
-                ementa = m.get('DadosBasicosMateria', {}).get('EmentaMateria', '').lower()
-                
-                # No senado, os status são diferentes, então filtramos apenas pelo tema
-                if 'planejamento e orçamento' in ementa or 'mpo' in ementa:
-                    codigo_materia = m.get('IdentificacaoMateria', {}).get('CodigoMateria')
+    for ano in ANOS_BUSCA:
+        url = f"https://legis.senado.leg.br/dadosabertos/materia/pesquisa/lista?sigla=REQ&ano={ano}"
+        
+        try:
+            response = session.get(url, headers=headers, timeout=30)
+            if response.status_code == 200:
+                materias = response.json().get('PesquisaBasicaMateria', {}).get('Materias', {}).get('Materia', [])
+                if isinstance(materias, dict): materias = [materias]
                     
-                    time.sleep(DELAY_API)
-                    url_detalhe = f"https://legis.senado.leg.br/dadosabertos/materia/{codigo_materia}"
-                    res_detalhe = session.get(url_detalhe, headers=headers, timeout=15)
+                for m in materias:
+                    ementa = m.get('DadosBasicosMateria', {}).get('EmentaMateria', '').lower()
                     
-                    autor_formatado = "Senador(a)"
-                    comissao_atual = "Plenário"
-                    status = "Aguardando Leitura/Resposta"
-                    
-                    if res_detalhe.status_code == 200:
-                        detalhe_json = res_detalhe.json().get('DetalheMateria', {}).get('Materia', {})
-                        autores_list = detalhe_json.get('Autoria', {}).get('Autor', [])
-                        if isinstance(autores_list, dict): autores_list = [autores_list]
-                        if autores_list:
-                            a = autores_list[0]
-                            nome_autor = a.get('NomeAutor', '')
-                            partido = a.get('IdentificacaoParlamentar', {}).get('SiglaPartidoParlamentar', '')
-                            uf = a.get('IdentificacaoParlamentar', {}).get('UfParlamentar', '')
-                            autor_formatado = f"Sen. {nome_autor} ({partido}-{uf})" if partido else f"Sen. {nome_autor}"
-                            
-                        situacao = detalhe_json.get('SituacaoAtual', {}).get('Autuacoes', {}).get('Autuacao', [])
-                        if isinstance(situacao, dict): situacao = [situacao]
-                        if situacao:
-                            comissao_atual = situacao[0].get('Local', {}).get('SiglaLocal', 'Plenário')
+                    # FILTRO FLEXIBILIZADO NO SENADO
+                    if any(termo in ementa for termo in TERMOS_MPO):
+                        codigo_materia = m.get('IdentificacaoMateria', {}).get('CodigoMateria')
+                        
+                        time.sleep(DELAY_API)
+                        url_detalhe = f"https://legis.senado.leg.br/dadosabertos/materia/{codigo_materia}"
+                        res_detalhe = session.get(url_detalhe, headers=headers, timeout=15)
+                        
+                        autor_formatado = "Senador(a)"
+                        comissao_atual = "Plenário"
+                        status = "Aguardando Leitura/Resposta"
+                        
+                        if res_detalhe.status_code == 200:
+                            detalhe_json = res_detalhe.json().get('DetalheMateria', {}).get('Materia', {})
+                            autores_list = detalhe_json.get('Autoria', {}).get('Autor', [])
+                            if isinstance(autores_list, dict): autores_list = [autores_list]
+                            if autores_list:
+                                a = autores_list[0]
+                                nome_autor = a.get('NomeAutor', '')
+                                partido = a.get('IdentificacaoParlamentar', {}).get('SiglaPartidoParlamentar', '')
+                                uf = a.get('IdentificacaoParlamentar', {}).get('UfParlamentar', '')
+                                autor_formatado = f"Sen. {nome_autor} ({partido}-{uf})" if partido else f"Sen. {nome_autor}"
+                                
+                            situacao = detalhe_json.get('SituacaoAtual', {}).get('Autuacoes', {}).get('Autuacao', [])
+                            if isinstance(situacao, dict): situacao = [situacao]
+                            if situacao:
+                                comissao_atual = situacao[0].get('Local', {}).get('SiglaLocal', 'Plenário')
 
-                    data_str = m.get('DadosBasicosMateria', {}).get('DataApresentacao', f'{ANO_BUSCA}-01-01')
-                    data_obj = datetime.strptime(data_str, '%Y-%m-%d')
-                    mes_ano = f"{MESES_BR[data_obj.month]}/{str(data_obj.year)[2:]}"
+                        data_str = m.get('DadosBasicosMateria', {}).get('DataApresentacao', f'{ano}-01-01')
+                        data_obj = datetime.strptime(data_str, '%Y-%m-%d')
+                        mes_ano = f"{MESES_BR[data_obj.month]}/{str(data_obj.year)[2:]}"
 
-                    dados.append({
-                        "data": data_obj.strftime('%d/%m/%Y'),
-                        "mes_ano": mes_ano,
-                        "casa": "Senado",
-                        "sigla": m.get('IdentificacaoMateria', {}).get('SiglaMateria'),
-                        "numero": m.get('IdentificacaoMateria', {}).get('NumeroMateria'),
-                        "ano": m.get('IdentificacaoMateria', {}).get('AnoMateria'),
-                        "autor": autor_formatado,
-                        "comissao": comissao_atual,
-                        "tema": classificar_tema_oficial(ementa),
-                        "ementa": m.get('DadosBasicosMateria', {}).get('EmentaMateria', ''),
-                        "status": status,
-                        "link": f"https://www25.senado.leg.br/web/atividade/materias/-/materia/{codigo_materia}"
-                    })
-    except Exception as e:
-        print(f"Erro ao processar Senado: {e}")
+                        dados.append({
+                            "data": data_obj.strftime('%d/%m/%Y'),
+                            "mes_ano": mes_ano,
+                            "casa": "Senado",
+                            "sigla": m.get('IdentificacaoMateria', {}).get('SiglaMateria'),
+                            "numero": m.get('IdentificacaoMateria', {}).get('NumeroMateria'),
+                            "ano": m.get('IdentificacaoMateria', {}).get('AnoMateria'),
+                            "autor": autor_formatado,
+                            "comissao": comissao_atual,
+                            "tema": classificar_tema_oficial(ementa),
+                            "ementa": m.get('DadosBasicosMateria', {}).get('EmentaMateria', ''),
+                            "status": status,
+                            "link": f"https://www25.senado.leg.br/web/atividade/materias/-/materia/{codigo_materia}"
+                        })
+        except Exception as e:
+            print(f"Erro ao processar Senado no ano {ano}: {e}")
             
     return dados
 
