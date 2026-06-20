@@ -1,267 +1,369 @@
 <!DOCTYPE html>
-<html lang="pt-PT">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monitor MPO - Requerimentos Legislativos</title>
+    <title>Monitor de RICs · MPO</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        .chart-container { position: relative; height: 300px; width: 100%; }
-        .table-scroll::-webkit-scrollbar { height: 8px; }
-        .table-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        :root {
+            --petrol-900: #0b2b34; --petrol-800: #0e3a46; --petrol-700: #134e5e; --petrol-100: #e3edf0;
+            --ink: #16242b; --muted: #5b6b73; --line: #dbe3e7; --surface: #ffffff; --canvas: #eef2f4;
+            --accent: #c2410c; --positive: #15803d; --neutral: #64748b; --focus: #1d9bb8;
+        }
+        * { font-family: 'Inter', system-ui, sans-serif; }
+        body { background: var(--canvas); color: var(--ink); }
+        h1, h2, h3, .display { font-family: 'Archivo', 'Inter', sans-serif; letter-spacing: -0.01em; }
+        .num { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
+        .card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; }
+        .chart-box { position: relative; height: 280px; width: 100%; }
+        .eyebrow { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+        select, input[type="text"] {
+            background: var(--surface); border: 1px solid var(--line); border-radius: 9px;
+            padding: .55rem .8rem; font-size: .875rem; color: var(--ink); transition: border-color .15s, box-shadow .15s;
+        }
+        select:focus, input[type="text"]:focus { outline: none; border-color: var(--focus); box-shadow: 0 0 0 3px rgba(29,155,184,.18); }
+        a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px solid rgba(29,155,184,.5); outline-offset: 2px; }
+        .pill { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
+        .pill-tramita { background: #fdeee4; color: var(--accent); }
+        .pill-resp { background: #e3f3e8; color: var(--positive); }
+        .pill-arq { background: #eef1f3; color: var(--neutral); }
+        .pill-outro { background: #eef1f3; color: var(--muted); }
+        .rowlink:hover { background: #f6f9fa; }
+        th.sortable { cursor: pointer; user-select: none; }
+        th.sortable:hover { color: var(--petrol-700); }
+        th.sortable[data-active="true"] { color: var(--petrol-700); }
+        .scroll::-webkit-scrollbar { height: 9px; width: 9px; }
+        .scroll::-webkit-scrollbar-thumb { background: #c3ced3; border-radius: 6px; }
+        .spin { animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @media (prefers-reduced-motion: reduce) { .spin { animation: none; } }
+        .tema-reserva::after { content: "•"; color: var(--accent); margin-left: 4px; font-weight: 700; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800">
+<body class="text-[15px]">
 
-    <header class="bg-indigo-700 text-white p-6 shadow-md">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+    <header style="background: linear-gradient(180deg, var(--petrol-800), var(--petrol-900));" class="text-white">
+        <div class="max-w-7xl mx-auto px-6 py-5 flex flex-col md:flex-row md:items-end justify-between gap-3">
             <div>
-                <h1 class="text-2xl font-bold"><i class="fa-solid fa-landmark mr-2"></i> Monitor Legislativo</h1>
-                <p class="text-indigo-200 text-sm mt-1">Requerimentos de Informação ao Ministério do Planeamento e Orçamento</p>
+                <p class="eyebrow" style="color:#9cc0cb;">Ministério do Planejamento e Orçamento · Secretaria de Articulação Institucional</p>
+                <h1 class="text-2xl md:text-[28px] font-extrabold mt-1 flex items-center gap-2">
+                    <i class="fa-solid fa-landmark-flag text-[20px]" style="color:#7fb8c6;"></i>
+                    Monitor de Requerimentos de Informação
+                </h1>
+                <p id="abrangencia" class="text-sm mt-1" style="color:#bcd6dd;"></p>
             </div>
-            <div class="text-sm bg-indigo-800 py-2 px-4 rounded-lg border border-indigo-600 flex items-center shadow-inner">
-                <i class="fa-regular fa-clock mr-2 text-indigo-300"></i>
-                Atualizado em: <span id="data-atualizacao" class="font-bold ml-1">Carregando...</span>
+            <div class="text-sm flex items-center gap-2 bg-white/10 border border-white/15 rounded-lg px-3 py-2 self-start md:self-auto">
+                <i class="fa-regular fa-clock" style="color:#9cc0cb;"></i>
+                <span>Dados atualizados em</span>
+                <span id="data-atualizacao" class="font-semibold">—</span>
             </div>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto p-6 mt-2">
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center">
-                <div class="bg-blue-100 text-blue-600 p-4 rounded-lg mr-4"><i class="fa-solid fa-file-lines text-2xl"></i></div>
-                <div>
-                    <p class="text-sm text-slate-500 font-medium">Requerimentos Ativos</p>
-                    <p class="text-3xl font-bold text-slate-800" id="kpi-total">-</p>
-                </div>
-            </div>
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center">
-                <div class="bg-green-100 text-green-600 p-4 rounded-lg mr-4"><i class="fa-solid fa-users text-2xl"></i></div>
-                <div>
-                    <p class="text-sm text-slate-500 font-medium">Parlamentares</p>
-                    <p class="text-3xl font-bold text-slate-800" id="kpi-parlamentares">-</p>
-                </div>
-            </div>
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center">
-                <div class="bg-purple-100 text-purple-600 p-4 rounded-lg mr-4"><i class="fa-solid fa-tags text-2xl"></i></div>
-                <div>
-                    <p class="text-sm text-slate-500 font-medium">Temas</p>
-                    <p class="text-3xl font-bold text-slate-800" id="kpi-temas">-</p>
-                </div>
-            </div>
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center">
-                <div class="bg-amber-100 text-amber-600 p-4 rounded-lg mr-4"><i class="fa-solid fa-gavel text-2xl"></i></div>
-                <div>
-                    <p class="text-sm text-slate-500 font-medium">Comissões</p>
-                    <p class="text-3xl font-bold text-slate-800" id="kpi-comissoes">-</p>
-                </div>
-            </div>
+    <main class="max-w-7xl mx-auto px-6 py-7">
+
+        <!-- Estado de carregamento -->
+        <div id="loading" class="card p-10 text-center text-[var(--muted)]">
+            <i class="fa-solid fa-circle-notch spin text-2xl mb-3 block" style="color:var(--petrol-700)"></i>
+            Carregando requerimentos…
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-                <h2 class="text-lg font-bold mb-4">Evolução</h2>
-                <div class="chart-container"><canvas id="chartTimeline"></canvas></div>
-            </div>
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-                <h2 class="text-lg font-bold mb-4">Autores Ativos</h2>
-                <div class="chart-container"><canvas id="chartAutores"></canvas></div>
-            </div>
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-                <h2 class="text-lg font-bold mb-4">Assuntos (Temas)</h2>
-                <div class="chart-container"><canvas id="chartTemas"></canvas></div>
-            </div>
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-                <h2 class="text-lg font-bold mb-4">Situação</h2>
-                <div class="chart-container"><canvas id="chartSituacao"></canvas></div>
-            </div>
-        </div>
+        <div id="conteudo" class="hidden">
+            <!-- KPIs -->
+            <section class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-5">
+                <div class="card p-4"><p class="eyebrow">RICs ao MPO</p><p class="num text-3xl font-extrabold display mt-1" id="kpi-total">—</p></div>
+                <div class="card p-4"><p class="eyebrow">Em tramitação</p><p class="num text-3xl font-extrabold display mt-1" id="kpi-ativos" style="color:var(--accent);">—</p></div>
+                <div class="card p-4"><p class="eyebrow">Respondidos</p><p class="num text-3xl font-extrabold display mt-1" id="kpi-resp" style="color:var(--positive);">—</p></div>
+                <div class="card p-4"><p class="eyebrow">Taxa de resposta</p><p class="num text-3xl font-extrabold display mt-1" id="kpi-taxa">—</p></div>
+                <div class="card p-4"><p class="eyebrow">Parlamentares · Temas</p><p class="num text-2xl font-bold display mt-1"><span id="kpi-parl">—</span><span class="text-[var(--muted)] font-medium"> · </span><span id="kpi-temas">—</span></p></div>
+            </section>
 
-        <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-            <div class="flex flex-col md:flex-row justify-between mb-6 gap-4 border-b pb-4">
-                <h2 class="text-xl font-bold">Lista de Requerimentos</h2>
-                <div class="flex gap-3">
-                    <input type="text" id="filter-busca" placeholder="Filtrar por ementa ou autor..." class="px-4 py-2 border rounded-lg text-sm w-full md:w-64">
-                    <button onclick="exportarCSV()" class="bg-green-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-700">Exportar CSV</button>
+            <!-- Situação da carteira -->
+            <section class="card p-5 mb-5">
+                <p class="eyebrow mb-3">Situação da carteira <span id="pipeline-escopo" class="text-[var(--muted)] normal-case tracking-normal font-normal"></span></p>
+                <div class="w-full h-4 rounded-full overflow-hidden flex bg-[var(--canvas)]" id="pipeline-bar" role="img" aria-label="Distribuição por situação"></div>
+                <div class="flex flex-wrap gap-x-6 gap-y-1 mt-3 text-sm" id="pipeline-legenda"></div>
+            </section>
+
+            <!-- Gráficos -->
+            <section class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
+                <div class="card p-5"><h2 class="text-base font-bold mb-3">Evolução mensal das apresentações</h2><div class="chart-box"><canvas id="chartTimeline"></canvas></div></div>
+                <div class="card p-5"><h2 class="text-base font-bold mb-3">Temas oficiais (Câmara · CEDOC)</h2><div class="chart-box"><canvas id="chartTemas"></canvas></div></div>
+                <div class="card p-5"><h2 class="text-base font-bold mb-3">Parlamentares que mais acionam o MPO</h2><div class="chart-box"><canvas id="chartAutores"></canvas></div></div>
+                <div class="card p-5"><h2 class="text-base font-bold mb-3">Distribuição por situação</h2><div class="chart-box"><canvas id="chartSituacao"></canvas></div></div>
+            </section>
+
+            <!-- Lista + filtros -->
+            <section class="card p-5">
+                <div class="flex flex-col xl:flex-row xl:items-end justify-between gap-4 mb-4">
+                    <div>
+                        <h2 class="text-lg font-bold">Requerimentos</h2>
+                        <p class="text-sm text-[var(--muted)] mt-0.5"><span id="contagem" class="num font-semibold">—</span></p>
+                    </div>
+                    <div class="flex flex-wrap gap-2 items-center">
+                        <input type="text" id="f-busca" placeholder="Buscar por ementa, autor ou número…" class="w-full sm:w-64" aria-label="Buscar">
+                        <select id="f-tema" aria-label="Filtrar por tema"><option value="">Todos os temas</option></select>
+                        <select id="f-situacao" aria-label="Filtrar por situação"><option value="">Todas as situações</option></select>
+                        <select id="f-ano" aria-label="Filtrar por ano"><option value="">Todos os anos</option></select>
+                        <select id="f-casa" aria-label="Filtrar por casa"><option value="">Câmara e Senado</option></select>
+                        <button onclick="limparFiltros()" class="text-sm font-semibold text-[var(--petrol-700)] px-3 py-2 rounded-lg hover:bg-[var(--petrol-100)]">Limpar</button>
+                        <button onclick="exportarCSV()" class="text-sm font-semibold text-white px-4 py-2 rounded-lg" style="background:var(--petrol-700);"><i class="fa-solid fa-file-csv mr-1"></i> Exportar</button>
+                    </div>
                 </div>
-            </div>
 
-            <div class="overflow-x-auto table-scroll">
-                <table class="w-full text-left text-sm">
-                    <thead class="bg-slate-50 text-slate-500 uppercase text-xs">
-                        <tr>
-                            <th class="px-6 py-4">Proposição</th>
-                            <th class="px-6 py-4">Data</th>
-                            <th class="px-6 py-4">Autor</th>
-                            <th class="px-6 py-4">Situação</th>
-                            <th class="px-6 py-4 w-1/3">Tema / Ementa</th>
-                        </tr>
-                    </thead>
-                    <tbody id="table-body" class="bg-white divide-y"></tbody>
-                </table>
-            </div>
+                <div class="overflow-x-auto scroll">
+                    <table class="w-full text-left text-sm">
+                        <thead>
+                            <tr class="text-[var(--muted)] border-b border-[var(--line)]">
+                                <th class="px-3 py-3 font-semibold sortable" data-col="numero">Proposição <i class="fa-solid fa-sort text-[10px] opacity-40"></i></th>
+                                <th class="px-3 py-3 font-semibold sortable" data-col="data">Data <i class="fa-solid fa-sort text-[10px] opacity-40"></i></th>
+                                <th class="px-3 py-3 font-semibold sortable" data-col="autor">Autor <i class="fa-solid fa-sort text-[10px] opacity-40"></i></th>
+                                <th class="px-3 py-3 font-semibold">Local</th>
+                                <th class="px-3 py-3 font-semibold sortable" data-col="situacao_grupo">Situação <i class="fa-solid fa-sort text-[10px] opacity-40"></i></th>
+                                <th class="px-3 py-3 font-semibold w-[42%]">Tema e ementa</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody" class="divide-y divide-[var(--line)]"></tbody>
+                    </table>
+                </div>
+                <div id="vazio" class="hidden text-center py-12 text-[var(--muted)]">
+                    <i class="fa-regular fa-folder-open text-2xl mb-2 block"></i>
+                    Nenhum requerimento corresponde aos filtros. <button onclick="limparFiltros()" class="underline">Limpar filtros</button>
+                </div>
+                <p id="nota-temas" class="hidden text-xs text-[var(--muted)] mt-4 border-t border-[var(--line)] pt-3">
+                    <i class="fa-solid fa-circle-info mr-1"></i>
+                    O ponto laranja (•) ao lado do tema indica classificação provisória por palavra-chave, ainda não classificada oficialmente pelo CEDOC/Câmara.
+                </p>
+            </section>
+
+            <footer class="text-center text-xs text-[var(--muted)] mt-8">
+                Fonte: Dados Abertos da Câmara dos Deputados e do Senado Federal · Painel interno de acompanhamento
+            </footer>
         </div>
     </main>
 
     <script>
-        const chartColors = { 
-            blue: 'rgba(59, 130, 246, 0.8)', 
-            amber: 'rgba(245, 158, 11, 0.8)', 
-            purple: 'rgba(139, 92, 246, 0.8)', 
-            green: 'rgba(16, 185, 129, 0.8)',
-            indigoBorder: 'rgba(79, 70, 229, 1)', 
-            indigoFill: 'rgba(79, 70, 229, 0.1)' 
-        };
-        let globalRequerimentos = [];
+        const COR = { petrol:'#134e5e', petrolFill:'rgba(19,78,94,.10)', tramita:'#c2410c', resp:'#15803d', arq:'#64748b', outro:'#94a3b8', barra:'#2f7c8f', temas:'#0e3a46' };
+        const PILL = { 'Em tramitação':'pill-tramita', 'Respondido':'pill-resp', 'Arquivado':'pill-arq' };
+        const CORSIT = { 'Em tramitação':COR.tramita, 'Respondido':COR.resp, 'Arquivado':COR.arq, 'Outros':COR.outro };
+        const semMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        async function initDashboard() {
+        let TODOS = [];
+        let ordem = { col: 'data', dir: 'desc' };
+        const charts = {};
+
+        function parseData(d) { const [dd,mm,yy] = (d||'').split('/'); return new Date(+('20'+(yy||'00').slice(-2)), (+mm||1)-1, +dd||1); }
+        function normCasa(c) { return (c||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'') === 'Camara' ? 'Câmara' : (c||''); }
+
+        async function init() {
             let dados;
             try {
-                const response = await fetch(`./dados.json?t=${new Date().getTime()}`);
-                dados = await response.json();
-            } catch (e) { dados = { lista_requerimentos: [], temas: {}, ultima_atualizacao: "Offline", resumo: {}, timeline: {}, autores: {}, comissoes: {} }; }
-            
-            globalRequerimentos = dados.lista_requerimentos.sort((a, b) => new Date(b.data.split('/').reverse().join('-')) - new Date(a.data.split('/').reverse().join('-')));
-            
-            document.getElementById('data-atualizacao').innerText = dados.ultima_atualizacao || '-';
-            document.getElementById('kpi-total').innerText = dados.resumo.total_requerimentos || 0;
-            document.getElementById('kpi-parlamentares').innerText = dados.resumo.total_autores || 0;
-            document.getElementById('kpi-temas').innerText = Object.keys(dados.temas || {}).length;
-            document.getElementById('kpi-comissoes').innerText = Object.keys(dados.comissoes || {}).length;
+                const r = await fetch(`./dados.json?t=${Date.now()}`);
+                dados = await r.json();
+            } catch (e) {
+                dados = { lista_requerimentos: [], resumo: {}, ultima_atualizacao: 'indisponível' };
+            }
+            TODOS = (dados.lista_requerimentos || []).map(r => ({ ...r, casa: normCasa(r.casa) }));
 
-            renderizarGraficos(dados);
-            renderizarTabela(globalRequerimentos);
-            
-            document.getElementById('filter-busca').addEventListener('input', (e) => {
-                const b = e.target.value.toLowerCase();
-                renderizarTabela(globalRequerimentos.filter(r => r.ementa.toLowerCase().includes(b) || r.autor.toLowerCase().includes(b)));
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('conteudo').classList.remove('hidden');
+            document.getElementById('data-atualizacao').textContent = dados.ultima_atualizacao || '—';
+
+            // Abrangência derivada dos dados
+            const anos = [...new Set(TODOS.map(r => +r.ano))].filter(Boolean).sort();
+            const casas = [...new Set(TODOS.map(r => r.casa))].filter(Boolean);
+            if (anos.length) {
+                const faixa = anos.length > 1 ? `${anos[0]}–${anos[anos.length-1]}` : `${anos[0]}`;
+                document.getElementById('abrangencia').textContent = `${TODOS.length} requerimentos · ${faixa} · ${casas.join(' e ')}`;
+            }
+            if (TODOS.some(r => r.tema_fonte === 'reserva')) document.getElementById('nota-temas').classList.remove('hidden');
+
+            popularFiltro('f-tema', [...new Set(TODOS.map(r => r.tema))].sort());
+            popularFiltro('f-situacao', [...new Set(TODOS.map(r => r.situacao_grupo))].sort());
+            popularFiltro('f-ano', [...new Set(TODOS.map(r => String(r.ano)))].sort().reverse());
+            popularFiltro('f-casa', [...new Set(TODOS.map(r => r.casa))].sort());
+
+            ['f-busca','f-tema','f-situacao','f-ano','f-casa'].forEach(id => document.getElementById(id).addEventListener('input', render));
+            document.querySelectorAll('th.sortable').forEach(th => th.addEventListener('click', () => {
+                const c = th.dataset.col;
+                ordem.dir = (ordem.col === c && ordem.dir === 'asc') ? 'desc' : 'asc';
+                ordem.col = c; render();
+            }));
+            render();
+        }
+
+        function popularFiltro(id, valores) {
+            const sel = document.getElementById(id);
+            valores.filter(Boolean).forEach(v => { const o = document.createElement('option'); o.value = v; o.textContent = v; sel.appendChild(o); });
+        }
+
+        function aplicarFiltros() {
+            const b = document.getElementById('f-busca').value.toLowerCase().trim();
+            const t = document.getElementById('f-tema').value;
+            const s = document.getElementById('f-situacao').value;
+            const a = document.getElementById('f-ano').value;
+            const c = document.getElementById('f-casa').value;
+            return TODOS.filter(r => {
+                if (t && r.tema !== t) return false;
+                if (s && r.situacao_grupo !== s) return false;
+                if (a && String(r.ano) !== a) return false;
+                if (c && r.casa !== c) return false;
+                if (b) { const alvo = `${r.ementa} ${r.autor} ${r.numero}/${r.ano} ${r.sigla}`.toLowerCase(); if (!alvo.includes(b)) return false; }
+                return true;
             });
         }
 
-        function ordenarTimeline(timelineDict) {
-            if (!timelineDict) return { labels: [], data: [] };
-            const monthMap = { 'Jan':0, 'Fev':1, 'Mar':2, 'Abr':3, 'Mai':4, 'Jun':5, 'Jul':6, 'Ago':7, 'Set':8, 'Out':9, 'Nov':10, 'Dez':11 };
-            const entries = Object.entries(timelineDict);
-            entries.sort((a, b) => {
-                const [mesA, anoA] = a[0].split('/');
-                const [mesB, anoB] = b[0].split('/');
-                return new Date(2000 + parseInt(anoA), monthMap[mesA]) - new Date(2000 + parseInt(anoB), monthMap[mesB]);
-            });
-            return { labels: entries.map(e => e[0]), data: entries.map(e => e[1]) };
-        }
-
-        function renderizarGraficos(dados) {
-            // 1. Timeline
-            const timelineData = ordenarTimeline(dados.timeline);
-            new Chart(document.getElementById('chartTimeline').getContext('2d'), {
-                type: 'line',
-                data: {
-                    labels: timelineData.labels,
-                    datasets: [{
-                        label: 'Apresentados',
-                        data: timelineData.data,
-                        borderColor: chartColors.indigoBorder,
-                        backgroundColor: chartColors.indigoFill,
-                        borderWidth: 2,
-                        fill: true,
-                        tension: 0.3
-                    }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-            });
-
-            // 2. Autores Ativos
-            const autoresData = Object.entries(dados.autores || {}).sort((a, b) => b[1] - a[1]).slice(0, 5);
-            new Chart(document.getElementById('chartAutores').getContext('2d'), {
-                type: 'bar',
-                data: {
-                    labels: autoresData.map(a => a[0].length > 25 ? a[0].substring(0, 25) + '...' : a[0]),
-                    datasets: [{
-                        label: 'Requerimentos',
-                        data: autoresData.map(a => a[1]),
-                        backgroundColor: chartColors.amber,
-                        borderRadius: 4
-                    }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { display: false } } }
-            });
-
-            // 3. Assuntos (Temas)
-            const temasData = Object.entries(dados.temas || {}).sort((a, b) => b[1] - a[1]).slice(0, 5);
-            new Chart(document.getElementById('chartTemas').getContext('2d'), {
-                type: 'bar',
-                data: {
-                    labels: temasData.map(t => t[0].length > 20 ? t[0].substring(0, 20) + '...' : t[0]),
-                    datasets: [{
-                        label: 'Ocorrências',
-                        data: temasData.map(t => t[1]),
-                        backgroundColor: chartColors.purple,
-                        borderRadius: 4
-                    }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-            });
-
-            // 4. Situação (Agrupado Dinamicamente)
-            const situacoesCount = {};
-            (dados.lista_requerimentos || []).forEach(r => {
-                situacoesCount[r.status] = (situacoesCount[r.status] || 0) + 1;
-            });
-            const situacoesData = Object.entries(situacoesCount).sort((a, b) => b[1] - a[1]).slice(0, 5);
-
-            new Chart(document.getElementById('chartSituacao').getContext('2d'), {
-                type: 'doughnut',
-                data: {
-                    labels: situacoesData.map(s => s[0]),
-                    datasets: [{
-                        data: situacoesData.map(s => s[1]),
-                        backgroundColor: [chartColors.blue, chartColors.amber, chartColors.purple, chartColors.green, '#ef4444'],
-                        borderWidth: 0
-                    }]
-                },
-                options: { 
-                    responsive: true, 
-                    maintainAspectRatio: false, 
-                    plugins: { 
-                        legend: { position: 'right', labels: { boxWidth: 12 } } 
-                    }, 
-                    cutout: '70%' 
-                }
+        function ordenar(lista) {
+            const dir = ordem.dir === 'asc' ? 1 : -1;
+            return [...lista].sort((x, y) => {
+                let vx, vy;
+                if (ordem.col === 'data') { vx = parseData(x.data); vy = parseData(y.data); }
+                else if (ordem.col === 'numero') { vx = (+x.ano)*100000 + (+x.numero); vy = (+y.ano)*100000 + (+y.numero); }
+                else { vx = (x[ordem.col]||'').toString().toLowerCase(); vy = (y[ordem.col]||'').toString().toLowerCase(); }
+                return vx < vy ? -dir : vx > vy ? dir : 0;
             });
         }
 
-        function renderizarTabela(lista) {
-            const tbody = document.getElementById('table-body');
-            tbody.innerHTML = lista.map(req => `
-                <tr class="hover:bg-slate-50">
-                    <td class="px-6 py-4 font-bold text-indigo-700">${req.sigla} ${req.numero}/${req.ano}</td>
-                    <td class="px-6 py-4 text-slate-600">${req.data}</td>
-                    <td class="px-6 py-4">${req.autor}</td>
-                    <td class="px-6 py-4"><span class="px-2 py-1 bg-amber-100 text-amber-800 rounded-full text-[10px] font-bold uppercase">${req.status}</span></td>
-                    <td class="px-6 py-4 whitespace-normal text-slate-600">
-                        <span class="text-[10px] text-indigo-500 font-bold uppercase">${req.tema}</span>
-                        <p class="mt-1">${req.ementa}</p>
-                        <a href="${req.link}" target="_blank" class="text-indigo-600 text-[11px] underline mt-1 block">Acessar</a>
+        function marcarColunaOrdenada() {
+            document.querySelectorAll('th.sortable').forEach(th => {
+                const ativo = th.dataset.col === ordem.col;
+                th.dataset.active = ativo ? 'true' : 'false';
+                const ic = th.querySelector('i');
+                if (!ic) return;
+                ic.className = ativo
+                    ? `fa-solid ${ordem.dir === 'asc' ? 'fa-sort-up' : 'fa-sort-down'} text-[10px]`
+                    : 'fa-solid fa-sort text-[10px] opacity-40';
+            });
+        }
+
+        function render() {
+            const filtrados = aplicarFiltros();
+            renderKPIs(filtrados);
+            renderPipeline(filtrados);
+            renderGraficos(filtrados);
+            marcarColunaOrdenada();
+            renderTabela(ordenar(filtrados));
+            document.getElementById('contagem').textContent = `${filtrados.length} de ${TODOS.length} requerimentos`;
+            document.getElementById('pipeline-escopo').textContent = filtrados.length === TODOS.length ? '(carteira completa)' : '(seleção filtrada)';
+        }
+
+        function renderKPIs(l) {
+            const ativos = l.filter(r => r.situacao_grupo === 'Em tramitação').length;
+            const resp = l.filter(r => r.situacao_grupo === 'Respondido').length;
+            const base = ativos + resp;
+            document.getElementById('kpi-total').textContent = l.length;
+            document.getElementById('kpi-ativos').textContent = ativos;
+            document.getElementById('kpi-resp').textContent = resp;
+            document.getElementById('kpi-taxa').textContent = base ? Math.round(resp/base*100) + '%' : '—';
+            document.getElementById('kpi-parl').textContent = new Set(l.map(r => r.autor)).size;
+            document.getElementById('kpi-temas').textContent = new Set(l.map(r => r.tema)).size;
+        }
+
+        function renderPipeline(l) {
+            const ordemSit = ['Em tramitação','Respondido','Arquivado','Outros'];
+            const cont = {}; l.forEach(r => cont[r.situacao_grupo] = (cont[r.situacao_grupo]||0)+1);
+            const total = l.length || 1;
+            const bar = document.getElementById('pipeline-bar'); const leg = document.getElementById('pipeline-legenda');
+            bar.innerHTML = ''; leg.innerHTML = '';
+            ordemSit.filter(s => cont[s]).forEach(s => {
+                const seg = document.createElement('div');
+                seg.style.width = (cont[s]/total*100) + '%'; seg.style.background = CORSIT[s]; seg.title = `${s}: ${cont[s]}`;
+                bar.appendChild(seg);
+                const item = document.createElement('span'); item.className = 'flex items-center gap-1.5';
+                item.innerHTML = `<span class="inline-block w-2.5 h-2.5 rounded-sm" style="background:${CORSIT[s]}"></span><span class="font-semibold num">${cont[s]}</span> <span class="text-[var(--muted)]">${s}</span>`;
+                leg.appendChild(item);
+            });
+        }
+
+        function novoGrafico(id, cfg) {
+            if (charts[id]) charts[id].destroy();
+            if (semMovimento) cfg.options = { ...(cfg.options||{}), animation: false };
+            charts[id] = new Chart(document.getElementById(id).getContext('2d'), cfg);
+        }
+
+        function renderGraficos(l) {
+            const mm = {'Jan':0,'Fev':1,'Mar':2,'Abr':3,'Mai':4,'Jun':5,'Jul':6,'Ago':7,'Set':8,'Out':9,'Nov':10,'Dez':11};
+            const tl = {}; l.forEach(r => tl[r.mes_ano] = (tl[r.mes_ano]||0)+1);
+            const tlE = Object.entries(tl).filter(e => e[0] in {} || mm[e[0].split('/')[0]] !== undefined)
+                .sort((a,b)=>{ const [ma,aa]=a[0].split('/'),[mb,ab]=b[0].split('/'); return new Date(2000+ +aa, mm[ma]) - new Date(2000+ +ab, mm[mb]); });
+            novoGrafico('chartTimeline', {
+                type:'line',
+                data:{ labels: tlE.map(e=>e[0]), datasets:[{ data: tlE.map(e=>e[1]), borderColor:COR.petrol, backgroundColor:COR.petrolFill, borderWidth:2, fill:true, tension:.3, pointRadius:3, pointBackgroundColor:COR.petrol }] },
+                options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ y:{ beginAtZero:true, ticks:{precision:0} } } }
+            });
+
+            const tm = {}; l.forEach(r => tm[r.tema] = (tm[r.tema]||0)+1);
+            const tmE = Object.entries(tm).sort((a,b)=>b[1]-a[1]).slice(0,7);
+            novoGrafico('chartTemas', {
+                type:'bar',
+                data:{ labels: tmE.map(e=>e[0]), datasets:[{ data: tmE.map(e=>e[1]), backgroundColor:COR.temas, borderRadius:5, barThickness:18 }] },
+                options:{ indexAxis:'y', responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ x:{ beginAtZero:true, ticks:{precision:0} } } }
+            });
+
+            const au = {}; l.forEach(r => au[r.autor] = (au[r.autor]||0)+1);
+            const auE = Object.entries(au).sort((a,b)=>b[1]-a[1]).slice(0,6);
+            novoGrafico('chartAutores', {
+                type:'bar',
+                data:{ labels: auE.map(e=> e[0].length>28 ? e[0].slice(0,28)+'…' : e[0]), datasets:[{ data: auE.map(e=>e[1]), backgroundColor:COR.barra, borderRadius:5, barThickness:18 }] },
+                options:{ indexAxis:'y', responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ x:{ beginAtZero:true, ticks:{precision:0} } } }
+            });
+
+            const ordemSit = ['Em tramitação','Respondido','Arquivado','Outros'];
+            const st = {}; l.forEach(r => st[r.situacao_grupo] = (st[r.situacao_grupo]||0)+1);
+            const stE = ordemSit.filter(s=>st[s]).map(s=>[s, st[s]]);
+            novoGrafico('chartSituacao', {
+                type:'doughnut',
+                data:{ labels: stE.map(e=>e[0]), datasets:[{ data: stE.map(e=>e[1]), backgroundColor: stE.map(e=>CORSIT[e[0]]), borderWidth:2, borderColor:'#fff' }] },
+                options:{ responsive:true, maintainAspectRatio:false, cutout:'65%', plugins:{ legend:{ position:'right', labels:{ boxWidth:12, font:{size:12} } } } }
+            });
+        }
+
+        function renderTabela(lista) {
+            const tb = document.getElementById('tbody'); const vazio = document.getElementById('vazio');
+            vazio.classList.toggle('hidden', lista.length > 0);
+            tb.innerHTML = lista.map(r => {
+                const cls = PILL[r.situacao_grupo] || 'pill-outro';
+                const temaCls = r.tema_fonte === 'reserva' ? 'eyebrow tema-reserva' : 'eyebrow';
+                const temaTitle = r.tema_fonte === 'reserva' ? ' title="Classificação provisória por palavra-chave"' : '';
+                return `<tr class="rowlink align-top">
+                    <td class="px-3 py-3 font-bold" style="color:var(--petrol-700)">${r.sigla} ${r.numero}/${r.ano}<span class="block text-[10px] font-medium text-[var(--muted)] mt-0.5">${r.casa}</span></td>
+                    <td class="px-3 py-3 num text-[var(--muted)] whitespace-nowrap">${r.data}</td>
+                    <td class="px-3 py-3">${r.autor}</td>
+                    <td class="px-3 py-3 text-[var(--muted)] whitespace-nowrap">${r.comissao || '—'}</td>
+                    <td class="px-3 py-3"><span class="pill ${cls}">${r.situacao_grupo}</span><span class="block text-[10px] text-[var(--muted)] mt-1">${r.status}</span></td>
+                    <td class="px-3 py-3 text-[var(--ink)]">
+                        <span class="${temaCls}" style="color:var(--petrol-700)"${temaTitle}>${r.tema}</span>
+                        <p class="mt-1 leading-snug">${r.ementa}</p>
+                        <a href="${r.link}" target="_blank" rel="noopener" class="inline-block mt-1.5 text-[12px] font-semibold" style="color:var(--focus)">Abrir ficha de tramitação <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></a>
                     </td>
-                </tr>
-            `).join('');
+                </tr>`;
+            }).join('');
+        }
+
+        function limparFiltros() {
+            ['f-busca','f-tema','f-situacao','f-ano','f-casa'].forEach(id => document.getElementById(id).value = '');
+            render();
         }
 
         function exportarCSV() {
-            const csv = "Data,Proposicao,Autor,Situacao,Ementa,Link\n" + globalRequerimentos.map(r => `"${r.data}","${r.sigla} ${r.numero}/${r.ano}","${r.autor}","${r.status}","${r.ementa.replace(/"/g, '""')}","${r.link}"`).join("\n");
-            const blob = new Blob(["\uFEFF" + csv], { type: 'text/csv' });
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = "monitor_mpo.csv";
-            link.click();
+            const l = ordenar(aplicarFiltros());
+            const cab = ['Casa','Proposicao','Data','Autor','Local','Situacao','Status','Tema','Ementa','Link'];
+            const linhas = l.map(r => [r.casa, `${r.sigla} ${r.numero}/${r.ano}`, r.data, r.autor, r.comissao, r.situacao_grupo, r.status, r.tema, r.ementa, r.link]
+                .map(v => `"${String(v ?? '').replace(/"/g,'""')}"`).join(','));
+            const csv = '\uFEFF' + [cab.join(','), ...linhas].join('\n');
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(new Blob([csv], { type:'text/csv' }));
+            a.download = `monitor_rics_mpo_${new Date().toISOString().slice(0,10)}.csv`;
+            a.click();
         }
 
-        window.onload = initDashboard;
+        window.onload = init;
     </script>
 </body>
-</html>
 </html>
