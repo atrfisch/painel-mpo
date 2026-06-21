@@ -1,12 +1,18 @@
 {
-    "ultima_atualizacao": "20/06/2026 07:40",
-    "resumo": {
-        "total_requerimentos": 0,
-        "total_autores": 0
-    },
-    "timeline": {},
-    "autores": {},
-    "temas": {},
-    "comissoes": {},
-    "lista_requerimentos": []
+  "ultima_atualizacao": "21/06/2026 00:31",
+  "fonte_temas": "oficial",
+  "resumo": {
+    "total_requerimentos": 0,
+    "total_autores": 0,
+    "total_temas": 0,
+    "total_comissoes": 0,
+    "total_ativos": 0,
+    "total_respondidos": 0
+  },
+  "timeline": {},
+  "autores": {},
+  "temas": {},
+  "comissoes": {},
+  "situacoes": {},
+  "lista_requerimentos": []
 }
