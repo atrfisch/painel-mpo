@@ -1,12 +1,12 @@
 {
-  "ultima_atualizacao": "30/06/2026 14:08",
+  "ultima_atualizacao": "01/07/2026 07:16",
   "fonte_temas": "oficial",
   "resumo": {
     "total_requerimentos": 159,
     "total_autores": 56,
     "total_temas": 12,
     "total_comissoes": 2,
-    "total_ativos": 20,
+    "total_ativos": 16,
     "total_respondidos": 0
   },
   "timeline": {
@@ -125,8 +125,8 @@
     "1SECM": 146
   },
   "situacoes": {
-    "Em tramitação": 20,
-    "Arquivado": 136,
+    "Em tramitação": 16,
+    "Arquivado": 140,
     "Outros": 3
   },
   "lista_requerimentos": [
@@ -339,8 +339,8 @@
       ],
       "tema_fonte": "oficial",
       "ementa": "Requer informações ao Ministério do Planejamento e Orçamento acerca da análise de impacto regulatório e dos efeitos sistêmicos das propostas de alteração da jornada de trabalho.",
-      "status": "Aguardando Resposta",
-      "situacao_grupo": "Em tramitação",
+      "status": "Aguardando Remessa ao Arquivo",
+      "situacao_grupo": "Arquivado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2623530"
     },
     {
@@ -361,8 +361,8 @@
       ],
       "tema_fonte": "oficial",
       "ementa": "Requer o encaminhamento de solicitação de informações ao Ministério do Planejamento e Orçamento acerca de dados estatísticos sobre jornada de trabalho e estrutura ocupacional no Brasil.",
-      "status": "Aguardando Resposta",
-      "situacao_grupo": "Em tramitação",
+      "status": "Aguardando Remessa ao Arquivo",
+      "situacao_grupo": "Arquivado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2623532"
     },
     {
@@ -383,8 +383,8 @@
       ],
       "tema_fonte": "oficial",
       "ementa": "Requer ao Ministério do Planejamento e Orçamento solicitação de dados ao IBGE relativos à renda real do trabalhador, ao endividamento das famílias, ao crédito e à inflação, para subsidiar os trabalhos da Comissão Especial.",
-      "status": "Aguardando Resposta",
-      "situacao_grupo": "Em tramitação",
+      "status": "Aguardando Remessa ao Arquivo",
+      "situacao_grupo": "Arquivado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2623287"
     },
     {
@@ -405,8 +405,8 @@
       ],
       "tema_fonte": "oficial",
       "ementa": "Requer ao Ministério do Planejamento e Orçamento a solicitação de dados ao IBGE e ao IPEA sobre informalidade no mercado de trabalho e renda real do trabalhador, com foco no risco de aumento da informalidade decorrente da redução da jornada.",
-      "status": "Aguardando Resposta",
-      "situacao_grupo": "Em tramitação",
+      "status": "Aguardando Remessa ao Arquivo",
+      "situacao_grupo": "Arquivado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2623288"
     },
     {
