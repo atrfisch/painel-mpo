@@ -1,15 +1,16 @@
 {
-  "ultima_atualizacao": "01/07/2026 07:16",
+  "ultima_atualizacao": "02/07/2026 06:59",
   "fonte_temas": "oficial",
   "resumo": {
-    "total_requerimentos": 159,
+    "total_requerimentos": 161,
     "total_autores": 56,
     "total_temas": 12,
     "total_comissoes": 2,
-    "total_ativos": 16,
+    "total_ativos": 18,
     "total_respondidos": 0
   },
   "timeline": {
+    "Jul/26": 2,
     "Jun/26": 5,
     "Mai/26": 8,
     "Abr/26": 1,
@@ -49,6 +50,7 @@
     "Fev/23": 1
   },
   "autores": {
+    "Dep. Adriana Ventura (-)": 14,
     "Dep. Chris Tonietto (-)": 4,
     "Dep. Gustavo Gayer (-)": 21,
     "Dep. Evair Vieira de Melo (-)": 4,
@@ -61,7 +63,6 @@
     "Dep. Roberto Monteiro Pai (-)": 1,
     "Dep. Julia Zanatta (-)": 1,
     "Dep. Messias Donato (-)": 4,
-    "Dep. Adriana Ventura (-)": 12,
     "Dep. Luiz Carlos Hauly (-)": 3,
     "Dep. Cabo Gilberto Silva (-)": 4,
     "Dep. Dr. Frederico (-)": 1,
@@ -107,7 +108,7 @@
     "Dep. Aureo Ribeiro (-)": 1
   },
   "temas": {
-    "Administração Pública": 103,
+    "Administração Pública": 105,
     "Agricultura, Pecuária, Pesca e Extrativismo": 5,
     "Finanças Públicas e Orçamento": 21,
     "Economia": 11,
@@ -121,15 +122,56 @@
     "Trabalho e Emprego": 1
   },
   "comissoes": {
-    "MESA": 13,
+    "MESA": 15,
     "1SECM": 146
   },
   "situacoes": {
-    "Em tramitação": 16,
+    "Em tramitação": 18,
     "Arquivado": 140,
     "Outros": 3
   },
   "lista_requerimentos": [
+    {
+      "data": "01/07/2026",
+      "data_iso": "2026-07-01",
+      "mes_ano": "Jul/26",
+      "casa": "Câmara",
+      "sigla": "RIC",
+      "numero": 2081,
+      "ano": 2026,
+      "autor": "Dep. Adriana Ventura (-)",
+      "comissao": "MESA",
+      "tema": "Administração Pública",
+      "temas": [
+        "Administração Pública",
+        "Finanças Públicas e Orçamento"
+      ],
+      "tema_fonte": "oficial",
+      "ementa": "Requer informações ao Ministro de Estado do Planejamento e Orçamento, Sr. Bruno Moretti, sobre bloqueios, contingenciamentos, limites de movimentação e empenho, programação financeira e riscos à capacidade fiscalizatória das agências reguladoras federais em 2026.",
+      "status": "Em Tramitação",
+      "situacao_grupo": "Em tramitação",
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2636496"
+    },
+    {
+      "data": "01/07/2026",
+      "data_iso": "2026-07-01",
+      "mes_ano": "Jul/26",
+      "casa": "Câmara",
+      "sigla": "RIC",
+      "numero": 2089,
+      "ano": 2026,
+      "autor": "Dep. Adriana Ventura (-)",
+      "comissao": "MESA",
+      "tema": "Administração Pública",
+      "temas": [
+        "Administração Pública"
+      ],
+      "tema_fonte": "oficial",
+      "ementa": "Requer informações ao Ministro de Estado do Planejamento e Orçamento, Sr. Bruno Moretti, sobre processos de dispensa e designação, critérios de chefia, manifestações recebidas e riscos à independência técnica do IBGE.",
+      "status": "Em Tramitação",
+      "situacao_grupo": "Em tramitação",
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2636504"
+    },
     {
       "data": "22/06/2026",
       "data_iso": "2026-06-22",
