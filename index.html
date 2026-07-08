@@ -14,7 +14,7 @@
         :root {
             --petrol-900: #0b2b34; --petrol-800: #0e3a46; --petrol-700: #134e5e; --petrol-100: #e3edf0;
             --ink: #16242b; --muted: #5b6b73; --line: #dbe3e7; --surface: #ffffff; --canvas: #eef2f4;
-            --accent: #c2410c; --positive: #15803d; --neutral: #64748b; --focus: #1d9bb8;
+            --accent: #c2410c; --positive: #15803d; --neutral: #64748b; --focus: #1d9bb8; --warning: #ca8a04;
         }
         * { font-family: 'Inter', system-ui, sans-serif; }
         body { background: var(--canvas); color: var(--ink); }
@@ -31,6 +31,7 @@
         a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px solid rgba(29,155,184,.5); outline-offset: 2px; }
         .pill { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
         .pill-tramita { background: #fdeee4; color: var(--accent); }
+        .pill-aguarda { background: #fef08a; color: var(--warning); }
         .pill-resp { background: #e3f3e8; color: var(--positive); }
         .pill-arq { background: #eef1f3; color: var(--neutral); }
         .pill-outro { background: #eef1f3; color: var(--muted); }
@@ -75,12 +76,12 @@
         </div>
 
         <div id="conteudo" class="hidden">
-            <!-- KPIs -->
+            <!-- KPIs Atualizados -->
             <section class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-5">
                 <div class="card p-4"><p class="eyebrow">RICs ao MPO</p><p class="num text-3xl font-extrabold display mt-1" id="kpi-total">—</p></div>
                 <div class="card p-4"><p class="eyebrow">Em tramitação</p><p class="num text-3xl font-extrabold display mt-1" id="kpi-ativos" style="color:var(--accent);">—</p></div>
-                <div class="card p-4"><p class="eyebrow">Respondidos</p><p class="num text-3xl font-extrabold display mt-1" id="kpi-resp" style="color:var(--positive);">—</p></div>
-                <div class="card p-4"><p class="eyebrow">Taxa de resposta</p><p class="num text-3xl font-extrabold display mt-1" id="kpi-taxa">—</p></div>
+                <div class="card p-4"><p class="eyebrow" title="Número de RICs aguardando resposta do Ministério">Aguardando resposta</p><p class="num text-3xl font-extrabold display mt-1" id="kpi-aguardando" style="color:var(--warning);">—</p></div>
+                <div class="card p-4"><p class="eyebrow" title="Apresentadas, mas ainda não encaminhadas ao MPO">Não encaminhadas</p><p class="num text-3xl font-extrabold display mt-1" id="kpi-nao-encaminhadas" style="color:var(--muted);">—</p></div>
                 <div class="card p-4"><p class="eyebrow">Parlamentares · Temas</p><p class="num text-2xl font-bold display mt-1"><span id="kpi-parl">—</span><span class="text-[var(--muted)] font-medium"> · </span><span id="kpi-temas">—</span></p></div>
             </section>
 
@@ -91,12 +92,22 @@
                 <div class="flex flex-wrap gap-x-6 gap-y-1 mt-3 text-sm" id="pipeline-legenda"></div>
             </section>
 
-            <!-- Gráficos -->
+            <!-- Gráficos e Alertas (Modificado) -->
             <section class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
                 <div class="card p-5"><h2 class="text-base font-bold mb-3">Evolução mensal das apresentações</h2><div class="chart-box"><canvas id="chartTimeline"></canvas></div></div>
                 <div class="card p-5"><h2 class="text-base font-bold mb-3">Temas oficiais (Câmara · CEDOC)</h2><div class="chart-box"><canvas id="chartTemas"></canvas></div></div>
                 <div class="card p-5"><h2 class="text-base font-bold mb-3">Parlamentares que mais acionam o MPO</h2><div class="chart-box"><canvas id="chartAutores"></canvas></div></div>
-                <div class="card p-5"><h2 class="text-base font-bold mb-3">Distribuição por situação</h2><div class="chart-box"><canvas id="chartSituacao"></canvas></div></div>
+                
+                <!-- Novo Quadro de Prazos de 7 dias -->
+                <div class="card p-5">
+                    <h2 class="text-base font-bold mb-3 flex items-center justify-between">
+                        <span>Vencimentos nos próximos 7 dias</span>
+                        <i class="fa-solid fa-bell text-[var(--accent)] text-lg"></i>
+                    </h2>
+                    <div class="overflow-y-auto max-h-[280px] scroll pr-2" id="lista-vencimentos">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
             </section>
 
             <!-- Lista + filtros -->
@@ -122,11 +133,13 @@
                         <thead>
                             <tr class="text-[var(--muted)] border-b border-[var(--line)]">
                                 <th class="px-3 py-3 font-semibold sortable" data-col="numero">Proposição <i class="fa-solid fa-sort text-[10px] opacity-40"></i></th>
-                                <th class="px-3 py-3 font-semibold sortable" data-col="data">Data <i class="fa-solid fa-sort text-[10px] opacity-40"></i></th>
+                                <th class="px-3 py-3 font-semibold sortable" data-col="data">Apresentação <i class="fa-solid fa-sort text-[10px] opacity-40"></i></th>
+                                <!-- Novas Colunas combinadas (para economizar espaço) -->
+                                <th class="px-3 py-3 font-semibold sortable" data-col="data_prazo_iso">Datas & Prazos <i class="fa-solid fa-sort text-[10px] opacity-40"></i></th>
                                 <th class="px-3 py-3 font-semibold sortable" data-col="autor">Autor <i class="fa-solid fa-sort text-[10px] opacity-40"></i></th>
                                 <th class="px-3 py-3 font-semibold">Local</th>
                                 <th class="px-3 py-3 font-semibold sortable" data-col="situacao_grupo">Situação <i class="fa-solid fa-sort text-[10px] opacity-40"></i></th>
-                                <th class="px-3 py-3 font-semibold w-[42%]">Tema e ementa</th>
+                                <th class="px-3 py-3 font-semibold w-[33%]">Tema e ementa</th>
                             </tr>
                         </thead>
                         <tbody id="tbody" class="divide-y divide-[var(--line)]"></tbody>
@@ -149,9 +162,12 @@
     </main>
 
     <script>
-        const COR = { petrol:'#134e5e', petrolFill:'rgba(19,78,94,.10)', tramita:'#c2410c', resp:'#15803d', arq:'#64748b', outro:'#94a3b8', barra:'#2f7c8f', temas:'#0e3a46' };
-        const PILL = { 'Em tramitação':'pill-tramita', 'Respondido':'pill-resp', 'Arquivado':'pill-arq' };
-        const CORSIT = { 'Em tramitação':COR.tramita, 'Respondido':COR.resp, 'Arquivado':COR.arq, 'Outros':COR.outro };
+        const COR = { petrol:'#134e5e', petrolFill:'rgba(19,78,94,.10)', tramita:'#c2410c', resp:'#15803d', arq:'#64748b', outro:'#94a3b8', barra:'#2f7c8f', temas:'#0e3a46', aguarda:'#ca8a04', n_encam:'#5b6b73' };
+        
+        // Atualizado para englobar os novos grupos do back-end
+        const PILL = { 'Em tramitação':'pill-tramita', 'Aguardando resposta':'pill-aguarda', 'Não encaminhada':'pill-outro', 'Respondido':'pill-resp', 'Arquivado':'pill-arq' };
+        const CORSIT = { 'Em tramitação':COR.tramita, 'Aguardando resposta':COR.aguarda, 'Não encaminhada':COR.n_encam, 'Respondido':COR.resp, 'Arquivado':COR.arq, 'Outros':COR.outro };
+        
         const semMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         let TODOS = [];
@@ -225,6 +241,7 @@
                 let vx, vy;
                 if (ordem.col === 'data') { vx = parseData(x.data); vy = parseData(y.data); }
                 else if (ordem.col === 'numero') { vx = (+x.ano)*100000 + (+x.numero); vy = (+y.ano)*100000 + (+y.numero); }
+                else if (ordem.col === 'data_prazo_iso') { vx = x.data_prazo_iso || '9999-12-31'; vy = y.data_prazo_iso || '9999-12-31'; }
                 else { vx = (x[ordem.col]||'').toString().toLowerCase(); vy = (y[ordem.col]||'').toString().toLowerCase(); }
                 return vx < vy ? -dir : vx > vy ? dir : 0;
             });
@@ -247,26 +264,29 @@
             renderKPIs(filtrados);
             renderPipeline(filtrados);
             renderGraficos(filtrados);
+            renderVencimentos(filtrados);
             marcarColunaOrdenada();
             renderTabela(ordenar(filtrados));
             document.getElementById('contagem').textContent = `${filtrados.length} de ${TODOS.length} requerimentos`;
             document.getElementById('pipeline-escopo').textContent = filtrados.length === TODOS.length ? '(carteira completa)' : '(seleção filtrada)';
         }
 
+        // Modificado para as novas métricas em tempo real
         function renderKPIs(l) {
-            const ativos = l.filter(r => r.situacao_grupo === 'Em tramitação').length;
-            const resp = l.filter(r => r.situacao_grupo === 'Respondido').length;
-            const base = ativos + resp;
+            const ativos = l.filter(r => r.situacao_grupo === 'Em tramitação' || r.situacao_grupo === 'Aguardando resposta').length;
+            const aguardando = l.filter(r => r.situacao_grupo === 'Aguardando resposta').length;
+            const naoEncam = l.filter(r => r.situacao_grupo === 'Não encaminhada').length;
+            
             document.getElementById('kpi-total').textContent = l.length;
             document.getElementById('kpi-ativos').textContent = ativos;
-            document.getElementById('kpi-resp').textContent = resp;
-            document.getElementById('kpi-taxa').textContent = base ? Math.round(resp/base*100) + '%' : '—';
+            document.getElementById('kpi-aguardando').textContent = aguardando;
+            document.getElementById('kpi-nao-encaminhadas').textContent = naoEncam;
             document.getElementById('kpi-parl').textContent = new Set(l.map(r => r.autor)).size;
             document.getElementById('kpi-temas').textContent = new Set(l.map(r => r.tema)).size;
         }
 
         function renderPipeline(l) {
-            const ordemSit = ['Em tramitação','Respondido','Arquivado','Outros'];
+            const ordemSit = ['Em tramitação','Aguardando resposta','Não encaminhada','Respondido','Arquivado','Outros'];
             const cont = {}; l.forEach(r => cont[r.situacao_grupo] = (cont[r.situacao_grupo]||0)+1);
             const total = l.length || 1;
             const bar = document.getElementById('pipeline-bar'); const leg = document.getElementById('pipeline-legenda');
@@ -313,17 +333,51 @@
                 data:{ labels: auE.map(e=> e[0].length>28 ? e[0].slice(0,28)+'…' : e[0]), datasets:[{ data: auE.map(e=>e[1]), backgroundColor:COR.barra, borderRadius:5, barThickness:18 }] },
                 options:{ indexAxis:'y', responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ x:{ beginAtZero:true, ticks:{precision:0} } } }
             });
-
-            const ordemSit = ['Em tramitação','Respondido','Arquivado','Outros'];
-            const st = {}; l.forEach(r => st[r.situacao_grupo] = (st[r.situacao_grupo]||0)+1);
-            const stE = ordemSit.filter(s=>st[s]).map(s=>[s, st[s]]);
-            novoGrafico('chartSituacao', {
-                type:'doughnut',
-                data:{ labels: stE.map(e=>e[0]), datasets:[{ data: stE.map(e=>e[1]), backgroundColor: stE.map(e=>CORSIT[e[0]]), borderWidth:2, borderColor:'#fff' }] },
-                options:{ responsive:true, maintainAspectRatio:false, cutout:'65%', plugins:{ legend:{ position:'right', labels:{ boxWidth:12, font:{size:12} } } } }
-            });
         }
 
+        // Nova função para listar Vencimentos em 7 dias
+        function renderVencimentos(l) {
+            const container = document.getElementById('lista-vencimentos');
+            
+            const hoje = new Date(); 
+            hoje.setHours(0,0,0,0);
+            
+            const daqui7dias = new Date(hoje); 
+            daqui7dias.setDate(hoje.getDate() + 7);
+            
+            const vencendo = l.filter(r => {
+                if (r.situacao_grupo !== 'Aguardando resposta' || !r.data_prazo_iso) return false;
+                // Previne falha de Timezone no parser local
+                const p = new Date(r.data_prazo_iso + 'T00:00:00'); 
+                return p >= hoje && p <= daqui7dias;
+            }).sort((a, b) => new Date(a.data_prazo_iso) - new Date(b.data_prazo_iso));
+
+            if (vencendo.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-10 text-[var(--muted)] flex flex-col items-center">
+                        <i class="fa-solid fa-calendar-check text-3xl mb-3" style="color:var(--positive)"></i>
+                        <span class="text-sm font-medium">Nenhum RIC aguardando resposta vence<br>nos próximos 7 dias.</span>
+                    </div>`;
+                return;
+            }
+            
+            container.innerHTML = `<ul class="divide-y divide-[var(--line)]">
+                ${vencendo.map(r => `
+                    <li class="py-3 flex justify-between items-center gap-3">
+                        <div class="flex-1 min-w-0">
+                            <a href="${r.link}" target="_blank" class="font-bold text-[var(--petrol-700)] hover:underline block truncate">${r.sigla} ${r.numero}/${r.ano}</a>
+                            <p class="text-[12px] text-[var(--muted)] truncate" title="${r.autor}">${r.autor}</p>
+                        </div>
+                        <div class="text-right whitespace-nowrap">
+                            <span class="block text-[10px] uppercase font-bold text-[var(--muted)] tracking-wider">Prazo</span>
+                            <span class="block font-semibold text-sm num" style="color:var(--accent)">${r.data_prazo_br}</span>
+                        </div>
+                    </li>
+                `).join('')}
+            </ul>`;
+        }
+
+        // Tabela atualizada com a nova coluna dupla (Movimentação & Prazo)
         function renderTabela(lista) {
             const tb = document.getElementById('tbody'); const vazio = document.getElementById('vazio');
             vazio.classList.toggle('hidden', lista.length > 0);
@@ -331,11 +385,23 @@
                 const cls = PILL[r.situacao_grupo] || 'pill-outro';
                 const temaCls = r.tema_fonte === 'reserva' ? 'eyebrow tema-reserva' : 'eyebrow';
                 const temaTitle = r.tema_fonte === 'reserva' ? ' title="Classificação provisória por palavra-chave"' : '';
+                
+                // Renderização das Datas (Movimentação e Prazo na mesma célula para poupar espaço)
+                const prazoInfo = (r.data_prazo_br && r.data_prazo_br !== '—') 
+                    ? `<span class="block mt-1 font-semibold" style="color:var(--accent)" title="Prazo fatal (30 dias após movimentação)"><i class="fa-solid fa-hourglass-half text-[11px] mr-1"></i> ${r.data_prazo_br}</span>` 
+                    : '';
+                    
                 return `<tr class="rowlink align-top">
                     <td class="px-3 py-3 font-bold" style="color:var(--petrol-700)">${r.sigla} ${r.numero}/${r.ano}<span class="block text-[10px] font-medium text-[var(--muted)] mt-0.5">${r.casa}</span></td>
-                    <td class="px-3 py-3 num text-[var(--muted)] whitespace-nowrap">${r.data}</td>
+                    <td class="px-3 py-3 num text-[var(--muted)] whitespace-nowrap text-[13px]">${r.data}</td>
+                    
+                    <td class="px-3 py-3 text-[13px] whitespace-nowrap bg-[var(--surface)] border-x border-[var(--canvas)]">
+                        <span class="block text-[var(--muted)]" title="Data da última movimentação"><i class="fa-solid fa-clock-rotate-left text-[11px] mr-1"></i> ${r.data_ult_mov_br || '—'}</span>
+                        ${prazoInfo}
+                    </td>
+                    
                     <td class="px-3 py-3">${r.autor}</td>
-                    <td class="px-3 py-3 text-[var(--muted)] whitespace-nowrap">${r.comissao || '—'}</td>
+                    <td class="px-3 py-3 text-[var(--muted)] whitespace-nowrap text-[13px]">${r.comissao || '—'}</td>
                     <td class="px-3 py-3"><span class="pill ${cls}">${r.situacao_grupo}</span><span class="block text-[10px] text-[var(--muted)] mt-1">${r.status}</span></td>
                     <td class="px-3 py-3 text-[var(--ink)]">
                         <span class="${temaCls}" style="color:var(--petrol-700)"${temaTitle}>${r.tema}</span>
@@ -353,9 +419,12 @@
 
         function exportarCSV() {
             const l = ordenar(aplicarFiltros());
-            const cab = ['Casa','Proposicao','Data','Autor','Local','Situacao','Status','Tema','Ementa','Link'];
-            const linhas = l.map(r => [r.casa, `${r.sigla} ${r.numero}/${r.ano}`, r.data, r.autor, r.comissao, r.situacao_grupo, r.status, r.tema, r.ementa, r.link]
-                .map(v => `"${String(v ?? '').replace(/"/g,'""')}"`).join(','));
+            // Atualizado para incluir as novas colunas no export
+            const cab = ['Casa','Proposicao','Data_Apresentacao','Data_Ultima_Movimentacao','Data_Prazo','Autor','Local','Situacao_Grupo','Status_Detalhado','Tema','Ementa','Link'];
+            const linhas = l.map(r => [
+                r.casa, `${r.sigla} ${r.numero}/${r.ano}`, r.data, r.data_ult_mov_br, r.data_prazo_br, r.autor, r.comissao, r.situacao_grupo, r.status, r.tema, r.ementa, r.link
+            ].map(v => `"${String(v ?? '').replace(/"/g,'""')}"`).join(','));
+            
             const csv = '\uFEFF' + [cab.join(','), ...linhas].join('\n');
             const a = document.createElement('a');
             a.href = URL.createObjectURL(new Blob([csv], { type:'text/csv' }));
