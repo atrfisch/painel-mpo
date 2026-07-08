@@ -26,7 +26,7 @@ import re
 import json
 import time
 import unicodedata
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from collections import Counter
 
 import requests
@@ -140,6 +140,12 @@ def agrupar_situacao(status):
         return "Arquivado"
     if ("resposta" in s and ("recebid" in s or "respondid" in s)) or "transformad" in s:
         return "Respondido"
+    # Separação Exclusiva para KPI e Gestão de Prazos do Dashboard
+    if "aguardando resposta" in s or "aguardando recebimento" in s:
+        return "Aguardando resposta"
+    if any(x in s for x in ["aguardando encaminhamento", "aguardando despacho", "aguardando envio", "pronta para pauta"]):
+        return "Não encaminhada"
+        
     if any(a in s for a in SITUACOES_ATIVAS) or "tramita" in s:
         return "Em tramitação"
     return "Outros"
@@ -184,16 +190,24 @@ def tema_reserva(texto):
 # ==========================================
 # MONTAGEM DE UM REGISTRO
 # ==========================================
-def montar_registro(id_prop, sigla, numero, ano, ementa, status, comissao, data_obj):
+def montar_registro(id_prop, sigla, numero, ano, ementa, status, comissao, data_obj, data_ult_mov_obj=None, data_prazo_obj=None):
     nomes_tema = temas_oficiais(id_prop)
     if nomes_tema:
         tema, fonte = nomes_tema[0], "oficial"
     else:
         tema, fonte = tema_reserva(ementa), "reserva"
+        
     return {
         "data": data_obj.strftime("%d/%m/%Y") if data_obj else "—",
         "data_iso": data_obj.strftime("%Y-%m-%d") if data_obj else "",
         "mes_ano": f"{MESES_BR[data_obj.month]}/{str(data_obj.year)[2:]}" if data_obj else "—",
+        
+        # Colunas e Lógicas Novas
+        "data_ult_mov_br": data_ult_mov_obj.strftime("%d/%m/%Y") if data_ult_mov_obj else "—",
+        "data_ult_mov_iso": data_ult_mov_obj.strftime("%Y-%m-%d") if data_ult_mov_obj else "",
+        "data_prazo_br": data_prazo_obj.strftime("%d/%m/%Y") if data_prazo_obj else "—",
+        "data_prazo_iso": data_prazo_obj.strftime("%Y-%m-%d") if data_prazo_obj else "",
+        
         "casa": "Câmara",
         "sigla": sigla,
         "numero": numero,
@@ -242,14 +256,21 @@ def buscar_por_arquivo(ano):
         status = ultimo.get("descricaoSituacao") or "Em Tramitação"
         if APENAS_ATIVOS and not esta_ativo(status):
             continue
+            
         comissao = ultimo.get("siglaOrgao") or "MESA"
 
         id_prop = p.get("id")
         data_obj = parse_data(p.get("dataApresentacao"))
+        
+        # Lógica de Captura da Última Movimentação e Cálculo de Vencimento
+        data_ult_mov_obj = parse_data(ultimo.get("dataHora"))
+        prazo_obj = None
+        if agrupar_situacao(status) == "Aguardando resposta" and data_ult_mov_obj:
+            prazo_obj = data_ult_mov_obj + timedelta(days=30)
 
         achados.append(montar_registro(
             id_prop, p.get("siglaTipo"), p.get("numero"), p.get("ano"),
-            ementa, status, comissao, data_obj))
+            ementa, status, comissao, data_obj, data_ult_mov_obj, prazo_obj))
         print(f"  + RIC {p.get('numero')}/{ano} | {achados[-1]['tema']} ({achados[-1]['tema_fonte']}) | {status.strip()}")
     return achados
 
@@ -258,7 +279,7 @@ def buscar_por_arquivo(ano):
 # ==========================================
 def buscar_por_api(ano):
     print(f"[{ano}] FALLBACK: varrendo endpoint paginado...")
-    achados, pagina = [], 1
+    achados, pagina = 1
     while True:
         url = (f"{API}/proposicoes?siglaTipo=RIC&ano={ano}"
                f"&itens=100&ordem=DESC&ordenarPor=id&pagina={pagina}")
@@ -275,14 +296,24 @@ def buscar_por_api(ano):
             id_prop = p.get("id")
             time.sleep(DELAY_API)
             det = session.get(f"{API}/proposicoes/{id_prop}", timeout=15).json().get("dados", {})
-            status = det.get("statusProposicao", {}).get("descricaoSituacao", "Em Tramitação")
+            statusProposicao = det.get("statusProposicao", {})
+            status = statusProposicao.get("descricaoSituacao", "Em Tramitação")
+            
             if APENAS_ATIVOS and not esta_ativo(status):
                 continue
-            comissao = det.get("statusProposicao", {}).get("siglaOrgao", "MESA")
+            
+            comissao = statusProposicao.get("siglaOrgao", "MESA")
             data_obj = parse_data(p.get("dataApresentacao"))
+            
+            # Captura de Vencimento (Fallback)
+            data_ult_mov_obj = parse_data(statusProposicao.get("dataHora"))
+            prazo_obj = None
+            if agrupar_situacao(status) == "Aguardando resposta" and data_ult_mov_obj:
+                prazo_obj = data_ult_mov_obj + timedelta(days=30)
+
             achados.append(montar_registro(
                 id_prop, p.get("siglaTipo"), p.get("numero"), p.get("ano"),
-                ementa, status, comissao, data_obj))
+                ementa, status, comissao, data_obj, data_ult_mov_obj, prazo_obj))
         pagina += 1
     return achados
 
@@ -321,6 +352,7 @@ def buscar_senado():
                     continue
                 cod = m.get("IdentificacaoMateria", {}).get("CodigoMateria")
                 autor = "Senador(a)"
+                
                 try:
                     time.sleep(DELAY_API)
                     dj = session.get(f"https://legis.senado.leg.br/dadosabertos/materia/{cod}",
@@ -336,12 +368,22 @@ def buscar_senado():
                         autor = f"Sen. {nome} ({partido}-{uf})" if partido else f"Sen. {nome}"
                 except Exception:
                     pass
+                
                 data_obj = parse_data(m.get("DadosBasicosMateria", {}).get("DataApresentacao"))
                 status = "Aguardando Leitura/Resposta"
+                
+                # Prazo provisório assumindo a data de apresentação como start no Senado
+                data_ult_mov_obj = data_obj 
+                prazo_obj = data_ult_mov_obj + timedelta(days=30) if data_ult_mov_obj else None
+
                 achados.append({
                     "data": data_obj.strftime("%d/%m/%Y") if data_obj else "—",
                     "data_iso": data_obj.strftime("%Y-%m-%d") if data_obj else "",
                     "mes_ano": f"{MESES_BR[data_obj.month]}/{str(data_obj.year)[2:]}" if data_obj else "—",
+                    "data_ult_mov_br": data_ult_mov_obj.strftime("%d/%m/%Y") if data_ult_mov_obj else "—",
+                    "data_ult_mov_iso": data_ult_mov_obj.strftime("%Y-%m-%d") if data_ult_mov_obj else "",
+                    "data_prazo_br": prazo_obj.strftime("%d/%m/%Y") if prazo_obj else "—",
+                    "data_prazo_iso": prazo_obj.strftime("%Y-%m-%d") if prazo_obj else "",
                     "casa": "Senado",
                     "sigla": m.get("IdentificacaoMateria", {}).get("SiglaMateria"),
                     "numero": m.get("IdentificacaoMateria", {}).get("NumeroMateria"),
@@ -391,7 +433,7 @@ def gerar_dashboard_data():
             "total_autores": len(autores),
             "total_temas": len(temas),
             "total_comissoes": len(comissoes),
-            "total_ativos": sum(1 for r in unicos if r["situacao_grupo"] == "Em tramitação"),
+            "total_ativos": sum(1 for r in unicos if r["situacao_grupo"] in ["Em tramitação", "Aguardando resposta", "Não encaminhada"]),
             "total_respondidos": sum(1 for r in unicos if r["situacao_grupo"] == "Respondido"),
         },
         "timeline": dict(timeline),
@@ -406,9 +448,8 @@ def gerar_dashboard_data():
 
     print("=========================================")
     print(f"Concluído. {len(unicos)} RICs do MPO "
-          f"({saida['resumo']['total_ativos']} em tramitação, "
+          f"({saida['resumo']['total_ativos']} ativos/tramitando, "
           f"{saida['resumo']['total_respondidos']} respondidos).")
-
 
 if __name__ == "__main__":
     gerar_dashboard_data()
