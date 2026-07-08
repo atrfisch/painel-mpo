@@ -1,16 +1,16 @@
 {
-  "ultima_atualizacao": "07/07/2026 13:53",
+  "ultima_atualizacao": "08/07/2026 05:55",
   "fonte_temas": "oficial",
   "resumo": {
-    "total_requerimentos": 161,
-    "total_autores": 56,
+    "total_requerimentos": 162,
+    "total_autores": 57,
     "total_temas": 12,
     "total_comissoes": 2,
-    "total_ativos": 18,
+    "total_ativos": 19,
     "total_respondidos": 0
   },
   "timeline": {
-    "Jul/26": 2,
+    "Jul/26": 3,
     "Jun/26": 5,
     "Mai/26": 8,
     "Abr/26": 1,
@@ -50,6 +50,7 @@
     "Fev/23": 1
   },
   "autores": {
+    "Dep. Duda Salabert (-)": 1,
     "Dep. Adriana Ventura (-)": 14,
     "Dep. Chris Tonietto (-)": 4,
     "Dep. Gustavo Gayer (-)": 21,
@@ -108,8 +109,8 @@
     "Dep. Aureo Ribeiro (-)": 1
   },
   "temas": {
+    "Agricultura, Pecuária, Pesca e Extrativismo": 6,
     "Administração Pública": 105,
-    "Agricultura, Pecuária, Pesca e Extrativismo": 5,
     "Finanças Públicas e Orçamento": 21,
     "Economia": 11,
     "Educação": 5,
@@ -122,15 +123,37 @@
     "Trabalho e Emprego": 1
   },
   "comissoes": {
-    "MESA": 15,
+    "MESA": 16,
     "1SECM": 146
   },
   "situacoes": {
-    "Em tramitação": 18,
+    "Em tramitação": 19,
     "Arquivado": 140,
     "Outros": 3
   },
   "lista_requerimentos": [
+    {
+      "data": "07/07/2026",
+      "data_iso": "2026-07-07",
+      "mes_ano": "Jul/26",
+      "casa": "Câmara",
+      "sigla": "RIC",
+      "numero": 2140,
+      "ano": 2026,
+      "autor": "Dep. Duda Salabert (-)",
+      "comissao": "MESA",
+      "tema": "Agricultura, Pecuária, Pesca e Extrativismo",
+      "temas": [
+        "Agricultura, Pecuária, Pesca e Extrativismo",
+        "Meio Ambiente e Desenvolvimento Sustentável",
+        "Viação, Transporte e Mobilidade"
+      ],
+      "tema_fonte": "oficial",
+      "ementa": "Requer informações do Sr. Bruno Moretti, Ministro de Estado do Planejamento e Orçamento, sobre as condições de regulação e fiscalização pela União da exportação marítima comercial de bovinos vivos para abate no exterior.",
+      "status": "Em Tramitação",
+      "situacao_grupo": "Em tramitação",
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2637622"
+    },
     {
       "data": "01/07/2026",
       "data_iso": "2026-07-01",
