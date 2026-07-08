@@ -92,13 +92,13 @@
                 <div class="flex flex-wrap gap-x-6 gap-y-1 mt-3 text-sm" id="pipeline-legenda"></div>
             </section>
 
-            <!-- Gráficos e Alertas (Modificado) -->
+            <!-- Gráficos e Alertas -->
             <section class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
                 <div class="card p-5"><h2 class="text-base font-bold mb-3">Evolução mensal das apresentações</h2><div class="chart-box"><canvas id="chartTimeline"></canvas></div></div>
                 <div class="card p-5"><h2 class="text-base font-bold mb-3">Temas oficiais (Câmara · CEDOC)</h2><div class="chart-box"><canvas id="chartTemas"></canvas></div></div>
                 <div class="card p-5"><h2 class="text-base font-bold mb-3">Parlamentares que mais acionam o MPO</h2><div class="chart-box"><canvas id="chartAutores"></canvas></div></div>
                 
-                <!-- Novo Quadro de Prazos de 7 dias -->
+                <!-- Quadro de Prazos de 7 dias -->
                 <div class="card p-5">
                     <h2 class="text-base font-bold mb-3 flex items-center justify-between">
                         <span>Vencimentos nos próximos 7 dias</span>
@@ -134,7 +134,6 @@
                             <tr class="text-[var(--muted)] border-b border-[var(--line)]">
                                 <th class="px-3 py-3 font-semibold sortable" data-col="numero">Proposição <i class="fa-solid fa-sort text-[10px] opacity-40"></i></th>
                                 <th class="px-3 py-3 font-semibold sortable" data-col="data">Apresentação <i class="fa-solid fa-sort text-[10px] opacity-40"></i></th>
-                                <!-- Novas Colunas combinadas (para economizar espaço) -->
                                 <th class="px-3 py-3 font-semibold sortable" data-col="data_prazo_iso">Datas & Prazos <i class="fa-solid fa-sort text-[10px] opacity-40"></i></th>
                                 <th class="px-3 py-3 font-semibold sortable" data-col="autor">Autor <i class="fa-solid fa-sort text-[10px] opacity-40"></i></th>
                                 <th class="px-3 py-3 font-semibold">Local</th>
@@ -164,17 +163,29 @@
     <script>
         const COR = { petrol:'#134e5e', petrolFill:'rgba(19,78,94,.10)', tramita:'#c2410c', resp:'#15803d', arq:'#64748b', outro:'#94a3b8', barra:'#2f7c8f', temas:'#0e3a46', aguarda:'#ca8a04', n_encam:'#5b6b73' };
         
-        // Atualizado para englobar os novos grupos do back-end
         const PILL = { 'Em tramitação':'pill-tramita', 'Aguardando resposta':'pill-aguarda', 'Não encaminhada':'pill-outro', 'Respondido':'pill-resp', 'Arquivado':'pill-arq' };
         const CORSIT = { 'Em tramitação':COR.tramita, 'Aguardando resposta':COR.aguarda, 'Não encaminhada':COR.n_encam, 'Respondido':COR.resp, 'Arquivado':COR.arq, 'Outros':COR.outro };
         
         const semMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         let TODOS = [];
+        
+        // Garante que a ordenação primária seja sempre pela coluna 'data' em modo decrescente (mais recentes primeiro)
         let ordem = { col: 'data', dir: 'desc' };
         const charts = {};
 
-        function parseData(d) { const [dd,mm,yy] = (d||'').split('/'); return new Date(+('20'+(yy||'00').slice(-2)), (+mm||1)-1, +dd||1); }
+        // Parser de datas mais robusto para corrigir erros de ordenação
+        function parseData(d) { 
+            if (!d || d === '—') return new Date(0);
+            if (d.includes('-')) return new Date(d + 'T12:00:00'); // Evita bug de timezone caindo pro dia anterior
+            const partes = d.split('/');
+            if (partes.length === 3) {
+                const ano = partes[2].length === 2 ? 2000 + parseInt(partes[2], 10) : parseInt(partes[2], 10);
+                return new Date(ano, parseInt(partes[1], 10) - 1, parseInt(partes[0], 10));
+            }
+            return new Date(0);
+        }
+
         function normCasa(c) { return (c||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'') === 'Camara' ? 'Câmara' : (c||''); }
 
         async function init() {
@@ -191,7 +202,6 @@
             document.getElementById('conteudo').classList.remove('hidden');
             document.getElementById('data-atualizacao').textContent = dados.ultima_atualizacao || '—';
 
-            // Abrangência derivada dos dados
             const anos = [...new Set(TODOS.map(r => +r.ano))].filter(Boolean).sort();
             const casas = [...new Set(TODOS.map(r => r.casa))].filter(Boolean);
             if (anos.length) {
@@ -211,7 +221,7 @@
                 ordem.dir = (ordem.col === c && ordem.dir === 'asc') ? 'desc' : 'asc';
                 ordem.col = c; render();
             }));
-            render();
+            render(); // Primeira renderização vai usar { col: 'data', dir: 'desc' }
         }
 
         function popularFiltro(id, valores) {
@@ -239,10 +249,18 @@
             const dir = ordem.dir === 'asc' ? 1 : -1;
             return [...lista].sort((x, y) => {
                 let vx, vy;
-                if (ordem.col === 'data') { vx = parseData(x.data); vy = parseData(y.data); }
-                else if (ordem.col === 'numero') { vx = (+x.ano)*100000 + (+x.numero); vy = (+y.ano)*100000 + (+y.numero); }
-                else if (ordem.col === 'data_prazo_iso') { vx = x.data_prazo_iso || '9999-12-31'; vy = y.data_prazo_iso || '9999-12-31'; }
-                else { vx = (x[ordem.col]||'').toString().toLowerCase(); vy = (y[ordem.col]||'').toString().toLowerCase(); }
+                if (ordem.col === 'data') { 
+                    vx = parseData(x.data); vy = parseData(y.data); 
+                }
+                else if (ordem.col === 'numero') { 
+                    vx = (+x.ano)*100000 + (+x.numero); vy = (+y.ano)*100000 + (+y.numero); 
+                }
+                else if (ordem.col === 'data_prazo_iso') { 
+                    vx = parseData(x.data_prazo_iso || '9999-12-31'); vy = parseData(y.data_prazo_iso || '9999-12-31'); 
+                }
+                else { 
+                    vx = (x[ordem.col]||'').toString().toLowerCase(); vy = (y[ordem.col]||'').toString().toLowerCase(); 
+                }
                 return vx < vy ? -dir : vx > vy ? dir : 0;
             });
         }
@@ -271,7 +289,6 @@
             document.getElementById('pipeline-escopo').textContent = filtrados.length === TODOS.length ? '(carteira completa)' : '(seleção filtrada)';
         }
 
-        // Modificado para as novas métricas em tempo real
         function renderKPIs(l) {
             const ativos = l.filter(r => r.situacao_grupo === 'Em tramitação' || r.situacao_grupo === 'Aguardando resposta').length;
             const aguardando = l.filter(r => r.situacao_grupo === 'Aguardando resposta').length;
@@ -335,7 +352,7 @@
             });
         }
 
-        // Nova função para listar Vencimentos em 7 dias
+        // Nova lógica com Timezone corrigido para evitar desaparecimento de datas
         function renderVencimentos(l) {
             const container = document.getElementById('lista-vencimentos');
             
@@ -347,10 +364,11 @@
             
             const vencendo = l.filter(r => {
                 if (r.situacao_grupo !== 'Aguardando resposta' || !r.data_prazo_iso) return false;
-                // Previne falha de Timezone no parser local
-                const p = new Date(r.data_prazo_iso + 'T00:00:00'); 
+                // Previne falha de Timezone no navegador adicionando T12:00:00
+                const p = new Date(r.data_prazo_iso + 'T12:00:00'); 
+                p.setHours(0,0,0,0); // Normaliza para comparar datas brutas
                 return p >= hoje && p <= daqui7dias;
-            }).sort((a, b) => new Date(a.data_prazo_iso) - new Date(b.data_prazo_iso));
+            }).sort((a, b) => new Date(a.data_prazo_iso + 'T12:00:00') - new Date(b.data_prazo_iso + 'T12:00:00'));
 
             if (vencendo.length === 0) {
                 container.innerHTML = `
@@ -377,7 +395,7 @@
             </ul>`;
         }
 
-        // Tabela atualizada com a nova coluna dupla (Movimentação & Prazo)
+        // Tratamento seguro caso os campos data_ult_mov_br/data_prazo_br não existam no JSON antigo
         function renderTabela(lista) {
             const tb = document.getElementById('tbody'); const vazio = document.getElementById('vazio');
             vazio.classList.toggle('hidden', lista.length > 0);
@@ -386,7 +404,7 @@
                 const temaCls = r.tema_fonte === 'reserva' ? 'eyebrow tema-reserva' : 'eyebrow';
                 const temaTitle = r.tema_fonte === 'reserva' ? ' title="Classificação provisória por palavra-chave"' : '';
                 
-                // Renderização das Datas (Movimentação e Prazo na mesma célula para poupar espaço)
+                const dataMov = r.data_ult_mov_br && r.data_ult_mov_br !== '—' ? r.data_ult_mov_br : 'Sem registro';
                 const prazoInfo = (r.data_prazo_br && r.data_prazo_br !== '—') 
                     ? `<span class="block mt-1 font-semibold" style="color:var(--accent)" title="Prazo fatal (30 dias após movimentação)"><i class="fa-solid fa-hourglass-half text-[11px] mr-1"></i> ${r.data_prazo_br}</span>` 
                     : '';
@@ -396,7 +414,7 @@
                     <td class="px-3 py-3 num text-[var(--muted)] whitespace-nowrap text-[13px]">${r.data}</td>
                     
                     <td class="px-3 py-3 text-[13px] whitespace-nowrap bg-[var(--surface)] border-x border-[var(--canvas)]">
-                        <span class="block text-[var(--muted)]" title="Data da última movimentação"><i class="fa-solid fa-clock-rotate-left text-[11px] mr-1"></i> ${r.data_ult_mov_br || '—'}</span>
+                        <span class="block text-[var(--muted)]" title="Data da última movimentação"><i class="fa-solid fa-clock-rotate-left text-[11px] mr-1"></i> ${dataMov}</span>
                         ${prazoInfo}
                     </td>
                     
@@ -419,10 +437,9 @@
 
         function exportarCSV() {
             const l = ordenar(aplicarFiltros());
-            // Atualizado para incluir as novas colunas no export
             const cab = ['Casa','Proposicao','Data_Apresentacao','Data_Ultima_Movimentacao','Data_Prazo','Autor','Local','Situacao_Grupo','Status_Detalhado','Tema','Ementa','Link'];
             const linhas = l.map(r => [
-                r.casa, `${r.sigla} ${r.numero}/${r.ano}`, r.data, r.data_ult_mov_br, r.data_prazo_br, r.autor, r.comissao, r.situacao_grupo, r.status, r.tema, r.ementa, r.link
+                r.casa, `${r.sigla} ${r.numero}/${r.ano}`, r.data, r.data_ult_mov_br || '', r.data_prazo_br || '', r.autor, r.comissao, r.situacao_grupo, r.status, r.tema, r.ementa, r.link
             ].map(v => `"${String(v ?? '').replace(/"/g,'""')}"`).join(','));
             
             const csv = '\uFEFF' + [cab.join(','), ...linhas].join('\n');
