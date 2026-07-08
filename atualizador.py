@@ -140,14 +140,15 @@ def agrupar_situacao(status):
         return "Arquivado"
     if ("resposta" in s and ("recebid" in s or "respondid" in s)) or "transformad" in s:
         return "Respondido"
+    
     # Separação Exclusiva para KPI e Gestão de Prazos do Dashboard
     if "aguardando resposta" in s or "aguardando recebimento" in s:
         return "Aguardando resposta"
-    if any(x in s for x in ["aguardando encaminhamento", "aguardando despacho", "aguardando envio", "pronta para pauta"]):
-        return "Não encaminhada"
-        
+    
+    # Status ativos que já foram apresentados, mas ainda não despachados/enviados ao MPO
     if any(a in s for a in SITUACOES_ATIVAS) or "tramita" in s:
-        return "Em tramitação"
+        return "Apresentado, não enviado"
+        
     return "Outros"
 
 def esta_ativo(status):
@@ -433,7 +434,7 @@ def gerar_dashboard_data():
             "total_autores": len(autores),
             "total_temas": len(temas),
             "total_comissoes": len(comissoes),
-            "total_ativos": sum(1 for r in unicos if r["situacao_grupo"] in ["Em tramitação", "Aguardando resposta", "Não encaminhada"]),
+            "total_ativos": sum(1 for r in unicos if r["situacao_grupo"] not in ["Arquivado", "Respondido"]),
             "total_respondidos": sum(1 for r in unicos if r["situacao_grupo"] == "Respondido"),
         },
         "timeline": dict(timeline),
