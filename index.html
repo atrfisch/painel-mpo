@@ -81,7 +81,7 @@
                 <div class="card p-4"><p class="eyebrow">RICs ao MPO</p><p class="num text-3xl font-extrabold display mt-1" id="kpi-total">—</p></div>
                 <div class="card p-4"><p class="eyebrow">Em tramitação</p><p class="num text-3xl font-extrabold display mt-1" id="kpi-ativos" style="color:var(--accent);">—</p></div>
                 <div class="card p-4"><p class="eyebrow" title="Número de RICs aguardando resposta do Ministério">Aguardando resposta</p><p class="num text-3xl font-extrabold display mt-1" id="kpi-aguardando" style="color:var(--warning);">—</p></div>
-                <div class="card p-4"><p class="eyebrow" title="Apresentadas, mas ainda não encaminhadas ao MPO">Não encaminhadas</p><p class="num text-3xl font-extrabold display mt-1" id="kpi-nao-encaminhadas" style="color:var(--muted);">—</p></div>
+                <div class="card p-4"><p class="eyebrow" title="Apresentadas, mas ainda não encaminhadas ao MPO">Apresentado, não enviado</p><p class="num text-3xl font-extrabold display mt-1" id="kpi-nao-encaminhadas" style="color:var(--muted);">—</p></div>
                 <div class="card p-4"><p class="eyebrow">Parlamentares · Temas</p><p class="num text-2xl font-bold display mt-1"><span id="kpi-parl">—</span><span class="text-[var(--muted)] font-medium"> · </span><span id="kpi-temas">—</span></p></div>
             </section>
 
@@ -163,8 +163,8 @@
     <script>
         const COR = { petrol:'#134e5e', petrolFill:'rgba(19,78,94,.10)', tramita:'#c2410c', resp:'#15803d', arq:'#64748b', outro:'#94a3b8', barra:'#2f7c8f', temas:'#0e3a46', aguarda:'#ca8a04', n_encam:'#5b6b73' };
         
-        const PILL = { 'Em tramitação':'pill-tramita', 'Aguardando resposta':'pill-aguarda', 'Não encaminhada':'pill-outro', 'Respondido':'pill-resp', 'Arquivado':'pill-arq' };
-        const CORSIT = { 'Em tramitação':COR.tramita, 'Aguardando resposta':COR.aguarda, 'Não encaminhada':COR.n_encam, 'Respondido':COR.resp, 'Arquivado':COR.arq, 'Outros':COR.outro };
+        const PILL = { 'Em tramitação':'pill-tramita', 'Aguardando resposta':'pill-aguarda', 'Apresentado, não enviado':'pill-outro', 'Respondido':'pill-resp', 'Arquivado':'pill-arq' };
+        const CORSIT = { 'Em tramitação':COR.tramita, 'Aguardando resposta':COR.aguarda, 'Apresentado, não enviado':COR.n_encam, 'Respondido':COR.resp, 'Arquivado':COR.arq, 'Outros':COR.outro };
         
         const semMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -290,9 +290,10 @@
         }
 
         function renderKPIs(l) {
-            const ativos = l.filter(r => r.situacao_grupo === 'Em tramitação' || r.situacao_grupo === 'Aguardando resposta').length;
+            // Em tramitação engloba todos os ativos (exclui Arquivados e Respondidos)
+            const ativos = l.filter(r => !['Arquivado', 'Respondido'].includes(r.situacao_grupo)).length;
             const aguardando = l.filter(r => r.situacao_grupo === 'Aguardando resposta').length;
-            const naoEncam = l.filter(r => r.situacao_grupo === 'Não encaminhada').length;
+            const naoEncam = l.filter(r => r.situacao_grupo === 'Apresentado, não enviado').length;
             
             document.getElementById('kpi-total').textContent = l.length;
             document.getElementById('kpi-ativos').textContent = ativos;
@@ -303,7 +304,7 @@
         }
 
         function renderPipeline(l) {
-            const ordemSit = ['Em tramitação','Aguardando resposta','Não encaminhada','Respondido','Arquivado','Outros'];
+            const ordemSit = ['Em tramitação','Apresentado, não enviado','Aguardando resposta','Respondido','Arquivado','Outros'];
             const cont = {}; l.forEach(r => cont[r.situacao_grupo] = (cont[r.situacao_grupo]||0)+1);
             const total = l.length || 1;
             const bar = document.getElementById('pipeline-bar'); const leg = document.getElementById('pipeline-legenda');
