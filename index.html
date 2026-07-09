@@ -418,7 +418,10 @@
                 const temaCls = r.tema_fonte === 'reserva' ? 'eyebrow tema-reserva' : 'eyebrow';
                 const temaTitle = r.tema_fonte === 'reserva' ? ' title="Classificação provisória por palavra-chave"' : '';
                 
-                const dataMov = r.data_ult_mov_br && r.data_ult_mov_br !== '—' ? r.data_ult_mov_br : 'Sem registro';
+                const naoEnviado = r.situacao_grupo === 'Apresentado, não enviado';
+                const dataMov = naoEnviado
+                    ? '—'
+                    : (r.data_ult_mov_br && r.data_ult_mov_br !== '—' ? r.data_ult_mov_br : 'Sem registro');
 
                 let prazoInfo = '';
                 if (r.situacao_grupo === 'Aguardando resposta') {
@@ -465,9 +468,14 @@
         function exportarCSV() {
             const l = ordenar(aplicarFiltros());
             const cab = ['Casa','Proposicao','Data_Apresentacao','Data_Ultima_Movimentacao','Data_Prazo','Autor','Local','Situacao_Grupo','Status_Detalhado','Tema','Ementa','Link'];
-            const linhas = l.map(r => [
-                r.casa, `${r.sigla} ${r.numero}/${r.ano}`, r.data, r.data_ult_mov_br || '', r.data_prazo_br || '', r.autor, r.comissao, r.situacao_grupo, r.status, r.tema, r.ementa, r.link
-            ].map(v => `"${String(v ?? '').replace(/"/g,'""')}"`).join(','));
+            const linhas = l.map(r => {
+                const naoEnviado = r.situacao_grupo === 'Apresentado, não enviado';
+                const mov = naoEnviado ? '' : (r.data_ult_mov_br && r.data_ult_mov_br !== '—' ? r.data_ult_mov_br : '');
+                const prazo = naoEnviado ? '' : (r.data_prazo_br && r.data_prazo_br !== '—' ? r.data_prazo_br : '');
+                return [
+                    r.casa, `${r.sigla} ${r.numero}/${r.ano}`, r.data, mov, prazo, r.autor, r.comissao, r.situacao_grupo, r.status, r.tema, r.ementa, r.link
+                ].map(v => `"${String(v ?? '').replace(/"/g,'""')}"`).join(',');
+            });
             
             const csv = '\uFEFF' + [cab.join(','), ...linhas].join('\n');
             const a = document.createElement('a');
