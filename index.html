@@ -29,12 +29,15 @@
         }
         select:focus, input[type="text"]:focus { outline: none; border-color: var(--focus); box-shadow: 0 0 0 3px rgba(29,155,184,.18); }
         a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px solid rgba(29,155,184,.5); outline-offset: 2px; }
+        
         .pill { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
-        .pill-tramita { background: #fdeee4; color: var(--accent); }
-        .pill-aguarda { background: #fef08a; color: var(--warning); }
-        .pill-resp { background: #e3f3e8; color: var(--positive); }
-        .pill-arq { background: #eef1f3; color: var(--neutral); }
+        .pill-tramita { background: #fdeee4; color: var(--accent); } 
+        .pill-laranja { background: #ffedd5; color: #ea580c; } /* Nova pílula Laranja */
+        .pill-aguarda { background: #fef08a; color: var(--warning); } 
+        .pill-resp { background: #e3f3e8; color: var(--positive); } 
+        .pill-arq { background: #eef1f3; color: var(--neutral); } 
         .pill-outro { background: #eef1f3; color: var(--muted); }
+        
         .rowlink:hover { background: #f6f9fa; }
         th.sortable { cursor: pointer; user-select: none; }
         th.sortable:hover { color: var(--petrol-700); }
@@ -69,48 +72,40 @@
 
     <main class="max-w-7xl mx-auto px-6 py-7">
 
-        <!-- Estado de carregamento -->
         <div id="loading" class="card p-10 text-center text-[var(--muted)]">
             <i class="fa-solid fa-circle-notch spin text-2xl mb-3 block" style="color:var(--petrol-700)"></i>
             Carregando requerimentos…
         </div>
 
         <div id="conteudo" class="hidden">
-            <!-- KPIs Atualizados -->
             <section class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-5">
                 <div class="card p-4"><p class="eyebrow">RICs ao MPO</p><p class="num text-3xl font-extrabold display mt-1" id="kpi-total">—</p></div>
-                <div class="card p-4"><p class="eyebrow">Em tramitação</p><p class="num text-3xl font-extrabold display mt-1" id="kpi-ativos" style="color:var(--accent);">—</p></div>
+                <div class="card p-4"><p class="eyebrow" title="Qualquer RIC que não esteja arquivado ou respondido">Em tramitação (Ativos)</p><p class="num text-3xl font-extrabold display mt-1" id="kpi-ativos" style="color:var(--accent);">—</p></div>
                 <div class="card p-4"><p class="eyebrow" title="Número de RICs aguardando resposta do Ministério">Aguardando resposta</p><p class="num text-3xl font-extrabold display mt-1" id="kpi-aguardando" style="color:var(--warning);">—</p></div>
-                <div class="card p-4"><p class="eyebrow" title="Apresentadas, mas ainda não encaminhadas ao MPO">Apresentado, não enviado</p><p class="num text-3xl font-extrabold display mt-1" id="kpi-nao-encaminhadas" style="color:var(--muted);">—</p></div>
+                <div class="card p-4"><p class="eyebrow" title="Apresentadas, mas ainda não encaminhadas ao MPO">Apresentado, não enviado</p><p class="num text-3xl font-extrabold display mt-1" id="kpi-nao-encaminhadas" style="color:#ea580c;">—</p></div>
                 <div class="card p-4"><p class="eyebrow">Parlamentares · Temas</p><p class="num text-2xl font-bold display mt-1"><span id="kpi-parl">—</span><span class="text-[var(--muted)] font-medium"> · </span><span id="kpi-temas">—</span></p></div>
             </section>
 
-            <!-- Situação da carteira -->
             <section class="card p-5 mb-5">
                 <p class="eyebrow mb-3">Situação da carteira <span id="pipeline-escopo" class="text-[var(--muted)] normal-case tracking-normal font-normal"></span></p>
                 <div class="w-full h-4 rounded-full overflow-hidden flex bg-[var(--canvas)]" id="pipeline-bar" role="img" aria-label="Distribuição por situação"></div>
                 <div class="flex flex-wrap gap-x-6 gap-y-1 mt-3 text-sm" id="pipeline-legenda"></div>
             </section>
 
-            <!-- Gráficos e Alertas -->
             <section class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
                 <div class="card p-5"><h2 class="text-base font-bold mb-3">Evolução mensal das apresentações</h2><div class="chart-box"><canvas id="chartTimeline"></canvas></div></div>
                 <div class="card p-5"><h2 class="text-base font-bold mb-3">Temas oficiais (Câmara · CEDOC)</h2><div class="chart-box"><canvas id="chartTemas"></canvas></div></div>
                 <div class="card p-5"><h2 class="text-base font-bold mb-3">Parlamentares que mais acionam o MPO</h2><div class="chart-box"><canvas id="chartAutores"></canvas></div></div>
                 
-                <!-- Quadro de Prazos de 7 dias -->
                 <div class="card p-5">
                     <h2 class="text-base font-bold mb-3 flex items-center justify-between">
                         <span>Vencimentos nos próximos 7 dias</span>
-                        <i class="fa-solid fa-bell text-[var(--accent)] text-lg"></i>
+                        <i class="fa-solid fa-bell text-[var(--warning)] text-lg"></i>
                     </h2>
-                    <div class="overflow-y-auto max-h-[280px] scroll pr-2" id="lista-vencimentos">
-                        <!-- Populated by JS -->
-                    </div>
+                    <div class="overflow-y-auto max-h-[280px] scroll pr-2" id="lista-vencimentos"></div>
                 </div>
             </section>
 
-            <!-- Lista + filtros -->
             <section class="card p-5">
                 <div class="flex flex-col xl:flex-row xl:items-end justify-between gap-4 mb-4">
                     <div>
@@ -161,23 +156,20 @@
     </main>
 
     <script>
-        const COR = { petrol:'#134e5e', petrolFill:'rgba(19,78,94,.10)', tramita:'#c2410c', resp:'#15803d', arq:'#64748b', outro:'#94a3b8', barra:'#2f7c8f', temas:'#0e3a46', aguarda:'#ca8a04', n_encam:'#5b6b73' };
+        const COR = { petrol:'#134e5e', petrolFill:'rgba(19,78,94,.10)', tramita:'#c2410c', resp:'#15803d', arq:'#64748b', outro:'#94a3b8', barra:'#2f7c8f', temas:'#0e3a46', aguarda:'#ca8a04', laranja:'#ea580c' };
         
-        const PILL = { 'Em tramitação':'pill-tramita', 'Aguardando resposta':'pill-aguarda', 'Apresentado, não enviado':'pill-outro', 'Respondido':'pill-resp', 'Arquivado':'pill-arq' };
-        const CORSIT = { 'Em tramitação':COR.tramita, 'Aguardando resposta':COR.aguarda, 'Apresentado, não enviado':COR.n_encam, 'Respondido':COR.resp, 'Arquivado':COR.arq, 'Outros':COR.outro };
+        const PILL = { 'Em tramitação':'pill-tramita', 'Aguardando resposta':'pill-aguarda', 'Apresentado, não enviado':'pill-laranja', 'Respondido':'pill-resp', 'Arquivado':'pill-arq' };
+        const CORSIT = { 'Em tramitação':COR.tramita, 'Aguardando resposta':COR.aguarda, 'Apresentado, não enviado':COR.laranja, 'Respondido':COR.resp, 'Arquivado':COR.arq, 'Outros':COR.outro };
         
         const semMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         let TODOS = [];
-        
-        // Garante que a ordenação primária seja sempre pela coluna 'data' em modo decrescente (mais recentes primeiro)
         let ordem = { col: 'data', dir: 'desc' };
         const charts = {};
 
-        // Parser de datas mais robusto para corrigir erros de ordenação
         function parseData(d) { 
             if (!d || d === '—') return new Date(0);
-            if (d.includes('-')) return new Date(d + 'T12:00:00'); // Evita bug de timezone caindo pro dia anterior
+            if (d.includes('-')) return new Date(d + 'T12:00:00'); 
             const partes = d.split('/');
             if (partes.length === 3) {
                 const ano = partes[2].length === 2 ? 2000 + parseInt(partes[2], 10) : parseInt(partes[2], 10);
@@ -185,7 +177,7 @@
             }
             return new Date(0);
         }
-
+        
         function normCasa(c) { return (c||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'') === 'Camara' ? 'Câmara' : (c||''); }
 
         async function init() {
@@ -221,7 +213,7 @@
                 ordem.dir = (ordem.col === c && ordem.dir === 'asc') ? 'desc' : 'asc';
                 ordem.col = c; render();
             }));
-            render(); // Primeira renderização vai usar { col: 'data', dir: 'desc' }
+            render(); 
         }
 
         function popularFiltro(id, valores) {
@@ -249,18 +241,10 @@
             const dir = ordem.dir === 'asc' ? 1 : -1;
             return [...lista].sort((x, y) => {
                 let vx, vy;
-                if (ordem.col === 'data') { 
-                    vx = parseData(x.data); vy = parseData(y.data); 
-                }
-                else if (ordem.col === 'numero') { 
-                    vx = (+x.ano)*100000 + (+x.numero); vy = (+y.ano)*100000 + (+y.numero); 
-                }
-                else if (ordem.col === 'data_prazo_iso') { 
-                    vx = parseData(x.data_prazo_iso || '9999-12-31'); vy = parseData(y.data_prazo_iso || '9999-12-31'); 
-                }
-                else { 
-                    vx = (x[ordem.col]||'').toString().toLowerCase(); vy = (y[ordem.col]||'').toString().toLowerCase(); 
-                }
+                if (ordem.col === 'data') { vx = parseData(x.data); vy = parseData(y.data); }
+                else if (ordem.col === 'numero') { vx = (+x.ano)*100000 + (+x.numero); vy = (+y.ano)*100000 + (+y.numero); }
+                else if (ordem.col === 'data_prazo_iso') { vx = parseData(x.data_prazo_iso || '9999-12-31'); vy = parseData(y.data_prazo_iso || '9999-12-31'); }
+                else { vx = (x[ordem.col]||'').toString().toLowerCase(); vy = (y[ordem.col]||'').toString().toLowerCase(); }
                 return vx < vy ? -dir : vx > vy ? dir : 0;
             });
         }
@@ -290,7 +274,6 @@
         }
 
         function renderKPIs(l) {
-            // Em tramitação engloba todos os ativos (exclui Arquivados e Respondidos)
             const ativos = l.filter(r => !['Arquivado', 'Respondido'].includes(r.situacao_grupo)).length;
             const aguardando = l.filter(r => r.situacao_grupo === 'Aguardando resposta').length;
             const naoEncam = l.filter(r => r.situacao_grupo === 'Apresentado, não enviado').length;
@@ -353,7 +336,6 @@
             });
         }
 
-        // Nova lógica com Timezone corrigido para evitar desaparecimento de datas
         function renderVencimentos(l) {
             const container = document.getElementById('lista-vencimentos');
             
@@ -364,10 +346,9 @@
             daqui7dias.setDate(hoje.getDate() + 7);
             
             const vencendo = l.filter(r => {
-                if (r.situacao_grupo !== 'Aguardando resposta' || !r.data_prazo_iso) return false;
-                // Previne falha de Timezone no navegador adicionando T12:00:00
+                if (r.situacao_grupo !== 'Aguardando resposta' || !r.data_prazo_iso || r.data_prazo_iso === "—") return false;
                 const p = new Date(r.data_prazo_iso + 'T12:00:00'); 
-                p.setHours(0,0,0,0); // Normaliza para comparar datas brutas
+                p.setHours(0,0,0,0);
                 return p >= hoje && p <= daqui7dias;
             }).sort((a, b) => new Date(a.data_prazo_iso + 'T12:00:00') - new Date(b.data_prazo_iso + 'T12:00:00'));
 
@@ -389,14 +370,13 @@
                         </div>
                         <div class="text-right whitespace-nowrap">
                             <span class="block text-[10px] uppercase font-bold text-[var(--muted)] tracking-wider">Prazo</span>
-                            <span class="block font-semibold text-sm num" style="color:var(--accent)">${r.data_prazo_br}</span>
+                            <span class="block font-semibold text-sm num" style="color:var(--warning)">${r.data_prazo_br}</span>
                         </div>
                     </li>
                 `).join('')}
             </ul>`;
         }
 
-        // Tratamento seguro caso os campos data_ult_mov_br/data_prazo_br não existam no JSON antigo
         function renderTabela(lista) {
             const tb = document.getElementById('tbody'); const vazio = document.getElementById('vazio');
             vazio.classList.toggle('hidden', lista.length > 0);
@@ -406,8 +386,9 @@
                 const temaTitle = r.tema_fonte === 'reserva' ? ' title="Classificação provisória por palavra-chave"' : '';
                 
                 const dataMov = r.data_ult_mov_br && r.data_ult_mov_br !== '—' ? r.data_ult_mov_br : 'Sem registro';
-                const prazoInfo = (r.data_prazo_br && r.data_prazo_br !== '—') 
-                    ? `<span class="block mt-1 font-semibold" style="color:var(--accent)" title="Prazo fatal (30 dias após movimentação)"><i class="fa-solid fa-hourglass-half text-[11px] mr-1"></i> ${r.data_prazo_br}</span>` 
+                
+                const prazoInfo = (r.situacao_grupo === 'Aguardando resposta' && r.data_prazo_br && r.data_prazo_br !== '—') 
+                    ? `<span class="block mt-1 font-semibold" style="color:var(--warning)" title="Prazo fatal (30 dias após expedição)"><i class="fa-solid fa-hourglass-half text-[11px] mr-1"></i> ${r.data_prazo_br}</span>` 
                     : '';
                     
                 return `<tr class="rowlink align-top">
