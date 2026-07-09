@@ -21,6 +21,14 @@ apenas no objeto do pedido e o destinatário é outra pasta.
 Temas: classificação oficial do CEDOC via /proposicoes/{id}/temas; reserva por
 palavra-chave só quando o CEDOC ainda não classificou.
 """
+# -*- coding: utf-8 -*-
+"""
+Atualizador do Monitor MPO — Requerimentos de Informação (RIC).
+
+COMO GARANTE "TODOS OS RICs":
+A fonte primária deixa de ser o endpoint paginado e passa a ser o ARQUIVO ANUAL
+COMPLETO dos Dados Abertos.
+"""
 
 import re
 import json
@@ -97,19 +105,16 @@ def _sinal_mpo(txt):
         "planejamento e orcamento" in t
         or re.search(r"ministr[oa]s?(?: de estado)?(?: d[oae])? planejamento", t)
         or "ministerio do planejamento" in t
-        or "simone tebet" in t or "simone nassar tebet" in t
+        or "bruno moretti" in t or "simone tebet" in t
         or re.search(r"\bmpo\b", t)
     )
 
 def dirigido_ao_mpo(ementa, ementa_det="", keywords=""):
-    """True quando o RIC é dirigido ao MPO. Usa ementa, ementa detalhada e keywords
-    para recall; usa o trecho do destinatário para precisão."""
     if not _sinal_mpo(f"{ementa} {ementa_det} {keywords}"):
         return False
     dest = _trecho_destinatario(ementa)
     if _sinal_mpo(dest):
         return True
-    # sinal só fora do destinatário: rejeita se o destinatário nomeia outra pasta
     if re.search(_OUTRAS_PASTAS, dest):
         return False
     return True
@@ -118,7 +123,6 @@ def dirigido_ao_mpo(ementa, ementa_det="", keywords=""):
 # DATA / SITUAÇÃO / TEMA
 # ==========================================
 def parse_data(v):
-    """Aceita epoch (ms), 'YYYY-MM-DD[ T]HH:MM:SS[.f]' e 'YYYY-MM-DD'."""
     if v in (None, ""):
         return None
     if isinstance(v, (int, float)):
@@ -141,12 +145,12 @@ def agrupar_situacao(status):
     if ("resposta" in s and ("recebid" in s or "respondid" in s)) or "transformad" in s:
         return "Respondido"
     
-    # Separação Exclusiva para KPI e Gestão de Prazos do Dashboard
+    # 1. Enviados ao MPO
     if "aguardando resposta" in s or "aguardando recebimento" in s:
         return "Aguardando resposta"
     
-    # Status ativos que já foram apresentados, mas ainda não despachados/enviados ao MPO
-    if any(a in s for a in SITUACOES_ATIVAS) or "tramita" in s:
+    # 2. Apresentados na Câmara, mas ainda não despachados/enviados
+    if "aguardando elaboracao do parecer" in s or any(a in s for a in ["aguardando", "tramita", "pronta para pauta"]):
         return "Apresentado, não enviado"
         
     return "Outros"
@@ -176,16 +180,10 @@ def autor_principal(id_prop):
 
 def tema_reserva(texto):
     e = _norm(texto)
-    if any(x in e for x in ["jornada de trabalho", "escala 6x1", "6x1", "mercado de trabalho",
-                            "emprego", "informalidade", "trabalhador"]):
-        return "Trabalho e Emprego"
-    if any(x in e for x in ["orcament", "fiscal", "contingenciamento", "bloqueio orcament",
-                            "lrf", "dotacao", "receita", "despesa", "arrecadacao"]):
-        return "Finanças Públicas e Orçamento"
-    if any(x in e for x in ["servidor", "concurso", "carreira", "cargo", "reestruturacao"]):
-        return "Administração Pública"
-    if any(x in e for x in ["ibge", "ipea", "estatistic", "censo", "renda real", "endividamento"]):
-        return "Economia"
+    if any(x in e for x in ["jornada de trabalho", "escala 6x1", "6x1", "mercado de trabalho", "emprego", "informalidade", "trabalhador"]): return "Trabalho e Emprego"
+    if any(x in e for x in ["orcament", "fiscal", "contingenciamento", "bloqueio orcament", "lrf", "dotacao", "receita", "despesa", "arrecadacao"]): return "Finanças Públicas e Orçamento"
+    if any(x in e for x in ["servidor", "concurso", "carreira", "cargo", "reestruturacao"]): return "Administração Pública"
+    if any(x in e for x in ["ibge", "ipea", "estatistic", "censo", "renda real", "endividamento"]): return "Economia"
     return "Não classificado"
 
 # ==========================================
@@ -203,7 +201,7 @@ def montar_registro(id_prop, sigla, numero, ano, ementa, status, comissao, data_
         "data_iso": data_obj.strftime("%Y-%m-%d") if data_obj else "",
         "mes_ano": f"{MESES_BR[data_obj.month]}/{str(data_obj.year)[2:]}" if data_obj else "—",
         
-        # Colunas e Lógicas Novas
+        # Datas de Movimentação e Prazo
         "data_ult_mov_br": data_ult_mov_obj.strftime("%d/%m/%Y") if data_ult_mov_obj else "—",
         "data_ult_mov_iso": data_ult_mov_obj.strftime("%Y-%m-%d") if data_ult_mov_obj else "",
         "data_prazo_br": data_prazo_obj.strftime("%d/%m/%Y") if data_prazo_obj else "—",
@@ -228,11 +226,8 @@ def montar_registro(id_prop, sigla, numero, ano, ementa, status, comissao, data_
 # FONTE PRIMÁRIA: ARQUIVO ANUAL COMPLETO
 # ==========================================
 def _registros_do_arquivo(payload):
-    """O arquivo pode vir como {'dados': [...]} ou como lista pura."""
-    if isinstance(payload, dict):
-        return payload.get("dados") or payload.get("proposicoes") or []
-    if isinstance(payload, list):
-        return payload
+    if isinstance(payload, dict): return payload.get("dados") or payload.get("proposicoes") or []
+    if isinstance(payload, list): return payload
     return []
 
 def buscar_por_arquivo(ano):
@@ -255,6 +250,8 @@ def buscar_por_arquivo(ano):
 
         ultimo = p.get("ultimoStatus") or p.get("statusProposicao") or {}
         status = ultimo.get("descricaoSituacao") or "Em Tramitação"
+        situacao_grupo = agrupar_situacao(status)
+        
         if APENAS_ATIVOS and not esta_ativo(status):
             continue
             
@@ -263,16 +260,19 @@ def buscar_por_arquivo(ano):
         id_prop = p.get("id")
         data_obj = parse_data(p.get("dataApresentacao"))
         
-        # Lógica de Captura da Última Movimentação e Cálculo de Vencimento
+        # Pega a data da última movimentação
         data_ult_mov_obj = parse_data(ultimo.get("dataHora"))
+        
+        # REGRA DE PRAZO: +30 dias a partir da última movimentação SE estiver aguardando resposta
         prazo_obj = None
-        if agrupar_situacao(status) == "Aguardando resposta" and data_ult_mov_obj:
+        if situacao_grupo == "Aguardando resposta" and data_ult_mov_obj:
             prazo_obj = data_ult_mov_obj + timedelta(days=30)
 
         achados.append(montar_registro(
             id_prop, p.get("siglaTipo"), p.get("numero"), p.get("ano"),
             ementa, status, comissao, data_obj, data_ult_mov_obj, prazo_obj))
-        print(f"  + RIC {p.get('numero')}/{ano} | {achados[-1]['tema']} ({achados[-1]['tema_fonte']}) | {status.strip()}")
+            
+        print(f"  + RIC {p.get('numero')}/{ano} | {achados[-1]['tema']} | {situacao_grupo}")
     return achados
 
 # ==========================================
@@ -280,7 +280,7 @@ def buscar_por_arquivo(ano):
 # ==========================================
 def buscar_por_api(ano):
     print(f"[{ano}] FALLBACK: varrendo endpoint paginado...")
-    achados, pagina = 1
+    achados, pagina = [], 1
     while True:
         url = (f"{API}/proposicoes?siglaTipo=RIC&ano={ano}"
                f"&itens=100&ordem=DESC&ordenarPor=id&pagina={pagina}")
@@ -299,6 +299,7 @@ def buscar_por_api(ano):
             det = session.get(f"{API}/proposicoes/{id_prop}", timeout=15).json().get("dados", {})
             statusProposicao = det.get("statusProposicao", {})
             status = statusProposicao.get("descricaoSituacao", "Em Tramitação")
+            situacao_grupo = agrupar_situacao(status)
             
             if APENAS_ATIVOS and not esta_ativo(status):
                 continue
@@ -306,10 +307,9 @@ def buscar_por_api(ano):
             comissao = statusProposicao.get("siglaOrgao", "MESA")
             data_obj = parse_data(p.get("dataApresentacao"))
             
-            # Captura de Vencimento (Fallback)
             data_ult_mov_obj = parse_data(statusProposicao.get("dataHora"))
             prazo_obj = None
-            if agrupar_situacao(status) == "Aguardando resposta" and data_ult_mov_obj:
+            if situacao_grupo == "Aguardando resposta" and data_ult_mov_obj:
                 prazo_obj = data_ult_mov_obj + timedelta(days=30)
 
             achados.append(montar_registro(
@@ -332,7 +332,7 @@ def buscar_camara():
     return todos
 
 # ==========================================
-# SENADO (opcional, mesma regra de destinatário)
+# SENADO (Mesma regra de destinatário)
 # ==========================================
 def buscar_senado():
     print("Buscando requerimentos do Senado dirigidos ao MPO...")
@@ -372,10 +372,13 @@ def buscar_senado():
                 
                 data_obj = parse_data(m.get("DadosBasicosMateria", {}).get("DataApresentacao"))
                 status = "Aguardando Leitura/Resposta"
+                situacao_grupo = agrupar_situacao(status)
                 
-                # Prazo provisório assumindo a data de apresentação como start no Senado
+                # Prazo provisório assumindo a data de apresentação
                 data_ult_mov_obj = data_obj 
-                prazo_obj = data_ult_mov_obj + timedelta(days=30) if data_ult_mov_obj else None
+                prazo_obj = None
+                if situacao_grupo == "Aguardando resposta" and data_ult_mov_obj:
+                    prazo_obj = data_ult_mov_obj + timedelta(days=30)
 
                 achados.append({
                     "data": data_obj.strftime("%d/%m/%Y") if data_obj else "—",
@@ -396,7 +399,7 @@ def buscar_senado():
                     "tema_fonte": "reserva",
                     "ementa": ementa,
                     "status": status,
-                    "situacao_grupo": agrupar_situacao(status),
+                    "situacao_grupo": situacao_grupo,
                     "link": f"https://www25.senado.leg.br/web/atividade/materias/-/materia/{cod}",
                 })
         except Exception as e:
