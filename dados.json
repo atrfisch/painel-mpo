@@ -1,5 +1,5 @@
 {
-  "ultima_atualizacao": "09/07/2026 06:49",
+  "ultima_atualizacao": "09/07/2026 17:33",
   "fonte_temas": "oficial",
   "resumo": {
     "total_requerimentos": 162,
@@ -128,10 +128,10 @@
     "1SECM": 146
   },
   "situacoes": {
-    "Outros": 6,
-    "Apresentado, não enviado": 10,
+    "Apresentado, não enviado": 13,
     "Aguardando resposta": 6,
-    "Arquivado": 140
+    "Arquivado": 140,
+    "Outros": 3
   },
   "lista_requerimentos": [
     {
@@ -157,7 +157,7 @@
       "tema_fonte": "oficial",
       "ementa": "Requer informações do Sr. Bruno Moretti, Ministro de Estado do Planejamento e Orçamento, sobre as condições de regulação e fiscalização pela União da exportação marítima comercial de bovinos vivos para abate no exterior.",
       "status": "Aguardando Elaboração do Parecer pelo(a) Relator(a)",
-      "situacao_grupo": "Outros",
+      "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2637622"
     },
     {
@@ -182,7 +182,7 @@
       "tema_fonte": "oficial",
       "ementa": "Requer informações ao Ministro de Estado do Planejamento e Orçamento, Sr. Bruno Moretti, sobre bloqueios, contingenciamentos, limites de movimentação e empenho, programação financeira e riscos à capacidade fiscalizatória das agências reguladoras federais em 2026.",
       "status": "Aguardando Elaboração do Parecer pelo(a) Relator(a)",
-      "situacao_grupo": "Outros",
+      "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2636496"
     },
     {
@@ -206,7 +206,7 @@
       "tema_fonte": "oficial",
       "ementa": "Requer informações ao Ministro de Estado do Planejamento e Orçamento, Sr. Bruno Moretti, sobre processos de dispensa e designação, critérios de chefia, manifestações recebidas e riscos à independência técnica do IBGE.",
       "status": "Aguardando Elaboração do Parecer pelo(a) Relator(a)",
-      "situacao_grupo": "Outros",
+      "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2636504"
     },
     {
