@@ -98,11 +98,12 @@
                 <div class="card p-5"><h2 class="text-base font-bold mb-3">Parlamentares que mais acionam o MPO</h2><div class="chart-box"><canvas id="chartAutores"></canvas></div></div>
                 
                 <div class="card p-5">
-                    <h2 class="text-base font-bold mb-3 flex items-center justify-between">
-                        <span>Vencimentos nos próximos 30 dias</span>
+                    <h2 class="text-base font-bold mb-1 flex items-center justify-between">
+                        <span>Próximas respostas · prazos</span>
                         <i class="fa-solid fa-bell text-[var(--warning)] text-lg"></i>
                     </h2>
-                    <div class="overflow-y-auto max-h-[280px] scroll pr-2" id="lista-vencimentos"></div>
+                    <p class="text-xs text-[var(--muted)] mb-3">RICs aguardando resposta do MPO, do mais urgente para o mais distante. <span id="prazos-contagem" class="font-semibold"></span></p>
+                    <div class="overflow-y-auto max-h-[300px] scroll pr-2" id="lista-vencimentos"></div>
                 </div>
             </section>
 
@@ -338,42 +339,74 @@
 
         function renderVencimentos(l) {
             const container = document.getElementById('lista-vencimentos');
-            
-            const hoje = new Date(); 
-            hoje.setHours(0,0,0,0);
-            
-            const daqui30dias = new Date(hoje); 
-            daqui30dias.setDate(hoje.getDate() + 30);
-            
-            const vencendo = l.filter(r => {
-                if (r.situacao_grupo !== 'Aguardando resposta' || !r.data_prazo_iso || r.data_prazo_iso === "—") return false;
-                const p = new Date(r.data_prazo_iso + 'T12:00:00'); 
-                p.setHours(0,0,0,0);
-                return p >= hoje && p <= daqui30dias;
-            }).sort((a, b) => new Date(a.data_prazo_iso + 'T12:00:00') - new Date(b.data_prazo_iso + 'T12:00:00'));
+            const badge = document.getElementById('prazos-contagem');
 
-            if (vencendo.length === 0) {
+            const hoje = new Date();
+            hoje.setHours(0,0,0,0);
+
+            // TODOS os RICs aguardando resposta (não só os que vencem em 30 dias).
+            const aguardando = l.filter(r => r.situacao_grupo === 'Aguardando resposta');
+
+            // Dias até o prazo (null quando não há prazo calculado).
+            const diasAtePrazo = (r) => {
+                if (!r.data_prazo_iso || r.data_prazo_iso === '—') return null;
+                const p = new Date(r.data_prazo_iso + 'T12:00:00');
+                p.setHours(0,0,0,0);
+                return Math.round((p - hoje) / 86400000);
+            };
+
+            // Ordena: quem tem prazo primeiro (mais urgente/vencido no topo); sem prazo por último.
+            const ordenados = [...aguardando].sort((a, b) => {
+                const da = diasAtePrazo(a), db = diasAtePrazo(b);
+                if (da === null && db === null) return 0;
+                if (da === null) return 1;
+                if (db === null) return -1;
+                return da - db;
+            });
+
+            if (badge) {
+                const vencidos = ordenados.filter(r => { const d = diasAtePrazo(r); return d !== null && d < 0; }).length;
+                badge.textContent = vencidos > 0 ? `${ordenados.length} no total · ${vencidos} vencido(s)` : `${ordenados.length} no total`;
+            }
+
+            if (ordenados.length === 0) {
                 container.innerHTML = `
                     <div class="text-center py-10 text-[var(--muted)] flex flex-col items-center">
                         <i class="fa-solid fa-calendar-check text-3xl mb-3" style="color:var(--positive)"></i>
-                        <span class="text-sm font-medium">Nenhum RIC aguardando resposta vence<br>nos próximos 30 dias.</span>
+                        <span class="text-sm font-medium">Nenhum RIC aguardando<br>resposta do MPO no momento.</span>
                     </div>`;
                 return;
             }
-            
+
+            // Define rótulo, cor e ícone conforme o prazo.
+            const estado = (dias) => {
+                if (dias === null) return { cor: 'var(--neutral)', rotulo: 'Prazo a confirmar', icone: 'fa-hourglass-start' };
+                if (dias < 0)      return { cor: 'var(--accent)',  rotulo: `Vencido há ${Math.abs(dias)} dia(s)`, icone: 'fa-triangle-exclamation' };
+                if (dias === 0)    return { cor: 'var(--accent)',  rotulo: 'Vence hoje', icone: 'fa-triangle-exclamation' };
+                if (dias <= 7)     return { cor: 'var(--warning)', rotulo: `Vence em ${dias} dia(s)`, icone: 'fa-hourglass-half' };
+                return { cor: 'var(--focus)', rotulo: `Vence em ${dias} dia(s)`, icone: 'fa-hourglass-half' };
+            };
+
             container.innerHTML = `<ul class="divide-y divide-[var(--line)]">
-                ${vencendo.map(r => `
-                    <li class="py-3 flex justify-between items-center gap-3">
+                ${ordenados.map(r => {
+                    const dias = diasAtePrazo(r);
+                    const e = estado(dias);
+                    const prazoTxt = (r.data_prazo_br && r.data_prazo_br !== '—') ? r.data_prazo_br : '—';
+                    return `
+                    <li class="py-3 flex justify-between items-start gap-3">
                         <div class="flex-1 min-w-0">
                             <a href="${r.link}" target="_blank" class="font-bold text-[var(--petrol-700)] hover:underline block truncate">${r.sigla} ${r.numero}/${r.ano}</a>
                             <p class="text-[12px] text-[var(--muted)] truncate" title="${r.autor}">${r.autor}</p>
+                            <span class="inline-flex items-center gap-1 mt-1 text-[11px] font-semibold" style="color:${e.cor}">
+                                <i class="fa-solid ${e.icone} text-[10px]"></i> ${e.rotulo}
+                            </span>
                         </div>
                         <div class="text-right whitespace-nowrap">
                             <span class="block text-[10px] uppercase font-bold text-[var(--muted)] tracking-wider">Prazo</span>
-                            <span class="block font-semibold text-sm num" style="color:var(--warning)">${r.data_prazo_br}</span>
+                            <span class="block font-semibold text-sm num" style="color:${e.cor}">${prazoTxt}</span>
                         </div>
-                    </li>
-                `).join('')}
+                    </li>`;
+                }).join('')}
             </ul>`;
         }
 
@@ -386,10 +419,22 @@
                 const temaTitle = r.tema_fonte === 'reserva' ? ' title="Classificação provisória por palavra-chave"' : '';
                 
                 const dataMov = r.data_ult_mov_br && r.data_ult_mov_br !== '—' ? r.data_ult_mov_br : 'Sem registro';
-                
-                const prazoInfo = (r.situacao_grupo === 'Aguardando resposta' && r.data_prazo_br && r.data_prazo_br !== '—') 
-                    ? `<span class="block mt-1 font-semibold" style="color:var(--warning)" title="Prazo fatal (30 dias após expedição)"><i class="fa-solid fa-hourglass-half text-[11px] mr-1"></i> ${r.data_prazo_br}</span>` 
-                    : '';
+
+                let prazoInfo = '';
+                if (r.situacao_grupo === 'Aguardando resposta') {
+                    if (r.data_prazo_br && r.data_prazo_br !== '—') {
+                        const p = new Date(r.data_prazo_iso + 'T12:00:00'); p.setHours(0,0,0,0);
+                        const h = new Date(); h.setHours(0,0,0,0);
+                        const dias = Math.round((p - h) / 86400000);
+                        const vencido = dias < 0;
+                        const cor = vencido ? 'var(--accent)' : (dias <= 7 ? 'var(--warning)' : 'var(--focus)');
+                        const icone = vencido ? 'fa-triangle-exclamation' : 'fa-hourglass-half';
+                        const nota = vencido ? `Vencido há ${Math.abs(dias)} dia(s)` : (dias === 0 ? 'Vence hoje' : `Faltam ${dias} dia(s)`);
+                        prazoInfo = `<span class="block mt-1 font-semibold" style="color:${cor}" title="Prazo fatal (30 dias após a expedição) · ${nota}"><i class="fa-solid ${icone} text-[11px] mr-1"></i> ${r.data_prazo_br}</span>`;
+                    } else {
+                        prazoInfo = `<span class="block mt-1 text-[var(--muted)]" title="Sem data de movimentação para calcular o prazo"><i class="fa-solid fa-hourglass-start text-[11px] mr-1"></i> Prazo a confirmar</span>`;
+                    }
+                }
                     
                 return `<tr class="rowlink align-top">
                     <td class="px-3 py-3 font-bold" style="color:var(--petrol-700)">${r.sigla} ${r.numero}/${r.ano}<span class="block text-[10px] font-medium text-[var(--muted)] mt-0.5">${r.casa}</span></td>
