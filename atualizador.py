@@ -31,6 +31,7 @@ COMPLETO dos Dados Abertos.
 """
 
 import re
+import os
 import json
 import time
 import unicodedata
@@ -158,6 +159,71 @@ def agrupar_situacao(status):
 def esta_ativo(status):
     return any(a in _norm(status) for a in SITUACOES_ATIVAS)
 
+# Situações cujo prazo de resposta importa (o Ministério tem 30 dias para responder).
+SITUACOES_COM_PRAZO = {"Aguardando resposta"}
+
+# Possíveis nomes do campo de DATA dentro do objeto de status/tramitação.
+# O arquivo anual (dump) e o endpoint ao vivo da Câmara nem sempre usam o mesmo nome;
+# por isso tentamos vários. Foi esse descasamento que deixava o prazo em branco.
+_CAMPOS_DATA_STATUS = ("dataHora", "data", "dataHoraTramitacao", "dataTramitacao", "datahora")
+
+def data_mov_do_status(status_obj):
+    """Extrai a data da última movimentação testando os vários nomes de campo possíveis."""
+    if not isinstance(status_obj, dict):
+        return None
+    for campo in _CAMPOS_DATA_STATUS:
+        if status_obj.get(campo):
+            d = parse_data(status_obj.get(campo))
+            if d:
+                return d
+    return None
+
+def _id_do_link(link):
+    """Recupera o idProposicao a partir do link da ficha de tramitação."""
+    m = re.search(r"idProposicao=(\d+)", link or "")
+    return m.group(1) if m else None
+
+def calcular_prazo(situacao_grupo, data_ult_mov_obj):
+    """Prazo fatal (30 dias após a expedição/última movimentação) para itens aguardando resposta."""
+    if situacao_grupo in SITUACOES_COM_PRAZO and data_ult_mov_obj:
+        return data_ult_mov_obj + timedelta(days=30)
+    return None
+
+def enriquecer_datas_ativos(lista):
+    """
+    Para os RICs da Câmara que estão AGUARDANDO RESPOSTA (ou ativos) e ficaram sem
+    data de movimentação vinda do arquivo anual, busca a data ao vivo no endpoint
+    /proposicoes/{id} (que sempre traz statusProposicao.dataHora) e recalcula o prazo.
+    São poucos itens (dezenas), então o custo é baixo e garante que os prazos apareçam.
+    """
+    alvos = [r for r in lista
+             if r.get("casa") == "Câmara"
+             and r.get("situacao_grupo") in SITUACOES_COM_PRAZO
+             and (not r.get("data_ult_mov_iso"))]
+    if not alvos:
+        return lista
+    print(f"Enriquecendo datas de movimentação de {len(alvos)} RIC(s) aguardando resposta...")
+    for r in alvos:
+        id_prop = _id_do_link(r.get("link"))
+        if not id_prop:
+            continue
+        try:
+            time.sleep(DELAY_API)
+            det = session.get(f"{API}/proposicoes/{id_prop}", timeout=15).json().get("dados", {})
+            sp = det.get("statusProposicao", {}) or {}
+            d_mov = data_mov_do_status(sp)
+            if d_mov:
+                r["data_ult_mov_br"] = d_mov.strftime("%d/%m/%Y")
+                r["data_ult_mov_iso"] = d_mov.strftime("%Y-%m-%d")
+                prazo = calcular_prazo(r["situacao_grupo"], d_mov)
+                if prazo:
+                    r["data_prazo_br"] = prazo.strftime("%d/%m/%Y")
+                    r["data_prazo_iso"] = prazo.strftime("%Y-%m-%d")
+                print(f"  ✓ {r['sigla']} {r['numero']}/{r['ano']}: mov {r['data_ult_mov_br']} → prazo {r['data_prazo_br']}")
+        except Exception as e:
+            print(f"  ! não foi possível enriquecer {r['sigla']} {r['numero']}/{r['ano']}: {e}")
+    return lista
+
 def temas_oficiais(id_prop):
     try:
         time.sleep(DELAY_API)
@@ -233,9 +299,13 @@ def _registros_do_arquivo(payload):
 def buscar_por_arquivo(ano):
     url = ARQUIVO_ANO.format(ano=ano)
     print(f"[{ano}] baixando arquivo anual completo...")
-    resp = session.get(url, timeout=180)
+    # timeout=(conexão, leitura): o arquivo é grande, então damos folga na leitura.
+    resp = session.get(url, timeout=(15, 300))
     resp.raise_for_status()
     registros = _registros_do_arquivo(resp.json())
+    # Se o arquivo veio, mas sem nenhuma proposição, algo falhou: força o fallback.
+    if not registros:
+        raise ValueError("arquivo anual retornou 0 proposições")
     print(f"[{ano}] {len(registros)} proposições no arquivo. Filtrando RICs do MPO...")
 
     achados = []
@@ -260,13 +330,11 @@ def buscar_por_arquivo(ano):
         id_prop = p.get("id")
         data_obj = parse_data(p.get("dataApresentacao"))
         
-        # Pega a data da última movimentação
-        data_ult_mov_obj = parse_data(ultimo.get("dataHora"))
+        # Pega a data da última movimentação (tenta vários nomes de campo do arquivo anual)
+        data_ult_mov_obj = data_mov_do_status(ultimo)
         
         # REGRA DE PRAZO: +30 dias a partir da última movimentação SE estiver aguardando resposta
-        prazo_obj = None
-        if situacao_grupo == "Aguardando resposta" and data_ult_mov_obj:
-            prazo_obj = data_ult_mov_obj + timedelta(days=30)
+        prazo_obj = calcular_prazo(situacao_grupo, data_ult_mov_obj)
 
         achados.append(montar_registro(
             id_prop, p.get("siglaTipo"), p.get("numero"), p.get("ano"),
@@ -307,10 +375,8 @@ def buscar_por_api(ano):
             comissao = statusProposicao.get("siglaOrgao", "MESA")
             data_obj = parse_data(p.get("dataApresentacao"))
             
-            data_ult_mov_obj = parse_data(statusProposicao.get("dataHora"))
-            prazo_obj = None
-            if situacao_grupo == "Aguardando resposta" and data_ult_mov_obj:
-                prazo_obj = data_ult_mov_obj + timedelta(days=30)
+            data_ult_mov_obj = data_mov_do_status(statusProposicao)
+            prazo_obj = calcular_prazo(situacao_grupo, data_ult_mov_obj)
 
             achados.append(montar_registro(
                 id_prop, p.get("siglaTipo"), p.get("numero"), p.get("ano"),
@@ -376,9 +442,7 @@ def buscar_senado():
                 
                 # Prazo provisório assumindo a data de apresentação
                 data_ult_mov_obj = data_obj 
-                prazo_obj = None
-                if situacao_grupo == "Aguardando resposta" and data_ult_mov_obj:
-                    prazo_obj = data_ult_mov_obj + timedelta(days=30)
+                prazo_obj = calcular_prazo(situacao_grupo, data_ult_mov_obj)
 
                 achados.append({
                     "data": data_obj.strftime("%d/%m/%Y") if data_obj else "—",
@@ -423,6 +487,10 @@ def gerar_dashboard_data():
         unicos.append(r)
     unicos.sort(key=lambda r: r["data_iso"] or "0000-00-00", reverse=True)
 
+    # Garante que os prazos dos RICs aguardando resposta apareçam mesmo quando o
+    # arquivo anual não trouxe a data de movimentação.
+    enriquecer_datas_ativos(unicos)
+
     timeline = Counter(r["mes_ano"] for r in unicos)
     autores = Counter(r["autor"] for r in unicos)
     temas = Counter(r["tema"] for r in unicos)
@@ -439,6 +507,7 @@ def gerar_dashboard_data():
             "total_comissoes": len(comissoes),
             "total_ativos": sum(1 for r in unicos if r["situacao_grupo"] not in ["Arquivado", "Respondido"]),
             "total_respondidos": sum(1 for r in unicos if r["situacao_grupo"] == "Respondido"),
+            "total_aguardando": sum(1 for r in unicos if r["situacao_grupo"] == "Aguardando resposta"),
         },
         "timeline": dict(timeline),
         "autores": dict(autores),
@@ -447,13 +516,57 @@ def gerar_dashboard_data():
         "situacoes": dict(situacoes),
         "lista_requerimentos": unicos,
     }
-    with open("dados.json", "w", encoding="utf-8") as f:
-        json.dump(saida, f, ensure_ascii=False, indent=2)
+
+    # ==========================================
+    # TRAVA DE SEGURANÇA: nunca sobrescrever dados bons com uma coleta vazia/quebrada
+    # ==========================================
+    salvar_com_seguranca(saida)
 
     print("=========================================")
     print(f"Concluído. {len(unicos)} RICs do MPO "
           f"({saida['resumo']['total_ativos']} ativos/tramitando, "
-          f"{saida['resumo']['total_respondidos']} respondidos).")
+          f"{saida['resumo']['total_respondidos']} respondidos, "
+          f"{saida['resumo']['total_aguardando']} aguardando resposta).")
+
+def _carregar_dados_existentes(caminho="dados.json"):
+    try:
+        with open(caminho, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return None
+
+def salvar_com_seguranca(saida, caminho="dados.json", limite_queda=0.5):
+    """
+    Grava o dados.json apenas se a coleta for plausível. Se a extração voltou vazia,
+    ou despencou de forma anormal em relação ao arquivo anterior, PRESERVA o arquivo
+    antigo e encerra com erro — assim o painel nunca fica sem informação por causa de
+    uma falha temporária de rede/timeout da fonte.
+    """
+    novos = len(saida.get("lista_requerimentos", []))
+    anterior = _carregar_dados_existentes(caminho)
+    antigos = len(anterior.get("lista_requerimentos", [])) if anterior else 0
+
+    if novos == 0:
+        if antigos > 0:
+            print("=========================================")
+            print(f"ABORTADO: a coleta retornou 0 registros. Mantendo o dados.json "
+                  f"anterior ({antigos} registros) intacto. Nada foi sobrescrito.")
+            raise SystemExit(1)
+        print("AVISO: coleta vazia e não havia arquivo anterior; gravando mesmo assim.")
+
+    elif antigos >= 20 and novos < antigos * limite_queda:
+        print("=========================================")
+        print(f"ABORTADO: queda anormal de {antigos} para {novos} registros "
+              f"(< {int(limite_queda*100)}%). Provável falha parcial da fonte. "
+              f"Mantendo o dados.json anterior intacto.")
+        raise SystemExit(1)
+
+    # Escrita atômica: grava em arquivo temporário e só então substitui o definitivo.
+    tmp = f"{caminho}.tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(saida, f, ensure_ascii=False, indent=2)
+    os.replace(tmp, caminho)
+    print(f"dados.json gravado com sucesso ({novos} registros).")
 
 if __name__ == "__main__":
     gerar_dashboard_data()
