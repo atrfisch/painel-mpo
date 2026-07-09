@@ -37,6 +37,8 @@
         .pill-resp { background: #e3f3e8; color: var(--positive); } 
         .pill-arq { background: #eef1f3; color: var(--neutral); } 
         .pill-outro { background: #eef1f3; color: var(--muted); }
+        .pill-partido { display:inline-block; font-size:10px; font-weight:700; letter-spacing:.02em; padding:1px 7px; border-radius:999px; background:var(--petrol-100); color:var(--petrol-700); white-space:nowrap; flex-shrink:0; }
+        .autor-bar { height:6px; border-radius:999px; background:#2f7c8f; }
         
         .rowlink:hover { background: #f6f9fa; }
         th.sortable { cursor: pointer; user-select: none; }
@@ -95,7 +97,11 @@
             <section class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
                 <div class="card p-5"><h2 class="text-base font-bold mb-3">Evolução mensal das apresentações</h2><div class="chart-box"><canvas id="chartTimeline"></canvas></div></div>
                 <div class="card p-5"><h2 class="text-base font-bold mb-3">Temas oficiais (Câmara · CEDOC)</h2><div class="chart-box"><canvas id="chartTemas"></canvas></div></div>
-                <div class="card p-5"><h2 class="text-base font-bold mb-3">Parlamentares que mais acionam o MPO</h2><div class="chart-box"><canvas id="chartAutores"></canvas></div></div>
+                <div class="card p-5">
+                    <h2 class="text-base font-bold mb-1">Parlamentares que mais acionam o MPO</h2>
+                    <p class="text-xs text-[var(--muted)] mb-3">Todos os autores, por nº de requerimentos · <span id="autores-contagem" class="font-semibold"></span> — role para ver todos</p>
+                    <div class="overflow-y-auto max-h-[280px] scroll pr-2" id="lista-autores"></div>
+                </div>
                 
                 <div class="card p-5">
                     <h2 class="text-base font-bold mb-1 flex items-center justify-between">
@@ -267,6 +273,7 @@
             renderKPIs(filtrados);
             renderPipeline(filtrados);
             renderGraficos(filtrados);
+            renderAutores(filtrados);
             renderVencimentos(filtrados);
             marcarColunaOrdenada();
             renderTabela(ordenar(filtrados));
@@ -327,15 +334,60 @@
                 data:{ labels: tmE.map(e=>e[0]), datasets:[{ data: tmE.map(e=>e[1]), backgroundColor:COR.temas, borderRadius:5, barThickness:18 }] },
                 options:{ indexAxis:'y', responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ x:{ beginAtZero:true, ticks:{precision:0} } } }
             });
-
-            const au = {}; l.forEach(r => au[r.autor] = (au[r.autor]||0)+1);
-            const auE = Object.entries(au).sort((a,b)=>b[1]-a[1]).slice(0,6);
-            novoGrafico('chartAutores', {
-                type:'bar',
-                data:{ labels: auE.map(e=> e[0].length>28 ? e[0].slice(0,28)+'…' : e[0]), datasets:[{ data: auE.map(e=>e[1]), backgroundColor:COR.barra, borderRadius:5, barThickness:18 }] },
-                options:{ indexAxis:'y', responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ x:{ beginAtZero:true, ticks:{precision:0} } } }
-            });
         }
+
+        // Extrai nome, partido e UF do texto do autor: "Dep. Fulano (PT-SP)" → {nome, partido, uf}
+        function parseAutor(autor) {
+            const m = (autor || '').match(/^(.*?)\s*\(([^)]*)\)\s*$/);
+            if (m) {
+                const nome = m[1].trim();
+                const partes = m[2].split('-');
+                return { nome, partido: (partes[0] || '').trim(), uf: (partes[1] || '').trim() };
+            }
+            return { nome: (autor || '').trim(), partido: '', uf: '' };
+        }
+
+        function renderAutores(l) {
+            const cont = document.getElementById('lista-autores');
+            const badge = document.getElementById('autores-contagem');
+            const au = {};
+            l.forEach(r => au[r.autor] = (au[r.autor] || 0) + 1);
+            const ordenados = Object.entries(au).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+
+            if (badge) badge.textContent = `${ordenados.length} parlamentar(es)`;
+
+            if (ordenados.length === 0) {
+                cont.innerHTML = '<div class="text-center py-8 text-[var(--muted)] text-sm">Nenhum autor na seleção.</div>';
+                return;
+            }
+            const max = ordenados[0][1] || 1;
+            cont.innerHTML = `<ul class="space-y-2.5">
+                ${ordenados.map(([autor, n], i) => {
+                    const a = parseAutor(autor);
+                    const pct = Math.max(6, Math.round(n / max * 100));
+                    const badgePartido = a.partido
+                        ? `<span class="pill-partido" title="Partido: ${a.partido}${a.uf ? '-' + a.uf : ''}">${a.partido}${a.uf ? '-' + a.uf : ''}</span>`
+                        : '';
+                    return `
+                    <li class="flex items-center gap-3">
+                        <span class="num text-[11px] text-[var(--muted)] w-5 text-right shrink-0">${i + 1}</span>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between gap-2 mb-1">
+                                <span class="flex items-center gap-1.5 min-w-0">
+                                    <span class="text-[13px] font-medium truncate" title="${a.nome}">${a.nome}</span>
+                                    ${badgePartido}
+                                </span>
+                                <span class="num text-[13px] font-bold text-[var(--petrol-700)] shrink-0">${n}</span>
+                            </div>
+                            <div class="w-full bg-[var(--canvas)] rounded-full overflow-hidden">
+                                <div class="autor-bar" style="width:${pct}%"></div>
+                            </div>
+                        </div>
+                    </li>`;
+                }).join('')}
+            </ul>`;
+        }
+
 
         function renderVencimentos(l) {
             const container = document.getElementById('lista-vencimentos');
