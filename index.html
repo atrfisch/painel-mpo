@@ -1,542 +1,616 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monitor de RICs · MPO</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --petrol-900: #0b2b34; --petrol-800: #0e3a46; --petrol-700: #134e5e; --petrol-100: #e3edf0;
-            --ink: #16242b; --muted: #5b6b73; --line: #dbe3e7; --surface: #ffffff; --canvas: #eef2f4;
-            --accent: #c2410c; --positive: #15803d; --neutral: #64748b; --focus: #1d9bb8; --warning: #ca8a04;
-        }
-        * { font-family: 'Inter', system-ui, sans-serif; }
-        body { background: var(--canvas); color: var(--ink); }
-        h1, h2, h3, .display { font-family: 'Archivo', 'Inter', sans-serif; letter-spacing: -0.01em; }
-        .num { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
-        .card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; }
-        .chart-box { position: relative; height: 280px; width: 100%; }
-        .eyebrow { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
-        select, input[type="text"] {
-            background: var(--surface); border: 1px solid var(--line); border-radius: 9px;
-            padding: .55rem .8rem; font-size: .875rem; color: var(--ink); transition: border-color .15s, box-shadow .15s;
-        }
-        select:focus, input[type="text"]:focus { outline: none; border-color: var(--focus); box-shadow: 0 0 0 3px rgba(29,155,184,.18); }
-        a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px solid rgba(29,155,184,.5); outline-offset: 2px; }
+# -*- coding: utf-8 -*-
+"""
+Atualizador do Monitor MPO — Requerimentos de Informação (RIC).
+
+COMO GARANTE "TODOS OS RICs":
+A fonte primária deixa de ser o endpoint paginado e passa a ser o ARQUIVO ANUAL
+COMPLETO dos Dados Abertos:
+    https://dadosabertos.camara.leg.br/arquivos/proposicoes/json/proposicoes-{ano}.json
+Esse arquivo (atualização diária, completo de 2001 em diante) traz TODAS as
+proposições do ano — em qualquer situação, com ementa, ementaDetalhada, keywords e a
+tramitação mais recente (ultimoStatus). Lendo o arquivo, vemos o universo inteiro de
+RICs do ano e aplicamos o filtro do MPO sobre ele, sem paginação e sem descartar
+requerimentos já respondidos ou arquivados. Se o arquivo do ano falhar, há fallback
+para o endpoint paginado (método antigo), preservando o funcionamento.
+
+Filtro do destinatário (precisão + recall): casa quando o RIC é DIRIGIDO ao
+Planejamento e Orçamento (nome exclusivo da pasta, ministro(a) do Planejamento, sigla
+MPO isolada ou "Simone Tebet"), com guarda que rejeita o caso em que o sinal aparece
+apenas no objeto do pedido e o destinatário é outra pasta.
+
+Temas: classificação oficial do CEDOC via /proposicoes/{id}/temas; reserva por
+palavra-chave só quando o CEDOC ainda não classificou.
+"""
+# -*- coding: utf-8 -*-
+"""
+Atualizador do Monitor MPO — Requerimentos de Informação (RIC).
+
+COMO GARANTE "TODOS OS RICs":
+A fonte primária deixa de ser o endpoint paginado e passa a ser o ARQUIVO ANUAL
+COMPLETO dos Dados Abertos.
+"""
+
+import re
+import os
+import json
+import time
+import unicodedata
+from datetime import datetime, timezone, timedelta
+from collections import Counter
+
+import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
+
+# ==========================================
+# SESSÃO HTTP
+# ==========================================
+session = requests.Session()
+retry = Retry(connect=5, read=5, backoff_factor=1, status_forcelist=[429, 500, 502, 503, 504])
+adapter = HTTPAdapter(max_retries=retry)
+session.mount("http://", adapter)
+session.mount("https://", adapter)
+
+API = "https://dadosabertos.camara.leg.br/api/v2"
+ARQUIVO_ANO = "https://dadosabertos.camara.leg.br/arquivos/proposicoes/json/proposicoes-{ano}.json"
+
+# ==========================================
+# PARÂMETROS
+# ==========================================
+ANOS_BUSCA = [2023, 2024, 2025, 2026]  # legislatura atual; amplie se quiser histórico
+DELAY_API = 0.4                         # respiro entre chamadas de enriquecimento
+APENAS_ATIVOS = False                   # False = captura TODOS os RICs (recomendado)
+
+MESES_BR = {1: "Jan", 2: "Fev", 3: "Mar", 4: "Abr", 5: "Mai", 6: "Jun",
+            7: "Jul", 8: "Ago", 9: "Set", 10: "Out", 11: "Nov", 12: "Dez"}
+
+SITUACOES_ATIVAS = [
+    "aguardando designacao de relator", "aguardando encaminhamento",
+    "aguardando envio ao executivo", "aguardando resposta", "aguardando recebimento",
+    "aguardando despacho do presidente da camara dos deputados",
+    "aguardando deliberacao", "pronta para pauta", "aguardando parecer",
+]
+
+# ==========================================
+# TEXTO / DESTINATÁRIO
+# ==========================================
+def _norm(texto):
+    texto = unicodedata.normalize("NFKD", texto or "").encode("ascii", "ignore").decode("ascii")
+    return re.sub(r"\s+", " ", texto.lower()).strip()
+
+_VERBOS = r"(?:requer(?:imento)?|requeiro|solicit[ao]|solicito|encaminh\w+)"
+_CORTE = (r"(?:\bacerca\b|\bsobre\b|\ba respeito\b|\breferente\b|\bno sentido\b|"
+          r"\bquanto\b|\bque preste|\binforma\w+ sobre|\binforma\w+ acerca|\brelativ\w+\b|,)")
+
+# Núcleos distintivos de OUTRAS pastas (guarda de precisão).
+_OUTRAS_PASTAS = (r"(fazenda|saude|educacao|justica|seguranca publica|relacoes exteriores|"
+                  r"minas e energia|agricultura|pecuaria|desenvolvimento agrario|trabalho e emprego|"
+                  r"previdencia|portos|aeroportos|meio ambiente|casa civil|comunicacao social|"
+                  r"relacoes institucionais|gestao e inovacao|industria|comercio|defesa|transportes|"
+                  r"cidades|turismo|cultura|esporte|direitos humanos|povos indigenas|"
+                  r"desenvolvimento social|ciencia|tecnologia|pesca)")
+
+def _trecho_destinatario(ementa):
+    e = _norm(ementa)
+    m = re.search(_VERBOS, e)
+    if m:
+        e = e[m.end():]
+    c = re.search(_CORTE, e)
+    if c:
+        e = e[:c.start()]
+    return e
+
+def _sinal_mpo(txt):
+    t = _norm(txt)
+    return bool(
+        "planejamento e orcamento" in t
+        or re.search(r"ministr[oa]s?(?: de estado)?(?: d[oae])? planejamento", t)
+        or "ministerio do planejamento" in t
+        or "bruno moretti" in t or "simone tebet" in t
+        or re.search(r"\bmpo\b", t)
+    )
+
+def dirigido_ao_mpo(ementa, ementa_det="", keywords=""):
+    if not _sinal_mpo(f"{ementa} {ementa_det} {keywords}"):
+        return False
+    dest = _trecho_destinatario(ementa)
+    if _sinal_mpo(dest):
+        return True
+    if re.search(_OUTRAS_PASTAS, dest):
+        return False
+    return True
+
+# ==========================================
+# DATA / SITUAÇÃO / TEMA
+# ==========================================
+def parse_data(v):
+    if v in (None, ""):
+        return None
+    if isinstance(v, (int, float)):
+        return datetime.fromtimestamp(v / 1000, tz=timezone.utc).replace(tzinfo=None)
+    s = str(v).strip().replace("T", " ")
+    for fmt in ("%Y-%m-%d %H:%M:%S.%f", "%Y-%m-%d %H:%M:%S", "%Y-%m-%d %H:%M", "%Y-%m-%d"):
+        try:
+            return datetime.strptime(s[:26], fmt)
+        except ValueError:
+            continue
+    try:
+        return datetime.strptime(s[:10], "%Y-%m-%d")
+    except ValueError:
+        return None
+
+def agrupar_situacao(status):
+    s = _norm(status)
+    if "arquiv" in s:
+        return "Arquivado"
+    if ("resposta" in s and ("recebid" in s or "respondid" in s)) or "transformad" in s:
+        return "Respondido"
+    
+    # 1. Enviados ao MPO
+    if "aguardando resposta" in s or "aguardando recebimento" in s:
+        return "Aguardando resposta"
+    
+    # 2. Apresentados na Câmara, mas ainda não despachados/enviados
+    if "aguardando elaboracao do parecer" in s or any(a in s for a in ["aguardando", "tramita", "pronta para pauta"]):
+        return "Apresentado, não enviado"
         
-        .pill { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
-        .pill-tramita { background: #fdeee4; color: var(--accent); } 
-        .pill-laranja { background: #ffedd5; color: #ea580c; } /* Nova pílula Laranja */
-        .pill-aguarda { background: #fef08a; color: var(--warning); } 
-        .pill-resp { background: #e3f3e8; color: var(--positive); } 
-        .pill-arq { background: #eef1f3; color: var(--neutral); } 
-        .pill-outro { background: #eef1f3; color: var(--muted); }
-        .pill-partido { display:inline-block; font-size:10px; font-weight:700; letter-spacing:.02em; padding:1px 7px; border-radius:999px; background:var(--petrol-100); color:var(--petrol-700); white-space:nowrap; flex-shrink:0; }
-        .autor-bar { height:6px; border-radius:999px; background:#2f7c8f; }
+    return "Outros"
+
+def esta_ativo(status):
+    return any(a in _norm(status) for a in SITUACOES_ATIVAS)
+
+# Situações cujo prazo de resposta importa (o Ministério tem 30 dias para responder).
+SITUACOES_COM_PRAZO = {"Aguardando resposta"}
+
+# Possíveis nomes do campo de DATA dentro do objeto de status/tramitação.
+# O arquivo anual (dump) e o endpoint ao vivo da Câmara nem sempre usam o mesmo nome;
+# por isso tentamos vários. Foi esse descasamento que deixava o prazo em branco.
+_CAMPOS_DATA_STATUS = ("dataHora", "data", "dataHoraTramitacao", "dataTramitacao", "datahora")
+
+def data_mov_do_status(status_obj):
+    """Extrai a data da última movimentação testando os vários nomes de campo possíveis."""
+    if not isinstance(status_obj, dict):
+        return None
+    for campo in _CAMPOS_DATA_STATUS:
+        if status_obj.get(campo):
+            d = parse_data(status_obj.get(campo))
+            if d:
+                return d
+    return None
+
+def _id_do_link(link):
+    """Recupera o idProposicao a partir do link da ficha de tramitação."""
+    m = re.search(r"idProposicao=(\d+)", link or "")
+    return m.group(1) if m else None
+
+def calcular_prazo(situacao_grupo, data_ult_mov_obj):
+    """Prazo fatal (30 dias após a expedição/última movimentação) para itens aguardando resposta."""
+    if situacao_grupo in SITUACOES_COM_PRAZO and data_ult_mov_obj:
+        return data_ult_mov_obj + timedelta(days=30)
+    return None
+
+def enriquecer_datas_ativos(lista):
+    """
+    Para os RICs da Câmara que estão AGUARDANDO RESPOSTA (ou ativos) e ficaram sem
+    data de movimentação vinda do arquivo anual, busca a data ao vivo no endpoint
+    /proposicoes/{id} (que sempre traz statusProposicao.dataHora) e recalcula o prazo.
+    São poucos itens (dezenas), então o custo é baixo e garante que os prazos apareçam.
+    """
+    alvos = [r for r in lista
+             if r.get("casa") == "Câmara"
+             and r.get("situacao_grupo") in SITUACOES_COM_PRAZO
+             and (not r.get("data_ult_mov_iso"))]
+    if not alvos:
+        return lista
+    print(f"Enriquecendo datas de movimentação de {len(alvos)} RIC(s) aguardando resposta...")
+    for r in alvos:
+        id_prop = _id_do_link(r.get("link"))
+        if not id_prop:
+            continue
+        try:
+            time.sleep(DELAY_API)
+            det = session.get(f"{API}/proposicoes/{id_prop}", timeout=15).json().get("dados", {})
+            sp = det.get("statusProposicao", {}) or {}
+            d_mov = data_mov_do_status(sp)
+            if d_mov:
+                r["data_ult_mov_br"] = d_mov.strftime("%d/%m/%Y")
+                r["data_ult_mov_iso"] = d_mov.strftime("%Y-%m-%d")
+                prazo = calcular_prazo(r["situacao_grupo"], d_mov)
+                if prazo:
+                    r["data_prazo_br"] = prazo.strftime("%d/%m/%Y")
+                    r["data_prazo_iso"] = prazo.strftime("%Y-%m-%d")
+                print(f"  ✓ {r['sigla']} {r['numero']}/{r['ano']}: mov {r['data_ult_mov_br']} → prazo {r['data_prazo_br']}")
+        except Exception as e:
+            print(f"  ! não foi possível enriquecer {r['sigla']} {r['numero']}/{r['ano']}: {e}")
+    return lista
+
+def temas_oficiais(id_prop):
+    try:
+        time.sleep(DELAY_API)
+        dados = session.get(f"{API}/proposicoes/{id_prop}/temas", timeout=15).json().get("dados", [])
+        return [t.get("tema", "").strip() for t in dados if t.get("tema")]
+    except Exception as e:
+        print(f"  ! temas {id_prop}: {e}")
+        return []
+
+# Cache de partido/UF por URI de deputado, para não consultar o mesmo parlamentar várias vezes.
+_CACHE_PARTIDO = {}
+
+def _partido_uf(autor_obj):
+    """
+    Obtém (siglaPartido, siglaUf) de um autor. O endpoint /proposicoes/{id}/autores
+    normalmente NÃO traz o partido, então, quando faltar, buscamos no cadastro do
+    deputado apontado pela URI (dados.ultimoStatus.siglaPartido/siglaUf).
+    """
+    partido = (autor_obj.get("siglaPartido") or "").strip()
+    uf = (autor_obj.get("siglaUf") or "").strip()
+    if partido or uf:
+        return partido, uf
+
+    uri = autor_obj.get("uri") or ""
+    if "/deputados/" not in uri:  # comissões/órgãos não têm partido
+        return "", ""
+    if uri in _CACHE_PARTIDO:
+        return _CACHE_PARTIDO[uri]
+
+    resultado = ("", "")
+    try:
+        time.sleep(DELAY_API)
+        dep = session.get(uri, timeout=15).json().get("dados", {})
+        us = dep.get("ultimoStatus", {}) or {}
+        resultado = ((us.get("siglaPartido") or "").strip(), (us.get("siglaUf") or "").strip())
+    except Exception as e:
+        print(f"  ! partido do autor {uri}: {e}")
+    _CACHE_PARTIDO[uri] = resultado
+    return resultado
+
+def autor_principal(id_prop):
+    try:
+        time.sleep(DELAY_API)
+        a = session.get(f"{API}/proposicoes/{id_prop}/autores", timeout=15).json().get("dados", [])
+        if a:
+            x = a[0]
+            nome = (x.get("nome") or "").strip() or "Desconhecido"
+            prefixo = "Dep." if "/deputados/" in (x.get("uri") or "") else ""
+            partido, uf = _partido_uf(x)
+            base = f"{prefixo} {nome}".strip()
+            return f"{base} ({partido}-{uf})" if (partido or uf) else base
+    except Exception:
+        pass
+    return "Dep. Desconhecido"
+
+def tema_reserva(texto):
+    e = _norm(texto)
+    if any(x in e for x in ["jornada de trabalho", "escala 6x1", "6x1", "mercado de trabalho", "emprego", "informalidade", "trabalhador"]): return "Trabalho e Emprego"
+    if any(x in e for x in ["orcament", "fiscal", "contingenciamento", "bloqueio orcament", "lrf", "dotacao", "receita", "despesa", "arrecadacao"]): return "Finanças Públicas e Orçamento"
+    if any(x in e for x in ["servidor", "concurso", "carreira", "cargo", "reestruturacao"]): return "Administração Pública"
+    if any(x in e for x in ["ibge", "ipea", "estatistic", "censo", "renda real", "endividamento"]): return "Economia"
+    return "Não classificado"
+
+# ==========================================
+# MONTAGEM DE UM REGISTRO
+# ==========================================
+def montar_registro(id_prop, sigla, numero, ano, ementa, status, comissao, data_obj, data_ult_mov_obj=None, data_prazo_obj=None):
+    nomes_tema = temas_oficiais(id_prop)
+    if nomes_tema:
+        tema, fonte = nomes_tema[0], "oficial"
+    else:
+        tema, fonte = tema_reserva(ementa), "reserva"
         
-        .rowlink:hover { background: #f6f9fa; }
-        th.sortable { cursor: pointer; user-select: none; }
-        th.sortable:hover { color: var(--petrol-700); }
-        th.sortable[data-active="true"] { color: var(--petrol-700); }
-        .scroll::-webkit-scrollbar { height: 9px; width: 9px; }
-        .scroll::-webkit-scrollbar-thumb { background: #c3ced3; border-radius: 6px; }
-        .spin { animation: spin 1s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        @media (prefers-reduced-motion: reduce) { .spin { animation: none; } }
-        .tema-reserva::after { content: "•"; color: var(--accent); margin-left: 4px; font-weight: 700; }
-    </style>
-</head>
-<body class="text-[15px]">
-
-    <header style="background: linear-gradient(180deg, var(--petrol-800), var(--petrol-900));" class="text-white">
-        <div class="max-w-7xl mx-auto px-6 py-5 flex flex-col md:flex-row md:items-end justify-between gap-3">
-            <div>
-                <p class="eyebrow" style="color:#9cc0cb;">Ministério do Planejamento e Orçamento · Secretaria de Articulação Institucional</p>
-                <h1 class="text-2xl md:text-[28px] font-extrabold mt-1 flex items-center gap-2">
-                    <i class="fa-solid fa-landmark-flag text-[20px]" style="color:#7fb8c6;"></i>
-                    Monitor de Requerimentos de Informação
-                </h1>
-                <p id="abrangencia" class="text-sm mt-1" style="color:#bcd6dd;"></p>
-            </div>
-            <div class="text-sm flex items-center gap-2 bg-white/10 border border-white/15 rounded-lg px-3 py-2 self-start md:self-auto">
-                <i class="fa-regular fa-clock" style="color:#9cc0cb;"></i>
-                <span>Dados atualizados em</span>
-                <span id="data-atualizacao" class="font-semibold">—</span>
-            </div>
-        </div>
-    </header>
-
-    <main class="max-w-7xl mx-auto px-6 py-7">
-
-        <div id="loading" class="card p-10 text-center text-[var(--muted)]">
-            <i class="fa-solid fa-circle-notch spin text-2xl mb-3 block" style="color:var(--petrol-700)"></i>
-            Carregando requerimentos…
-        </div>
-
-        <div id="conteudo" class="hidden">
-            <section class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-5">
-                <div class="card p-4"><p class="eyebrow">RICs ao MPO</p><p class="num text-3xl font-extrabold display mt-1" id="kpi-total">—</p></div>
-                <div class="card p-4"><p class="eyebrow" title="Qualquer RIC que não esteja arquivado ou respondido">Em tramitação (Ativos)</p><p class="num text-3xl font-extrabold display mt-1" id="kpi-ativos" style="color:var(--accent);">—</p></div>
-                <div class="card p-4"><p class="eyebrow" title="Número de RICs aguardando resposta do Ministério">Aguardando resposta</p><p class="num text-3xl font-extrabold display mt-1" id="kpi-aguardando" style="color:var(--warning);">—</p></div>
-                <div class="card p-4"><p class="eyebrow" title="Apresentadas, mas ainda não encaminhadas ao MPO">Apresentado, não enviado</p><p class="num text-3xl font-extrabold display mt-1" id="kpi-nao-encaminhadas" style="color:#ea580c;">—</p></div>
-                <div class="card p-4"><p class="eyebrow">Parlamentares · Temas</p><p class="num text-2xl font-bold display mt-1"><span id="kpi-parl">—</span><span class="text-[var(--muted)] font-medium"> · </span><span id="kpi-temas">—</span></p></div>
-            </section>
-
-            <section class="card p-5 mb-5">
-                <p class="eyebrow mb-3">Situação da carteira <span id="pipeline-escopo" class="text-[var(--muted)] normal-case tracking-normal font-normal"></span></p>
-                <div class="w-full h-4 rounded-full overflow-hidden flex bg-[var(--canvas)]" id="pipeline-bar" role="img" aria-label="Distribuição por situação"></div>
-                <div class="flex flex-wrap gap-x-6 gap-y-1 mt-3 text-sm" id="pipeline-legenda"></div>
-            </section>
-
-            <section class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
-                <div class="card p-5"><h2 class="text-base font-bold mb-3">Evolução mensal das apresentações</h2><div class="chart-box"><canvas id="chartTimeline"></canvas></div></div>
-                <div class="card p-5"><h2 class="text-base font-bold mb-3">Temas oficiais (Câmara · CEDOC)</h2><div class="chart-box"><canvas id="chartTemas"></canvas></div></div>
-                <div class="card p-5">
-                    <h2 class="text-base font-bold mb-1">Parlamentares que mais acionam o MPO</h2>
-                    <p class="text-xs text-[var(--muted)] mb-3">Todos os autores, por nº de requerimentos · <span id="autores-contagem" class="font-semibold"></span> — role para ver todos</p>
-                    <div class="overflow-y-auto max-h-[280px] scroll pr-2" id="lista-autores"></div>
-                </div>
-                
-                <div class="card p-5">
-                    <h2 class="text-base font-bold mb-1 flex items-center justify-between">
-                        <span>Próximas respostas · prazos</span>
-                        <i class="fa-solid fa-bell text-[var(--warning)] text-lg"></i>
-                    </h2>
-                    <p class="text-xs text-[var(--muted)] mb-3">RICs aguardando resposta do MPO, do mais urgente para o mais distante. <span id="prazos-contagem" class="font-semibold"></span></p>
-                    <div class="overflow-y-auto max-h-[300px] scroll pr-2" id="lista-vencimentos"></div>
-                </div>
-            </section>
-
-            <section class="card p-5">
-                <div class="flex flex-col xl:flex-row xl:items-end justify-between gap-4 mb-4">
-                    <div>
-                        <h2 class="text-lg font-bold">Requerimentos</h2>
-                        <p class="text-sm text-[var(--muted)] mt-0.5"><span id="contagem" class="num font-semibold">—</span></p>
-                    </div>
-                    <div class="flex flex-wrap gap-2 items-center">
-                        <input type="text" id="f-busca" placeholder="Buscar por ementa, autor ou número…" class="w-full sm:w-64" aria-label="Buscar">
-                        <select id="f-tema" aria-label="Filtrar por tema"><option value="">Todos os temas</option></select>
-                        <select id="f-situacao" aria-label="Filtrar por situação"><option value="">Todas as situações</option></select>
-                        <select id="f-ano" aria-label="Filtrar por ano"><option value="">Todos os anos</option></select>
-                        <select id="f-casa" aria-label="Filtrar por casa"><option value="">Câmara e Senado</option></select>
-                        <button onclick="limparFiltros()" class="text-sm font-semibold text-[var(--petrol-700)] px-3 py-2 rounded-lg hover:bg-[var(--petrol-100)]">Limpar</button>
-                        <button onclick="exportarCSV()" class="text-sm font-semibold text-white px-4 py-2 rounded-lg" style="background:var(--petrol-700);"><i class="fa-solid fa-file-csv mr-1"></i> Exportar</button>
-                    </div>
-                </div>
-
-                <div class="overflow-x-auto scroll">
-                    <table class="w-full text-left text-sm">
-                        <thead>
-                            <tr class="text-[var(--muted)] border-b border-[var(--line)]">
-                                <th class="px-3 py-3 font-semibold sortable" data-col="numero">Proposição <i class="fa-solid fa-sort text-[10px] opacity-40"></i></th>
-                                <th class="px-3 py-3 font-semibold sortable" data-col="data">Apresentação <i class="fa-solid fa-sort text-[10px] opacity-40"></i></th>
-                                <th class="px-3 py-3 font-semibold sortable" data-col="data_prazo_iso">Datas & Prazos <i class="fa-solid fa-sort text-[10px] opacity-40"></i></th>
-                                <th class="px-3 py-3 font-semibold sortable" data-col="autor">Autor <i class="fa-solid fa-sort text-[10px] opacity-40"></i></th>
-                                <th class="px-3 py-3 font-semibold">Local</th>
-                                <th class="px-3 py-3 font-semibold sortable" data-col="situacao_grupo">Situação <i class="fa-solid fa-sort text-[10px] opacity-40"></i></th>
-                                <th class="px-3 py-3 font-semibold w-[33%]">Tema e ementa</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tbody" class="divide-y divide-[var(--line)]"></tbody>
-                    </table>
-                </div>
-                <div id="vazio" class="hidden text-center py-12 text-[var(--muted)]">
-                    <i class="fa-regular fa-folder-open text-2xl mb-2 block"></i>
-                    Nenhum requerimento corresponde aos filtros. <button onclick="limparFiltros()" class="underline">Limpar filtros</button>
-                </div>
-                <p id="nota-temas" class="hidden text-xs text-[var(--muted)] mt-4 border-t border-[var(--line)] pt-3">
-                    <i class="fa-solid fa-circle-info mr-1"></i>
-                    O ponto laranja (•) ao lado do tema indica classificação provisória por palavra-chave, ainda não classificada oficialmente pelo CEDOC/Câmara.
-                </p>
-            </section>
-
-            <footer class="text-center text-xs text-[var(--muted)] mt-8">
-                Fonte: Dados Abertos da Câmara dos Deputados e do Senado Federal · Painel interno de acompanhamento
-            </footer>
-        </div>
-    </main>
-
-    <script>
-        const COR = { petrol:'#134e5e', petrolFill:'rgba(19,78,94,.10)', tramita:'#c2410c', resp:'#15803d', arq:'#64748b', outro:'#94a3b8', barra:'#2f7c8f', temas:'#0e3a46', aguarda:'#ca8a04', laranja:'#ea580c' };
+    return {
+        "data": data_obj.strftime("%d/%m/%Y") if data_obj else "—",
+        "data_iso": data_obj.strftime("%Y-%m-%d") if data_obj else "",
+        "mes_ano": f"{MESES_BR[data_obj.month]}/{str(data_obj.year)[2:]}" if data_obj else "—",
         
-        const PILL = { 'Em tramitação':'pill-tramita', 'Aguardando resposta':'pill-aguarda', 'Apresentado, não enviado':'pill-laranja', 'Respondido':'pill-resp', 'Arquivado':'pill-arq' };
-        const CORSIT = { 'Em tramitação':COR.tramita, 'Aguardando resposta':COR.aguarda, 'Apresentado, não enviado':COR.laranja, 'Respondido':COR.resp, 'Arquivado':COR.arq, 'Outros':COR.outro };
+        # Datas de Movimentação e Prazo
+        "data_ult_mov_br": data_ult_mov_obj.strftime("%d/%m/%Y") if data_ult_mov_obj else "—",
+        "data_ult_mov_iso": data_ult_mov_obj.strftime("%Y-%m-%d") if data_ult_mov_obj else "",
+        "data_prazo_br": data_prazo_obj.strftime("%d/%m/%Y") if data_prazo_obj else "—",
+        "data_prazo_iso": data_prazo_obj.strftime("%Y-%m-%d") if data_prazo_obj else "",
         
-        const semMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        "casa": "Câmara",
+        "sigla": sigla,
+        "numero": numero,
+        "ano": ano,
+        "autor": autor_principal(id_prop),
+        "comissao": comissao or "MESA",
+        "tema": tema,
+        "temas": nomes_tema,
+        "tema_fonte": fonte,
+        "ementa": ementa,
+        "status": (status or "Em Tramitação").strip(),
+        "situacao_grupo": agrupar_situacao(status),
+        "link": f"https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao={id_prop}",
+    }
 
-        let TODOS = [];
-        let ordem = { col: 'data', dir: 'desc' };
-        const charts = {};
+# ==========================================
+# FONTE PRIMÁRIA: ARQUIVO ANUAL COMPLETO
+# ==========================================
+def _registros_do_arquivo(payload):
+    if isinstance(payload, dict): return payload.get("dados") or payload.get("proposicoes") or []
+    if isinstance(payload, list): return payload
+    return []
 
-        function parseData(d) { 
-            if (!d || d === '—') return new Date(0);
-            if (d.includes('-')) return new Date(d + 'T12:00:00'); 
-            const partes = d.split('/');
-            if (partes.length === 3) {
-                const ano = partes[2].length === 2 ? 2000 + parseInt(partes[2], 10) : parseInt(partes[2], 10);
-                return new Date(ano, parseInt(partes[1], 10) - 1, parseInt(partes[0], 10));
-            }
-            return new Date(0);
-        }
+def buscar_por_arquivo(ano):
+    url = ARQUIVO_ANO.format(ano=ano)
+    print(f"[{ano}] baixando arquivo anual completo...")
+    # timeout=(conexão, leitura): o arquivo é grande, então damos folga na leitura.
+    resp = session.get(url, timeout=(15, 300))
+    resp.raise_for_status()
+    registros = _registros_do_arquivo(resp.json())
+    # Se o arquivo veio, mas sem nenhuma proposição, algo falhou: força o fallback.
+    if not registros:
+        raise ValueError("arquivo anual retornou 0 proposições")
+    print(f"[{ano}] {len(registros)} proposições no arquivo. Filtrando RICs do MPO...")
+
+    achados = []
+    for p in registros:
+        if (p.get("siglaTipo") or "").strip().upper() != "RIC":
+            continue
+        ementa = p.get("ementa", "") or ""
+        ementa_det = p.get("ementaDetalhada", "") or ""
+        keywords = p.get("keywords", "") or ""
+        if not dirigido_ao_mpo(ementa, ementa_det, keywords):
+            continue
+
+        ultimo = p.get("ultimoStatus") or p.get("statusProposicao") or {}
+        status = ultimo.get("descricaoSituacao") or "Em Tramitação"
+        situacao_grupo = agrupar_situacao(status)
         
-        function normCasa(c) { return (c||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'') === 'Camara' ? 'Câmara' : (c||''); }
-
-        async function init() {
-            let dados;
-            try {
-                const r = await fetch(`./dados.json?t=${Date.now()}`);
-                dados = await r.json();
-            } catch (e) {
-                dados = { lista_requerimentos: [], resumo: {}, ultima_atualizacao: 'indisponível' };
-            }
-            TODOS = (dados.lista_requerimentos || []).map(r => ({ ...r, casa: normCasa(r.casa) }));
-
-            document.getElementById('loading').classList.add('hidden');
-            document.getElementById('conteudo').classList.remove('hidden');
-            document.getElementById('data-atualizacao').textContent = dados.ultima_atualizacao || '—';
-
-            const anos = [...new Set(TODOS.map(r => +r.ano))].filter(Boolean).sort();
-            const casas = [...new Set(TODOS.map(r => r.casa))].filter(Boolean);
-            if (anos.length) {
-                const faixa = anos.length > 1 ? `${anos[0]}–${anos[anos.length-1]}` : `${anos[0]}`;
-                document.getElementById('abrangencia').textContent = `${TODOS.length} requerimentos · ${faixa} · ${casas.join(' e ')}`;
-            }
-            if (TODOS.some(r => r.tema_fonte === 'reserva')) document.getElementById('nota-temas').classList.remove('hidden');
-
-            popularFiltro('f-tema', [...new Set(TODOS.map(r => r.tema))].sort());
-            popularFiltro('f-situacao', [...new Set(TODOS.map(r => r.situacao_grupo))].sort());
-            popularFiltro('f-ano', [...new Set(TODOS.map(r => String(r.ano)))].sort().reverse());
-            popularFiltro('f-casa', [...new Set(TODOS.map(r => r.casa))].sort());
-
-            ['f-busca','f-tema','f-situacao','f-ano','f-casa'].forEach(id => document.getElementById(id).addEventListener('input', render));
-            document.querySelectorAll('th.sortable').forEach(th => th.addEventListener('click', () => {
-                const c = th.dataset.col;
-                ordem.dir = (ordem.col === c && ordem.dir === 'asc') ? 'desc' : 'asc';
-                ordem.col = c; render();
-            }));
-            render(); 
-        }
-
-        function popularFiltro(id, valores) {
-            const sel = document.getElementById(id);
-            valores.filter(Boolean).forEach(v => { const o = document.createElement('option'); o.value = v; o.textContent = v; sel.appendChild(o); });
-        }
-
-        function aplicarFiltros() {
-            const b = document.getElementById('f-busca').value.toLowerCase().trim();
-            const t = document.getElementById('f-tema').value;
-            const s = document.getElementById('f-situacao').value;
-            const a = document.getElementById('f-ano').value;
-            const c = document.getElementById('f-casa').value;
-            return TODOS.filter(r => {
-                if (t && r.tema !== t) return false;
-                if (s && r.situacao_grupo !== s) return false;
-                if (a && String(r.ano) !== a) return false;
-                if (c && r.casa !== c) return false;
-                if (b) { const alvo = `${r.ementa} ${r.autor} ${r.numero}/${r.ano} ${r.sigla}`.toLowerCase(); if (!alvo.includes(b)) return false; }
-                return true;
-            });
-        }
-
-        function ordenar(lista) {
-            const dir = ordem.dir === 'asc' ? 1 : -1;
-            return [...lista].sort((x, y) => {
-                let vx, vy;
-                if (ordem.col === 'data') { vx = parseData(x.data); vy = parseData(y.data); }
-                else if (ordem.col === 'numero') { vx = (+x.ano)*100000 + (+x.numero); vy = (+y.ano)*100000 + (+y.numero); }
-                else if (ordem.col === 'data_prazo_iso') { vx = parseData(x.data_prazo_iso || '9999-12-31'); vy = parseData(y.data_prazo_iso || '9999-12-31'); }
-                else { vx = (x[ordem.col]||'').toString().toLowerCase(); vy = (y[ordem.col]||'').toString().toLowerCase(); }
-                return vx < vy ? -dir : vx > vy ? dir : 0;
-            });
-        }
-
-        function marcarColunaOrdenada() {
-            document.querySelectorAll('th.sortable').forEach(th => {
-                const ativo = th.dataset.col === ordem.col;
-                th.dataset.active = ativo ? 'true' : 'false';
-                const ic = th.querySelector('i');
-                if (!ic) return;
-                ic.className = ativo
-                    ? `fa-solid ${ordem.dir === 'asc' ? 'fa-sort-up' : 'fa-sort-down'} text-[10px]`
-                    : 'fa-solid fa-sort text-[10px] opacity-40';
-            });
-        }
-
-        function render() {
-            const filtrados = aplicarFiltros();
-            renderKPIs(filtrados);
-            renderPipeline(filtrados);
-            renderGraficos(filtrados);
-            renderAutores(filtrados);
-            renderVencimentos(filtrados);
-            marcarColunaOrdenada();
-            renderTabela(ordenar(filtrados));
-            document.getElementById('contagem').textContent = `${filtrados.length} de ${TODOS.length} requerimentos`;
-            document.getElementById('pipeline-escopo').textContent = filtrados.length === TODOS.length ? '(carteira completa)' : '(seleção filtrada)';
-        }
-
-        function renderKPIs(l) {
-            const ativos = l.filter(r => !['Arquivado', 'Respondido'].includes(r.situacao_grupo)).length;
-            const aguardando = l.filter(r => r.situacao_grupo === 'Aguardando resposta').length;
-            const naoEncam = l.filter(r => r.situacao_grupo === 'Apresentado, não enviado').length;
+        if APENAS_ATIVOS and not esta_ativo(status):
+            continue
             
-            document.getElementById('kpi-total').textContent = l.length;
-            document.getElementById('kpi-ativos').textContent = ativos;
-            document.getElementById('kpi-aguardando').textContent = aguardando;
-            document.getElementById('kpi-nao-encaminhadas').textContent = naoEncam;
-            document.getElementById('kpi-parl').textContent = new Set(l.map(r => r.autor)).size;
-            document.getElementById('kpi-temas').textContent = new Set(l.map(r => r.tema)).size;
-        }
+        comissao = ultimo.get("siglaOrgao") or "MESA"
 
-        function renderPipeline(l) {
-            const ordemSit = ['Em tramitação','Apresentado, não enviado','Aguardando resposta','Respondido','Arquivado','Outros'];
-            const cont = {}; l.forEach(r => cont[r.situacao_grupo] = (cont[r.situacao_grupo]||0)+1);
-            const total = l.length || 1;
-            const bar = document.getElementById('pipeline-bar'); const leg = document.getElementById('pipeline-legenda');
-            bar.innerHTML = ''; leg.innerHTML = '';
-            ordemSit.filter(s => cont[s]).forEach(s => {
-                const seg = document.createElement('div');
-                seg.style.width = (cont[s]/total*100) + '%'; seg.style.background = CORSIT[s]; seg.title = `${s}: ${cont[s]}`;
-                bar.appendChild(seg);
-                const item = document.createElement('span'); item.className = 'flex items-center gap-1.5';
-                item.innerHTML = `<span class="inline-block w-2.5 h-2.5 rounded-sm" style="background:${CORSIT[s]}"></span><span class="font-semibold num">${cont[s]}</span> <span class="text-[var(--muted)]">${s}</span>`;
-                leg.appendChild(item);
-            });
-        }
+        id_prop = p.get("id")
+        data_obj = parse_data(p.get("dataApresentacao"))
+        
+        # Pega a data da última movimentação (tenta vários nomes de campo do arquivo anual)
+        data_ult_mov_obj = data_mov_do_status(ultimo)
+        
+        # REGRA DE PRAZO: +30 dias a partir da última movimentação SE estiver aguardando resposta
+        prazo_obj = calcular_prazo(situacao_grupo, data_ult_mov_obj)
 
-        function novoGrafico(id, cfg) {
-            if (charts[id]) charts[id].destroy();
-            if (semMovimento) cfg.options = { ...(cfg.options||{}), animation: false };
-            charts[id] = new Chart(document.getElementById(id).getContext('2d'), cfg);
-        }
-
-        function renderGraficos(l) {
-            const mm = {'Jan':0,'Fev':1,'Mar':2,'Abr':3,'Mai':4,'Jun':5,'Jul':6,'Ago':7,'Set':8,'Out':9,'Nov':10,'Dez':11};
-            const tl = {}; l.forEach(r => tl[r.mes_ano] = (tl[r.mes_ano]||0)+1);
-            const tlE = Object.entries(tl).filter(e => e[0] in {} || mm[e[0].split('/')[0]] !== undefined)
-                .sort((a,b)=>{ const [ma,aa]=a[0].split('/'),[mb,ab]=b[0].split('/'); return new Date(2000+ +aa, mm[ma]) - new Date(2000+ +ab, mm[mb]); });
-            novoGrafico('chartTimeline', {
-                type:'line',
-                data:{ labels: tlE.map(e=>e[0]), datasets:[{ data: tlE.map(e=>e[1]), borderColor:COR.petrol, backgroundColor:COR.petrolFill, borderWidth:2, fill:true, tension:.3, pointRadius:3, pointBackgroundColor:COR.petrol }] },
-                options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ y:{ beginAtZero:true, ticks:{precision:0} } } }
-            });
-
-            const tm = {}; l.forEach(r => tm[r.tema] = (tm[r.tema]||0)+1);
-            const tmE = Object.entries(tm).sort((a,b)=>b[1]-a[1]).slice(0,7);
-            novoGrafico('chartTemas', {
-                type:'bar',
-                data:{ labels: tmE.map(e=>e[0]), datasets:[{ data: tmE.map(e=>e[1]), backgroundColor:COR.temas, borderRadius:5, barThickness:18 }] },
-                options:{ indexAxis:'y', responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ x:{ beginAtZero:true, ticks:{precision:0} } } }
-            });
-        }
-
-        // Extrai nome, partido e UF do texto do autor: "Dep. Fulano (PT-SP)" → {nome, partido, uf}
-        function parseAutor(autor) {
-            const m = (autor || '').match(/^(.*?)\s*\(([^)]*)\)\s*$/);
-            if (m) {
-                const nome = m[1].trim();
-                const partes = m[2].split('-');
-                return { nome, partido: (partes[0] || '').trim(), uf: (partes[1] || '').trim() };
-            }
-            return { nome: (autor || '').trim(), partido: '', uf: '' };
-        }
-
-        function renderAutores(l) {
-            const cont = document.getElementById('lista-autores');
-            const badge = document.getElementById('autores-contagem');
-            const au = {};
-            l.forEach(r => au[r.autor] = (au[r.autor] || 0) + 1);
-            const ordenados = Object.entries(au).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
-
-            if (badge) badge.textContent = `${ordenados.length} parlamentar(es)`;
-
-            if (ordenados.length === 0) {
-                cont.innerHTML = '<div class="text-center py-8 text-[var(--muted)] text-sm">Nenhum autor na seleção.</div>';
-                return;
-            }
-            const max = ordenados[0][1] || 1;
-            cont.innerHTML = `<ul class="space-y-2.5">
-                ${ordenados.map(([autor, n], i) => {
-                    const a = parseAutor(autor);
-                    const pct = Math.max(6, Math.round(n / max * 100));
-                    const badgePartido = a.partido
-                        ? `<span class="pill-partido" title="Partido: ${a.partido}${a.uf ? '-' + a.uf : ''}">${a.partido}${a.uf ? '-' + a.uf : ''}</span>`
-                        : '';
-                    return `
-                    <li class="flex items-center gap-3">
-                        <span class="num text-[11px] text-[var(--muted)] w-5 text-right shrink-0">${i + 1}</span>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-center justify-between gap-2 mb-1">
-                                <span class="flex items-center gap-1.5 min-w-0">
-                                    <span class="text-[13px] font-medium truncate" title="${a.nome}">${a.nome}</span>
-                                    ${badgePartido}
-                                </span>
-                                <span class="num text-[13px] font-bold text-[var(--petrol-700)] shrink-0">${n}</span>
-                            </div>
-                            <div class="w-full bg-[var(--canvas)] rounded-full overflow-hidden">
-                                <div class="autor-bar" style="width:${pct}%"></div>
-                            </div>
-                        </div>
-                    </li>`;
-                }).join('')}
-            </ul>`;
-        }
-
-
-        function renderVencimentos(l) {
-            const container = document.getElementById('lista-vencimentos');
-            const badge = document.getElementById('prazos-contagem');
-
-            const hoje = new Date();
-            hoje.setHours(0,0,0,0);
-
-            // TODOS os RICs aguardando resposta (não só os que vencem em 30 dias).
-            const aguardando = l.filter(r => r.situacao_grupo === 'Aguardando resposta');
-
-            // Dias até o prazo (null quando não há prazo calculado).
-            const diasAtePrazo = (r) => {
-                if (!r.data_prazo_iso || r.data_prazo_iso === '—') return null;
-                const p = new Date(r.data_prazo_iso + 'T12:00:00');
-                p.setHours(0,0,0,0);
-                return Math.round((p - hoje) / 86400000);
-            };
-
-            // Ordena: quem tem prazo primeiro (mais urgente/vencido no topo); sem prazo por último.
-            const ordenados = [...aguardando].sort((a, b) => {
-                const da = diasAtePrazo(a), db = diasAtePrazo(b);
-                if (da === null && db === null) return 0;
-                if (da === null) return 1;
-                if (db === null) return -1;
-                return da - db;
-            });
-
-            if (badge) {
-                const vencidos = ordenados.filter(r => { const d = diasAtePrazo(r); return d !== null && d < 0; }).length;
-                badge.textContent = vencidos > 0 ? `${ordenados.length} no total · ${vencidos} vencido(s)` : `${ordenados.length} no total`;
-            }
-
-            if (ordenados.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-10 text-[var(--muted)] flex flex-col items-center">
-                        <i class="fa-solid fa-calendar-check text-3xl mb-3" style="color:var(--positive)"></i>
-                        <span class="text-sm font-medium">Nenhum RIC aguardando<br>resposta do MPO no momento.</span>
-                    </div>`;
-                return;
-            }
-
-            // Define rótulo, cor e ícone conforme o prazo.
-            const estado = (dias) => {
-                if (dias === null) return { cor: 'var(--neutral)', rotulo: 'Prazo a confirmar', icone: 'fa-hourglass-start' };
-                if (dias < 0)      return { cor: 'var(--accent)',  rotulo: `Vencido há ${Math.abs(dias)} dia(s)`, icone: 'fa-triangle-exclamation' };
-                if (dias === 0)    return { cor: 'var(--accent)',  rotulo: 'Vence hoje', icone: 'fa-triangle-exclamation' };
-                if (dias <= 7)     return { cor: 'var(--warning)', rotulo: `Vence em ${dias} dia(s)`, icone: 'fa-hourglass-half' };
-                return { cor: 'var(--focus)', rotulo: `Vence em ${dias} dia(s)`, icone: 'fa-hourglass-half' };
-            };
-
-            container.innerHTML = `<ul class="divide-y divide-[var(--line)]">
-                ${ordenados.map(r => {
-                    const dias = diasAtePrazo(r);
-                    const e = estado(dias);
-                    const prazoTxt = (r.data_prazo_br && r.data_prazo_br !== '—') ? r.data_prazo_br : '—';
-                    return `
-                    <li class="py-3 flex justify-between items-start gap-3">
-                        <div class="flex-1 min-w-0">
-                            <a href="${r.link}" target="_blank" class="font-bold text-[var(--petrol-700)] hover:underline block truncate">${r.sigla} ${r.numero}/${r.ano}</a>
-                            <p class="text-[12px] text-[var(--muted)] truncate" title="${r.autor}">${r.autor}</p>
-                            <span class="inline-flex items-center gap-1 mt-1 text-[11px] font-semibold" style="color:${e.cor}">
-                                <i class="fa-solid ${e.icone} text-[10px]"></i> ${e.rotulo}
-                            </span>
-                        </div>
-                        <div class="text-right whitespace-nowrap">
-                            <span class="block text-[10px] uppercase font-bold text-[var(--muted)] tracking-wider">Prazo</span>
-                            <span class="block font-semibold text-sm num" style="color:${e.cor}">${prazoTxt}</span>
-                        </div>
-                    </li>`;
-                }).join('')}
-            </ul>`;
-        }
-
-        function renderTabela(lista) {
-            const tb = document.getElementById('tbody'); const vazio = document.getElementById('vazio');
-            vazio.classList.toggle('hidden', lista.length > 0);
-            tb.innerHTML = lista.map(r => {
-                const cls = PILL[r.situacao_grupo] || 'pill-outro';
-                const temaCls = r.tema_fonte === 'reserva' ? 'eyebrow tema-reserva' : 'eyebrow';
-                const temaTitle = r.tema_fonte === 'reserva' ? ' title="Classificação provisória por palavra-chave"' : '';
-                
-                const naoEnviado = r.situacao_grupo === 'Apresentado, não enviado';
-                const dataMov = naoEnviado
-                    ? '—'
-                    : (r.data_ult_mov_br && r.data_ult_mov_br !== '—' ? r.data_ult_mov_br : 'Sem registro');
-
-                let prazoInfo = '';
-                if (r.situacao_grupo === 'Aguardando resposta') {
-                    if (r.data_prazo_br && r.data_prazo_br !== '—') {
-                        const p = new Date(r.data_prazo_iso + 'T12:00:00'); p.setHours(0,0,0,0);
-                        const h = new Date(); h.setHours(0,0,0,0);
-                        const dias = Math.round((p - h) / 86400000);
-                        const vencido = dias < 0;
-                        const cor = vencido ? 'var(--accent)' : (dias <= 7 ? 'var(--warning)' : 'var(--focus)');
-                        const icone = vencido ? 'fa-triangle-exclamation' : 'fa-hourglass-half';
-                        const nota = vencido ? `Vencido há ${Math.abs(dias)} dia(s)` : (dias === 0 ? 'Vence hoje' : `Faltam ${dias} dia(s)`);
-                        prazoInfo = `<span class="block mt-1 font-semibold" style="color:${cor}" title="Prazo fatal (30 dias após a expedição) · ${nota}"><i class="fa-solid ${icone} text-[11px] mr-1"></i> ${r.data_prazo_br}</span>`;
-                    } else {
-                        prazoInfo = `<span class="block mt-1 text-[var(--muted)]" title="Sem data de movimentação para calcular o prazo"><i class="fa-solid fa-hourglass-start text-[11px] mr-1"></i> Prazo a confirmar</span>`;
-                    }
-                }
-                    
-                return `<tr class="rowlink align-top">
-                    <td class="px-3 py-3 font-bold" style="color:var(--petrol-700)">${r.sigla} ${r.numero}/${r.ano}<span class="block text-[10px] font-medium text-[var(--muted)] mt-0.5">${r.casa}</span></td>
-                    <td class="px-3 py-3 num text-[var(--muted)] whitespace-nowrap text-[13px]">${r.data}</td>
-                    
-                    <td class="px-3 py-3 text-[13px] whitespace-nowrap bg-[var(--surface)] border-x border-[var(--canvas)]">
-                        <span class="block text-[var(--muted)]" title="Data da última movimentação"><i class="fa-solid fa-clock-rotate-left text-[11px] mr-1"></i> ${dataMov}</span>
-                        ${prazoInfo}
-                    </td>
-                    
-                    <td class="px-3 py-3">${r.autor}</td>
-                    <td class="px-3 py-3 text-[var(--muted)] whitespace-nowrap text-[13px]">${r.comissao || '—'}</td>
-                    <td class="px-3 py-3"><span class="pill ${cls}">${r.situacao_grupo}</span><span class="block text-[10px] text-[var(--muted)] mt-1">${r.status}</span></td>
-                    <td class="px-3 py-3 text-[var(--ink)]">
-                        <span class="${temaCls}" style="color:var(--petrol-700)"${temaTitle}>${r.tema}</span>
-                        <p class="mt-1 leading-snug">${r.ementa}</p>
-                        <a href="${r.link}" target="_blank" rel="noopener" class="inline-block mt-1.5 text-[12px] font-semibold" style="color:var(--focus)">Abrir ficha de tramitação <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></a>
-                    </td>
-                </tr>`;
-            }).join('');
-        }
-
-        function limparFiltros() {
-            ['f-busca','f-tema','f-situacao','f-ano','f-casa'].forEach(id => document.getElementById(id).value = '');
-            render();
-        }
-
-        function exportarCSV() {
-            const l = ordenar(aplicarFiltros());
-            const cab = ['Casa','Proposicao','Data_Apresentacao','Data_Ultima_Movimentacao','Data_Prazo','Autor','Local','Situacao_Grupo','Status_Detalhado','Tema','Ementa','Link'];
-            const linhas = l.map(r => {
-                const naoEnviado = r.situacao_grupo === 'Apresentado, não enviado';
-                const mov = naoEnviado ? '' : (r.data_ult_mov_br && r.data_ult_mov_br !== '—' ? r.data_ult_mov_br : '');
-                const prazo = naoEnviado ? '' : (r.data_prazo_br && r.data_prazo_br !== '—' ? r.data_prazo_br : '');
-                return [
-                    r.casa, `${r.sigla} ${r.numero}/${r.ano}`, r.data, mov, prazo, r.autor, r.comissao, r.situacao_grupo, r.status, r.tema, r.ementa, r.link
-                ].map(v => `"${String(v ?? '').replace(/"/g,'""')}"`).join(',');
-            });
+        achados.append(montar_registro(
+            id_prop, p.get("siglaTipo"), p.get("numero"), p.get("ano"),
+            ementa, status, comissao, data_obj, data_ult_mov_obj, prazo_obj))
             
-            const csv = '\uFEFF' + [cab.join(','), ...linhas].join('\n');
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(new Blob([csv], { type:'text/csv' }));
-            a.download = `monitor_rics_mpo_${new Date().toISOString().slice(0,10)}.csv`;
-            a.click();
-        }
+        print(f"  + RIC {p.get('numero')}/{ano} | {achados[-1]['tema']} | {situacao_grupo}")
+    return achados
 
-        window.onload = init;
-    </script>
-</body>
-</html>
+# ==========================================
+# FALLBACK: ENDPOINT PAGINADO
+# ==========================================
+def buscar_por_api(ano):
+    print(f"[{ano}] FALLBACK: varrendo endpoint paginado...")
+    achados, pagina = [], 1
+    while True:
+        url = (f"{API}/proposicoes?siglaTipo=RIC&ano={ano}"
+               f"&itens=100&ordem=DESC&ordenarPor=id&pagina={pagina}")
+        resp = session.get(url, timeout=30)
+        if resp.status_code != 200:
+            break
+        props = resp.json().get("dados", [])
+        if not props:
+            break
+        for p in props:
+            ementa = p.get("ementa", "") or ""
+            if not dirigido_ao_mpo(ementa):
+                continue
+            id_prop = p.get("id")
+            time.sleep(DELAY_API)
+            det = session.get(f"{API}/proposicoes/{id_prop}", timeout=15).json().get("dados", {})
+            statusProposicao = det.get("statusProposicao", {})
+            status = statusProposicao.get("descricaoSituacao", "Em Tramitação")
+            situacao_grupo = agrupar_situacao(status)
+            
+            if APENAS_ATIVOS and not esta_ativo(status):
+                continue
+            
+            comissao = statusProposicao.get("siglaOrgao", "MESA")
+            data_obj = parse_data(p.get("dataApresentacao"))
+            
+            data_ult_mov_obj = data_mov_do_status(statusProposicao)
+            prazo_obj = calcular_prazo(situacao_grupo, data_ult_mov_obj)
+
+            achados.append(montar_registro(
+                id_prop, p.get("siglaTipo"), p.get("numero"), p.get("ano"),
+                ementa, status, comissao, data_obj, data_ult_mov_obj, prazo_obj))
+        pagina += 1
+    return achados
+
+def buscar_camara():
+    todos = []
+    for ano in ANOS_BUSCA:
+        try:
+            todos += buscar_por_arquivo(ano)
+        except Exception as e:
+            print(f"[{ano}] arquivo indisponível ({e}); usando fallback.")
+            try:
+                todos += buscar_por_api(ano)
+            except Exception as e2:
+                print(f"[{ano}] fallback também falhou: {e2}")
+    return todos
+
+# ==========================================
+# SENADO (Mesma regra de destinatário)
+# ==========================================
+def buscar_senado():
+    print("Buscando requerimentos do Senado dirigidos ao MPO...")
+    headers = {"Accept": "application/json"}
+    achados = []
+    for ano in ANOS_BUSCA:
+        try:
+            url = f"https://legis.senado.leg.br/dadosabertos/materia/pesquisa/lista?sigla=REQ&ano={ano}"
+            resp = session.get(url, headers=headers, timeout=30)
+            if resp.status_code != 200:
+                continue
+            materias = resp.json().get("PesquisaBasicaMateria", {}).get("Materias", {}).get("Materia", [])
+            if isinstance(materias, dict):
+                materias = [materias]
+            for m in materias:
+                ementa = m.get("DadosBasicosMateria", {}).get("EmentaMateria", "") or ""
+                if not dirigido_ao_mpo(ementa):
+                    continue
+                cod = m.get("IdentificacaoMateria", {}).get("CodigoMateria")
+                autor = "Senador(a)"
+                
+                try:
+                    time.sleep(DELAY_API)
+                    dj = session.get(f"https://legis.senado.leg.br/dadosabertos/materia/{cod}",
+                                     headers=headers, timeout=15).json().get("DetalheMateria", {}).get("Materia", {})
+                    autores = dj.get("Autoria", {}).get("Autor", [])
+                    if isinstance(autores, dict):
+                        autores = [autores]
+                    if autores:
+                        a = autores[0]
+                        nome = a.get("NomeAutor", "")
+                        partido = a.get("IdentificacaoParlamentar", {}).get("SiglaPartidoParlamentar", "")
+                        uf = a.get("IdentificacaoParlamentar", {}).get("UfParlamentar", "")
+                        autor = f"Sen. {nome} ({partido}-{uf})" if partido else f"Sen. {nome}"
+                except Exception:
+                    pass
+                
+                data_obj = parse_data(m.get("DadosBasicosMateria", {}).get("DataApresentacao"))
+                status = "Aguardando Leitura/Resposta"
+                situacao_grupo = agrupar_situacao(status)
+                
+                # Prazo provisório assumindo a data de apresentação
+                data_ult_mov_obj = data_obj 
+                prazo_obj = calcular_prazo(situacao_grupo, data_ult_mov_obj)
+
+                achados.append({
+                    "data": data_obj.strftime("%d/%m/%Y") if data_obj else "—",
+                    "data_iso": data_obj.strftime("%Y-%m-%d") if data_obj else "",
+                    "mes_ano": f"{MESES_BR[data_obj.month]}/{str(data_obj.year)[2:]}" if data_obj else "—",
+                    "data_ult_mov_br": data_ult_mov_obj.strftime("%d/%m/%Y") if data_ult_mov_obj else "—",
+                    "data_ult_mov_iso": data_ult_mov_obj.strftime("%Y-%m-%d") if data_ult_mov_obj else "",
+                    "data_prazo_br": prazo_obj.strftime("%d/%m/%Y") if prazo_obj else "—",
+                    "data_prazo_iso": prazo_obj.strftime("%Y-%m-%d") if prazo_obj else "",
+                    "casa": "Senado",
+                    "sigla": m.get("IdentificacaoMateria", {}).get("SiglaMateria"),
+                    "numero": m.get("IdentificacaoMateria", {}).get("NumeroMateria"),
+                    "ano": m.get("IdentificacaoMateria", {}).get("AnoMateria"),
+                    "autor": autor,
+                    "comissao": "Plenário",
+                    "tema": tema_reserva(ementa),
+                    "temas": [],
+                    "tema_fonte": "reserva",
+                    "ementa": ementa,
+                    "status": status,
+                    "situacao_grupo": situacao_grupo,
+                    "link": f"https://www25.senado.leg.br/web/atividade/materias/-/materia/{cod}",
+                })
+        except Exception as e:
+            print(f"  Erro no Senado ({ano}): {e}")
+    return achados
+
+# ==========================================
+# COMPILAÇÃO
+# ==========================================
+def gerar_dashboard_data():
+    print("Iniciando extração...")
+    reqs = buscar_camara() + buscar_senado()
+
+    # Deduplica (sigla+numero+ano+casa) e ordena por data desc
+    vistos, unicos = set(), []
+    for r in reqs:
+        chave = (r["casa"], r["sigla"], r["numero"], r["ano"])
+        if chave in vistos:
+            continue
+        vistos.add(chave)
+        unicos.append(r)
+    unicos.sort(key=lambda r: r["data_iso"] or "0000-00-00", reverse=True)
+
+    # Garante que os prazos dos RICs aguardando resposta apareçam mesmo quando o
+    # arquivo anual não trouxe a data de movimentação.
+    enriquecer_datas_ativos(unicos)
+
+    # RICs "Apresentado, não enviado" ainda não foram encaminhados ao Ministério:
+    # o prazo de 30 dias não começou a correr, então zeramos data de movimentação e prazo.
+    for r in unicos:
+        if r.get("situacao_grupo") == "Apresentado, não enviado":
+            r["data_ult_mov_br"] = "—"
+            r["data_ult_mov_iso"] = ""
+            r["data_prazo_br"] = "—"
+            r["data_prazo_iso"] = ""
+
+    timeline = Counter(r["mes_ano"] for r in unicos)
+    autores = Counter(r["autor"] for r in unicos)
+    temas = Counter(r["tema"] for r in unicos)
+    comissoes = Counter(r["comissao"] for r in unicos)
+    situacoes = Counter(r["situacao_grupo"] for r in unicos)
+
+    saida = {
+        "ultima_atualizacao": datetime.now().strftime("%d/%m/%Y %H:%M"),
+        "fonte_temas": "oficial",
+        "resumo": {
+            "total_requerimentos": len(unicos),
+            "total_autores": len(autores),
+            "total_temas": len(temas),
+            "total_comissoes": len(comissoes),
+            "total_ativos": sum(1 for r in unicos if r["situacao_grupo"] not in ["Arquivado", "Respondido"]),
+            "total_respondidos": sum(1 for r in unicos if r["situacao_grupo"] == "Respondido"),
+            "total_aguardando": sum(1 for r in unicos if r["situacao_grupo"] == "Aguardando resposta"),
+        },
+        "timeline": dict(timeline),
+        "autores": dict(autores),
+        "temas": dict(temas),
+        "comissoes": dict(comissoes),
+        "situacoes": dict(situacoes),
+        "lista_requerimentos": unicos,
+    }
+
+    # ==========================================
+    # TRAVA DE SEGURANÇA: nunca sobrescrever dados bons com uma coleta vazia/quebrada
+    # ==========================================
+    salvar_com_seguranca(saida)
+
+    print("=========================================")
+    print(f"Concluído. {len(unicos)} RICs do MPO "
+          f"({saida['resumo']['total_ativos']} ativos/tramitando, "
+          f"{saida['resumo']['total_respondidos']} respondidos, "
+          f"{saida['resumo']['total_aguardando']} aguardando resposta).")
+
+def _carregar_dados_existentes(caminho="dados.json"):
+    try:
+        with open(caminho, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return None
+
+def salvar_com_seguranca(saida, caminho="dados.json", limite_queda=0.5):
+    """
+    Grava o dados.json apenas se a coleta for plausível. Se a extração voltou vazia,
+    ou despencou de forma anormal em relação ao arquivo anterior, PRESERVA o arquivo
+    antigo e encerra com erro — assim o painel nunca fica sem informação por causa de
+    uma falha temporária de rede/timeout da fonte.
+    """
+    novos = len(saida.get("lista_requerimentos", []))
+    anterior = _carregar_dados_existentes(caminho)
+    antigos = len(anterior.get("lista_requerimentos", [])) if anterior else 0
+
+    if novos == 0:
+        if antigos > 0:
+            print("=========================================")
+            print(f"ABORTADO: a coleta retornou 0 registros. Mantendo o dados.json "
+                  f"anterior ({antigos} registros) intacto. Nada foi sobrescrito.")
+            raise SystemExit(1)
+        print("AVISO: coleta vazia e não havia arquivo anterior; gravando mesmo assim.")
+
+    elif antigos >= 20 and novos < antigos * limite_queda:
+        print("=========================================")
+        print(f"ABORTADO: queda anormal de {antigos} para {novos} registros "
+              f"(< {int(limite_queda*100)}%). Provável falha parcial da fonte. "
+              f"Mantendo o dados.json anterior intacto.")
+        raise SystemExit(1)
+
+    # Escrita atômica: grava em arquivo temporário e só então substitui o definitivo.
+    tmp = f"{caminho}.tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(saida, f, ensure_ascii=False, indent=2)
+    os.replace(tmp, caminho)
+    print(f"dados.json gravado com sucesso ({novos} registros).")
+
+if __name__ == "__main__":
+    gerar_dashboard_data()
