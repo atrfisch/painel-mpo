@@ -491,6 +491,15 @@ def gerar_dashboard_data():
     # arquivo anual não trouxe a data de movimentação.
     enriquecer_datas_ativos(unicos)
 
+    # RICs "Apresentado, não enviado" ainda não foram encaminhados ao Ministério:
+    # o prazo de 30 dias não começou a correr, então zeramos data de movimentação e prazo.
+    for r in unicos:
+        if r.get("situacao_grupo") == "Apresentado, não enviado":
+            r["data_ult_mov_br"] = "—"
+            r["data_ult_mov_iso"] = ""
+            r["data_prazo_br"] = "—"
+            r["data_prazo_iso"] = ""
+
     timeline = Counter(r["mes_ano"] for r in unicos)
     autores = Counter(r["autor"] for r in unicos)
     temas = Counter(r["tema"] for r in unicos)
