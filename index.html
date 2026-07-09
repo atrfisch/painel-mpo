@@ -99,7 +99,7 @@
                 
                 <div class="card p-5">
                     <h2 class="text-base font-bold mb-3 flex items-center justify-between">
-                        <span>Vencimentos nos próximos 7 dias</span>
+                        <span>Vencimentos nos próximos 30 dias</span>
                         <i class="fa-solid fa-bell text-[var(--warning)] text-lg"></i>
                     </h2>
                     <div class="overflow-y-auto max-h-[280px] scroll pr-2" id="lista-vencimentos"></div>
@@ -342,21 +342,21 @@
             const hoje = new Date(); 
             hoje.setHours(0,0,0,0);
             
-            const daqui7dias = new Date(hoje); 
-            daqui7dias.setDate(hoje.getDate() + 7);
+            const daqui30dias = new Date(hoje); 
+            daqui30dias.setDate(hoje.getDate() + 30);
             
             const vencendo = l.filter(r => {
                 if (r.situacao_grupo !== 'Aguardando resposta' || !r.data_prazo_iso || r.data_prazo_iso === "—") return false;
                 const p = new Date(r.data_prazo_iso + 'T12:00:00'); 
                 p.setHours(0,0,0,0);
-                return p >= hoje && p <= daqui7dias;
+                return p >= hoje && p <= daqui30dias;
             }).sort((a, b) => new Date(a.data_prazo_iso + 'T12:00:00') - new Date(b.data_prazo_iso + 'T12:00:00'));
 
             if (vencendo.length === 0) {
                 container.innerHTML = `
                     <div class="text-center py-10 text-[var(--muted)] flex flex-col items-center">
                         <i class="fa-solid fa-calendar-check text-3xl mb-3" style="color:var(--positive)"></i>
-                        <span class="text-sm font-medium">Nenhum RIC aguardando resposta vence<br>nos próximos 7 dias.</span>
+                        <span class="text-sm font-medium">Nenhum RIC aguardando resposta vence<br>nos próximos 30 dias.</span>
                     </div>`;
                 return;
             }
