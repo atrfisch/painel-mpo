@@ -1,11 +1,11 @@
 {
-  "ultima_atualizacao": "09/07/2026 21:12",
+  "ultima_atualizacao": "10/07/2026 12:32",
   "fonte_temas": "oficial",
   "resumo": {
     "total_requerimentos": 162,
     "total_autores": 57,
     "total_temas": 12,
-    "total_comissoes": 3,
+    "total_comissoes": 2,
     "total_ativos": 22,
     "total_respondidos": 0,
     "total_aguardando": 6
@@ -124,8 +124,7 @@
     "Trabalho e Emprego": 1
   },
   "comissoes": {
-    "1VIPR": 3,
-    "MESA": 13,
+    "MESA": 16,
     "1SECM": 146
   },
   "situacoes": {
@@ -148,7 +147,7 @@
       "numero": 2140,
       "ano": 2026,
       "autor": "Dep. Duda Salabert (-)",
-      "comissao": "1VIPR",
+      "comissao": "MESA",
       "tema": "Agricultura, Pecuária, Pesca e Extrativismo",
       "temas": [
         "Agricultura, Pecuária, Pesca e Extrativismo",
@@ -157,7 +156,7 @@
       ],
       "tema_fonte": "oficial",
       "ementa": "Requer informações do Sr. Bruno Moretti, Ministro de Estado do Planejamento e Orçamento, sobre as condições de regulação e fiscalização pela União da exportação marítima comercial de bovinos vivos para abate no exterior.",
-      "status": "Aguardando Elaboração do Parecer pelo(a) Relator(a)",
+      "status": "Aguardando Despacho do Presidente da Câmara dos Deputados",
       "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2637622"
     },
@@ -174,7 +173,7 @@
       "numero": 2081,
       "ano": 2026,
       "autor": "Dep. Adriana Ventura (-)",
-      "comissao": "1VIPR",
+      "comissao": "MESA",
       "tema": "Administração Pública",
       "temas": [
         "Administração Pública",
@@ -182,7 +181,7 @@
       ],
       "tema_fonte": "oficial",
       "ementa": "Requer informações ao Ministro de Estado do Planejamento e Orçamento, Sr. Bruno Moretti, sobre bloqueios, contingenciamentos, limites de movimentação e empenho, programação financeira e riscos à capacidade fiscalizatória das agências reguladoras federais em 2026.",
-      "status": "Aguardando Elaboração do Parecer pelo(a) Relator(a)",
+      "status": "Aguardando Despacho do Presidente da Câmara dos Deputados",
       "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2636496"
     },
@@ -199,14 +198,14 @@
       "numero": 2089,
       "ano": 2026,
       "autor": "Dep. Adriana Ventura (-)",
-      "comissao": "1VIPR",
+      "comissao": "MESA",
       "tema": "Administração Pública",
       "temas": [
         "Administração Pública"
       ],
       "tema_fonte": "oficial",
       "ementa": "Requer informações ao Ministro de Estado do Planejamento e Orçamento, Sr. Bruno Moretti, sobre processos de dispensa e designação, critérios de chefia, manifestações recebidas e riscos à independência técnica do IBGE.",
-      "status": "Aguardando Elaboração do Parecer pelo(a) Relator(a)",
+      "status": "Aguardando Despacho do Presidente da Câmara dos Deputados",
       "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2636504"
     },
