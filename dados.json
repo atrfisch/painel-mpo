@@ -1,14 +1,14 @@
 {
-  "ultima_atualizacao": "16/07/2026 05:59",
+  "ultima_atualizacao": "17/07/2026 06:00",
   "fonte_temas": "oficial",
   "resumo": {
     "total_requerimentos": 162,
     "total_autores": 57,
     "total_temas": 12,
     "total_comissoes": 2,
-    "total_ativos": 22,
+    "total_ativos": 21,
     "total_respondidos": 0,
-    "total_aguardando": 6
+    "total_aguardando": 5
   },
   "timeline": {
     "Jul/26": 3,
@@ -129,8 +129,8 @@
   },
   "situacoes": {
     "Apresentado, não enviado": 13,
-    "Aguardando resposta": 6,
-    "Arquivado": 140,
+    "Aguardando resposta": 5,
+    "Arquivado": 141,
     "Outros": 3
   },
   "lista_requerimentos": [
@@ -416,10 +416,10 @@
       "data": "18/05/2026",
       "data_iso": "2026-05-18",
       "mes_ano": "Mai/26",
-      "data_ult_mov_br": "18/06/2026",
-      "data_ult_mov_iso": "2026-06-18",
-      "data_prazo_br": "18/07/2026",
-      "data_prazo_iso": "2026-07-18",
+      "data_ult_mov_br": "16/07/2026",
+      "data_ult_mov_iso": "2026-07-16",
+      "data_prazo_br": "—",
+      "data_prazo_iso": "",
       "casa": "Câmara",
       "sigla": "RIC",
       "numero": 1384,
@@ -433,8 +433,8 @@
       ],
       "tema_fonte": "oficial",
       "ementa": "Requer informações ao Ministério do Planejamento e Orçamento sobre o impacto fiscal e financeiro da redução da jornada de trabalho e do fim da escala 6x1.",
-      "status": "Aguardando Resposta",
-      "situacao_grupo": "Aguardando resposta",
+      "status": "Aguardando Remessa ao Arquivo",
+      "situacao_grupo": "Arquivado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2625568"
     },
     {
