@@ -1,17 +1,17 @@
 {
-  "ultima_atualizacao": "21/07/2026 05:55",
+  "ultima_atualizacao": "22/07/2026 12:42",
   "fonte_temas": "oficial",
   "resumo": {
-    "total_requerimentos": 162,
+    "total_requerimentos": 163,
     "total_autores": 57,
     "total_temas": 12,
     "total_comissoes": 2,
-    "total_ativos": 21,
+    "total_ativos": 22,
     "total_respondidos": 0,
     "total_aguardando": 5
   },
   "timeline": {
-    "Jul/26": 3,
+    "Jul/26": 4,
     "Jun/26": 5,
     "Mai/26": 8,
     "Abr/26": 1,
@@ -51,6 +51,7 @@
     "Fev/23": 1
   },
   "autores": {
+    "Dep. Nikolas Ferreira (-)": 11,
     "Dep. Duda Salabert (-)": 1,
     "Dep. Adriana Ventura (-)": 14,
     "Dep. Chris Tonietto (-)": 4,
@@ -72,7 +73,6 @@
     "Dep. Capitão Alberto Neto (-)": 8,
     "Dep. Comissão de Fiscalização Financeira e Controle (-)": 9,
     "Dep. Zucco (-)": 1,
-    "Dep. Nikolas Ferreira (-)": 10,
     "Dep. Laura Carneiro (-)": 7,
     "Dep. Geraldo Resende (-)": 1,
     "Dep. Vander Loubet (-)": 1,
@@ -110,9 +110,9 @@
     "Dep. Aureo Ribeiro (-)": 1
   },
   "temas": {
+    "Finanças Públicas e Orçamento": 22,
     "Agricultura, Pecuária, Pesca e Extrativismo": 6,
     "Administração Pública": 105,
-    "Finanças Públicas e Orçamento": 21,
     "Economia": 11,
     "Educação": 5,
     "Direitos Humanos e Minorias": 4,
@@ -124,16 +124,38 @@
     "Trabalho e Emprego": 1
   },
   "comissoes": {
-    "MESA": 16,
+    "MESA": 17,
     "1SECM": 146
   },
   "situacoes": {
-    "Apresentado, não enviado": 13,
+    "Apresentado, não enviado": 14,
     "Aguardando resposta": 5,
     "Arquivado": 141,
     "Outros": 3
   },
   "lista_requerimentos": [
+    {
+      "data": "21/07/2026",
+      "data_iso": "2026-07-21",
+      "mes_ano": "Jul/26",
+      "data_ult_mov_br": "—",
+      "data_ult_mov_iso": "",
+      "data_prazo_br": "—",
+      "data_prazo_iso": "",
+      "casa": "Câmara",
+      "sigla": "RIC",
+      "numero": 2231,
+      "ano": 2026,
+      "autor": "Dep. Nikolas Ferreira (-)",
+      "comissao": "MESA",
+      "tema": "Finanças Públicas e Orçamento",
+      "temas": [],
+      "tema_fonte": "reserva",
+      "ementa": "Solicita ao Ministro de Estado do Planejamento e Orçamento informações sobre as medidas anunciadas pelo Poder Executivo relativas à ampliação do programa Minha Casa Minha Vida e à reformulação do programa Reforma Casa Brasil, especialmente no que diz respeito à sua compatibilidade com o ordenamento orçamentário e fiscal vigente.",
+      "status": "Em Tramitação",
+      "situacao_grupo": "Apresentado, não enviado",
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2641451"
+    },
     {
       "data": "07/07/2026",
       "data_iso": "2026-07-07",
