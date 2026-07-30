@@ -1,14 +1,14 @@
 {
-  "ultima_atualizacao": "29/07/2026 06:07",
+  "ultima_atualizacao": "30/07/2026 05:44",
   "fonte_temas": "oficial",
   "resumo": {
     "total_requerimentos": 163,
     "total_autores": 57,
     "total_temas": 12,
-    "total_comissoes": 3,
+    "total_comissoes": 2,
     "total_ativos": 17,
     "total_respondidos": 0,
-    "total_aguardando": 2
+    "total_aguardando": 0
   },
   "timeline": {
     "Jul/26": 4,
@@ -124,15 +124,13 @@
     "Trabalho e Emprego": 1
   },
   "comissoes": {
-    "MESA": 26,
-    "1SECM": 136,
-    "CFFC": 1
+    "MESA": 17,
+    "1SECM": 146
   },
   "situacoes": {
-    "Apresentado, não enviado": 11,
+    "Apresentado, não enviado": 14,
     "Arquivado": 146,
-    "Outros": 4,
-    "Aguardando resposta": 2
+    "Outros": 3
   },
   "lista_requerimentos": [
     {
@@ -157,7 +155,7 @@
       ],
       "tema_fonte": "oficial",
       "ementa": "Solicita ao Ministro de Estado do Planejamento e Orçamento informações sobre as medidas anunciadas pelo Poder Executivo relativas à ampliação do programa Minha Casa Minha Vida e à reformulação do programa Reforma Casa Brasil, especialmente no que diz respeito à sua compatibilidade com o ordenamento orçamentário e fiscal vigente.",
-      "status": "Em Tramitação",
+      "status": "Aguardando Designação de Relator(a)",
       "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2641451"
     },
@@ -3717,7 +3715,7 @@
       "numero": 3216,
       "ano": 2023,
       "autor": "Dep. Amom Mandel (-)",
-      "comissao": "MESA",
+      "comissao": "1SECM",
       "tema": "Economia",
       "temas": [
         "Economia",
@@ -3734,10 +3732,10 @@
       "data": "24/11/2023",
       "data_iso": "2023-11-24",
       "mes_ano": "Nov/23",
-      "data_ult_mov_br": "24/11/2023",
-      "data_ult_mov_iso": "2023-11-24",
-      "data_prazo_br": "24/12/2023",
-      "data_prazo_iso": "2023-12-24",
+      "data_ult_mov_br": "—",
+      "data_ult_mov_iso": "",
+      "data_prazo_br": "—",
+      "data_prazo_iso": "",
       "casa": "Câmara",
       "sigla": "RIC",
       "numero": 2870,
@@ -3750,8 +3748,8 @@
       ],
       "tema_fonte": "oficial",
       "ementa": "Requer informações à Ministra do Planejamento e Orçamento, Sra. Simone Nassar Tebet, acerca dos documentos que justificaram o remanejamento de recursos realizado por meio da Portaria GM/MPO nº 310, de 30/10/2023.",
-      "status": "Aguardando Recebimento",
-      "situacao_grupo": "Aguardando resposta",
+      "status": "Aguardando Designação de Relator(a)",
+      "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2406479"
     },
     {
@@ -3816,7 +3814,7 @@
       "numero": 2613,
       "ano": 2023,
       "autor": "Dep. Comissão de Fiscalização Financeira e Controle (-)",
-      "comissao": "CFFC",
+      "comissao": "1SECM",
       "tema": "Administração Pública",
       "temas": [
         "Administração Pública",
@@ -3867,7 +3865,7 @@
       "numero": 2521,
       "ano": 2023,
       "autor": "Dep. Sargento Portugal (-)",
-      "comissao": "MESA",
+      "comissao": "1SECM",
       "tema": "Defesa e Segurança",
       "temas": [
         "Defesa e Segurança",
@@ -3893,7 +3891,7 @@
       "numero": 2383,
       "ano": 2023,
       "autor": "Dep. Eduardo da Fonte (-)",
-      "comissao": "MESA",
+      "comissao": "1SECM",
       "tema": "Cidades e Desenvolvimento Urbano",
       "temas": [
         "Cidades e Desenvolvimento Urbano",
@@ -3919,7 +3917,7 @@
       "numero": 2269,
       "ano": 2023,
       "autor": "Dep. Adriana Ventura (-)",
-      "comissao": "MESA",
+      "comissao": "1SECM",
       "tema": "Cidades e Desenvolvimento Urbano",
       "temas": [
         "Cidades e Desenvolvimento Urbano"
@@ -3934,10 +3932,10 @@
       "data": "29/08/2023",
       "data_iso": "2023-08-29",
       "mes_ano": "Ago/23",
-      "data_ult_mov_br": "29/08/2023",
-      "data_ult_mov_iso": "2023-08-29",
-      "data_prazo_br": "28/09/2023",
-      "data_prazo_iso": "2023-09-28",
+      "data_ult_mov_br": "—",
+      "data_ult_mov_iso": "",
+      "data_prazo_br": "—",
+      "data_prazo_iso": "",
       "casa": "Câmara",
       "sigla": "RIC",
       "numero": 2234,
@@ -3951,8 +3949,8 @@
       ],
       "tema_fonte": "oficial",
       "ementa": "Requer informações adicionais à Ministra do Planejamento e Orçamento, Sra. Simone Tebet, sobre a utilização de aeronaves do Comando da Aeronáutica para transporte aéreo nos dias em que especifica, tendo em vista o disposto no art. 6º do Decreto nº 10.267, de 5 de março de 2020.",
-      "status": "Aguardando Recebimento",
-      "situacao_grupo": "Aguardando resposta",
+      "status": "Aguardando Designação de Relator(a)",
+      "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2383750"
     },
     {
@@ -3968,7 +3966,7 @@
       "numero": 2180,
       "ano": 2023,
       "autor": "Dep. Cobalchini (-)",
-      "comissao": "MESA",
+      "comissao": "1SECM",
       "tema": "Administração Pública",
       "temas": [
         "Administração Pública",
@@ -3994,7 +3992,7 @@
       "numero": 2127,
       "ano": 2023,
       "autor": "Dep. Julio Lopes (-)",
-      "comissao": "MESA",
+      "comissao": "1SECM",
       "tema": "Saúde",
       "temas": [
         "Saúde"
@@ -4018,7 +4016,7 @@
       "numero": 1958,
       "ano": 2023,
       "autor": "Dep. Rosângela Moro (-)",
-      "comissao": "MESA",
+      "comissao": "1SECM",
       "tema": "Finanças Públicas e Orçamento",
       "temas": [
         "Finanças Públicas e Orçamento",
@@ -4043,7 +4041,7 @@
       "numero": 1879,
       "ano": 2023,
       "autor": "Dep. Rodrigo Valadares (-)",
-      "comissao": "MESA",
+      "comissao": "1SECM",
       "tema": "Finanças Públicas e Orçamento",
       "temas": [
         "Finanças Públicas e Orçamento"
@@ -4092,7 +4090,7 @@
       "numero": 1712,
       "ano": 2023,
       "autor": "Dep. Zé Vitor (-)",
-      "comissao": "MESA",
+      "comissao": "1SECM",
       "tema": "Trabalho e Emprego",
       "temas": [
         "Trabalho e Emprego"
@@ -4177,7 +4175,7 @@
       ],
       "tema_fonte": "oficial",
       "ementa": "Requer informações do Ministério do Planejamento e Orçamento a respeito de financiamento agrícola para povos indígenas.",
-      "status": "Aguardando Deliberação",
+      "status": "Em Tramitação",
       "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2351568"
     },
@@ -4185,8 +4183,8 @@
       "data": "14/02/2023",
       "data_iso": "2023-02-14",
       "mes_ano": "Fev/23",
-      "data_ult_mov_br": "24/05/2023",
-      "data_ult_mov_iso": "2023-05-24",
+      "data_ult_mov_br": "—",
+      "data_ult_mov_iso": "",
       "data_prazo_br": "—",
       "data_prazo_iso": "",
       "casa": "Câmara",
@@ -4204,7 +4202,7 @@
       "tema_fonte": "oficial",
       "ementa": "Requer informação ao Ministério do Planejamento e Orçamento a respeito dos valores proporcionais destinados à remuneração de homens e mulheres nos órgãos do Poder Executivo.",
       "status": "Em Tramitação",
-      "situacao_grupo": "Outros",
+      "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2348792"
     }
   ]
