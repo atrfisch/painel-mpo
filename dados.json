@@ -1,17 +1,17 @@
 {
-  "ultima_atualizacao": "13/08/2026 04:53",
+  "ultima_atualizacao": "14/08/2026 04:51",
   "fonte_temas": "oficial",
   "resumo": {
-    "total_requerimentos": 166,
+    "total_requerimentos": 167,
     "total_autores": 58,
     "total_temas": 12,
-    "total_comissoes": 3,
-    "total_ativos": 20,
+    "total_comissoes": 2,
+    "total_ativos": 21,
     "total_respondidos": 0,
     "total_aguardando": 0
   },
   "timeline": {
-    "Ago/26": 3,
+    "Ago/26": 4,
     "Jul/26": 4,
     "Jun/26": 5,
     "Mai/26": 8,
@@ -52,13 +52,13 @@
     "Fev/23": 1
   },
   "autores": {
+    "Dep. Gustavo Gayer (-)": 22,
     "Dep. José Medeiros (-)": 1,
     "Dep. Messias Donato (-)": 5,
     "Dep. Nikolas Ferreira (-)": 12,
     "Dep. Duda Salabert (-)": 1,
     "Dep. Adriana Ventura (-)": 14,
     "Dep. Chris Tonietto (-)": 4,
-    "Dep. Gustavo Gayer (-)": 21,
     "Dep. Evair Vieira de Melo (-)": 4,
     "Dep. Caroline de Toni (-)": 4,
     "Dep. Comissão Especial destinada a proferir parecer à Proposta de Emenda à Constituição nº 221, de 2019, do Senhor Reginaldo Lopes, que \"altera o Art. 7º inciso XII da constituição Federal, reduzindo a jornada de trabalho a 36 horas semanais em 10 anos\", e apensada (-)": 4,
@@ -112,7 +112,7 @@
     "Dep. Aureo Ribeiro (-)": 1
   },
   "temas": {
-    "Finanças Públicas e Orçamento": 24,
+    "Finanças Públicas e Orçamento": 25,
     "Cidades e Desenvolvimento Urbano": 4,
     "Agricultura, Pecuária, Pesca e Extrativismo": 6,
     "Administração Pública": 105,
@@ -126,16 +126,37 @@
     "Trabalho e Emprego": 1
   },
   "comissoes": {
-    "MESA": 19,
-    "1VIPR": 1,
+    "MESA": 21,
     "1SECM": 146
   },
   "situacoes": {
-    "Apresentado, não enviado": 16,
+    "Apresentado, não enviado": 17,
     "Outros": 4,
     "Arquivado": 146
   },
   "lista_requerimentos": [
+    {
+      "data": "13/08/2026",
+      "data_iso": "2026-08-13",
+      "mes_ano": "Ago/26",
+      "data_ult_mov_br": "—",
+      "data_ult_mov_iso": "",
+      "data_prazo_br": "—",
+      "data_prazo_iso": "",
+      "casa": "Câmara",
+      "sigla": "RIC",
+      "numero": 2411,
+      "ano": 2026,
+      "autor": "Dep. Gustavo Gayer (-)",
+      "comissao": "MESA",
+      "tema": "Finanças Públicas e Orçamento",
+      "temas": [],
+      "tema_fonte": "reserva",
+      "ementa": "Solicita informações ao Senhor Ministro do Planejamento e Orçamento, acerca da programação financeira da União para 2026, da insuficiência de limite para o pagamento de despesas não obrigatórias e da evolução dos restos a pagar.",
+      "status": "Em Tramitação",
+      "situacao_grupo": "Apresentado, não enviado",
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2643692"
+    },
     {
       "data": "12/08/2026",
       "data_iso": "2026-08-12",
@@ -151,8 +172,10 @@
       "autor": "Dep. José Medeiros (-)",
       "comissao": "MESA",
       "tema": "Finanças Públicas e Orçamento",
-      "temas": [],
-      "tema_fonte": "reserva",
+      "temas": [
+        "Finanças Públicas e Orçamento"
+      ],
+      "tema_fonte": "oficial",
       "ementa": "Requer informações à Ministra de Estado do Planejamento e Orçamento acerca da distribuição dos limites de pagamento entre os órgãos do Poder Executivo Federal, da reprogramação financeira decorrente da restrição de aproximadamente R$ 105,5 bilhões identificada pela Consultoria de Orçamentos do Senado Federal e dos impactos específicos sobre as ações orçamentárias dos Ministérios da Saúde e da Educação.",
       "status": "Em Tramitação",
       "situacao_grupo": "Apresentado, não enviado",
@@ -173,8 +196,11 @@
       "autor": "Dep. Messias Donato (-)",
       "comissao": "MESA",
       "tema": "Finanças Públicas e Orçamento",
-      "temas": [],
-      "tema_fonte": "reserva",
+      "temas": [
+        "Finanças Públicas e Orçamento",
+        "Administração Pública"
+      ],
+      "tema_fonte": "oficial",
       "ementa": "Requer informações ao Ministério do Planejamento e Orçamento sobre a sustentabilidade da política fiscal e a trajetória da dívida pública, em face das projeções da Lei Orçamentária Anual para 2026.",
       "status": "Em Tramitação",
       "situacao_grupo": "Apresentado, não enviado",
@@ -193,7 +219,7 @@
       "numero": 2300,
       "ano": 2026,
       "autor": "Dep. Nikolas Ferreira (-)",
-      "comissao": "1VIPR",
+      "comissao": "MESA",
       "tema": "Finanças Públicas e Orçamento",
       "temas": [
         "Finanças Públicas e Orçamento",
@@ -202,7 +228,7 @@
       ],
       "tema_fonte": "oficial",
       "ementa": "Solicita ao Ministro de Estado do Planejamento e Orçamento informações sobre as medidas anunciadas pelo Poder Executivo relativas à ampliação do programa Minha Casa Minha Vida e à reformulação do programa Reforma Casa Brasil, especialmente no que diz respeito à sua compatibilidade com o ordenamento orçamentário e fiscal vigente.",
-      "status": "Aguardando Elaboração do Parecer pelo(a) Relator(a)",
+      "status": "Aguardando Despacho do Presidente da Câmara dos Deputados",
       "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2641889"
     },
