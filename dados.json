@@ -1,5 +1,5 @@
 {
-  "ultima_atualizacao": "14/08/2026 04:51",
+  "ultima_atualizacao": "15/08/2026 03:42",
   "fonte_temas": "oficial",
   "resumo": {
     "total_requerimentos": 167,
@@ -150,8 +150,11 @@
       "autor": "Dep. Gustavo Gayer (-)",
       "comissao": "MESA",
       "tema": "Finanças Públicas e Orçamento",
-      "temas": [],
-      "tema_fonte": "reserva",
+      "temas": [
+        "Finanças Públicas e Orçamento",
+        "Administração Pública"
+      ],
+      "tema_fonte": "oficial",
       "ementa": "Solicita informações ao Senhor Ministro do Planejamento e Orçamento, acerca da programação financeira da União para 2026, da insuficiência de limite para o pagamento de despesas não obrigatórias e da evolução dos restos a pagar.",
       "status": "Em Tramitação",
       "situacao_grupo": "Apresentado, não enviado",
