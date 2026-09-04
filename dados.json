@@ -1,5 +1,5 @@
 {
-  "ultima_atualizacao": "03/09/2026 17:08",
+  "ultima_atualizacao": "04/09/2026 07:49",
   "fonte_temas": "oficial",
   "resumo": {
     "total_requerimentos": 167,
@@ -8,7 +8,7 @@
     "total_comissoes": 3,
     "total_ativos": 21,
     "total_respondidos": 0,
-    "total_aguardando": 3
+    "total_aguardando": 0
   },
   "timeline": {
     "Ago/26": 4,
@@ -131,8 +131,7 @@
     "1SECM": 146
   },
   "situacoes": {
-    "Aguardando resposta": 3,
-    "Apresentado, não enviado": 14,
+    "Apresentado, não enviado": 17,
     "Outros": 4,
     "Arquivado": 146
   },
@@ -141,10 +140,10 @@
       "data": "13/08/2026",
       "data_iso": "2026-08-13",
       "mes_ano": "Ago/26",
-      "data_ult_mov_br": "02/09/2026",
-      "data_ult_mov_iso": "2026-09-02",
-      "data_prazo_br": "02/10/2026",
-      "data_prazo_iso": "2026-10-02",
+      "data_ult_mov_br": "—",
+      "data_ult_mov_iso": "",
+      "data_prazo_br": "—",
+      "data_prazo_iso": "",
       "casa": "Câmara",
       "sigla": "RIC",
       "numero": 2411,
@@ -158,18 +157,18 @@
       ],
       "tema_fonte": "oficial",
       "ementa": "Solicita informações ao Senhor Ministro do Planejamento e Orçamento, acerca da programação financeira da União para 2026, da insuficiência de limite para o pagamento de despesas não obrigatórias e da evolução dos restos a pagar.",
-      "status": "Aguardando Recebimento",
-      "situacao_grupo": "Aguardando resposta",
+      "status": "Aguardando Elaboração do Parecer pelo(a) Relator(a)",
+      "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2643692"
     },
     {
       "data": "12/08/2026",
       "data_iso": "2026-08-12",
       "mes_ano": "Ago/26",
-      "data_ult_mov_br": "02/09/2026",
-      "data_ult_mov_iso": "2026-09-02",
-      "data_prazo_br": "02/10/2026",
-      "data_prazo_iso": "2026-10-02",
+      "data_ult_mov_br": "—",
+      "data_ult_mov_iso": "",
+      "data_prazo_br": "—",
+      "data_prazo_iso": "",
       "casa": "Câmara",
       "sigla": "RIC",
       "numero": 2380,
@@ -182,18 +181,18 @@
       ],
       "tema_fonte": "oficial",
       "ementa": "Requer informações à Ministra de Estado do Planejamento e Orçamento acerca da distribuição dos limites de pagamento entre os órgãos do Poder Executivo Federal, da reprogramação financeira decorrente da restrição de aproximadamente R$ 105,5 bilhões identificada pela Consultoria de Orçamentos do Senado Federal e dos impactos específicos sobre as ações orçamentárias dos Ministérios da Saúde e da Educação.",
-      "status": "Aguardando Recebimento",
-      "situacao_grupo": "Aguardando resposta",
+      "status": "Aguardando Elaboração do Parecer pelo(a) Relator(a)",
+      "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2643029"
     },
     {
       "data": "12/08/2026",
       "data_iso": "2026-08-12",
       "mes_ano": "Ago/26",
-      "data_ult_mov_br": "02/09/2026",
-      "data_ult_mov_iso": "2026-09-02",
-      "data_prazo_br": "02/10/2026",
-      "data_prazo_iso": "2026-10-02",
+      "data_ult_mov_br": "—",
+      "data_ult_mov_iso": "",
+      "data_prazo_br": "—",
+      "data_prazo_iso": "",
       "casa": "Câmara",
       "sigla": "RIC",
       "numero": 2387,
@@ -207,8 +206,8 @@
       ],
       "tema_fonte": "oficial",
       "ementa": "Requer informações ao Ministério do Planejamento e Orçamento sobre a sustentabilidade da política fiscal e a trajetória da dívida pública, em face das projeções da Lei Orçamentária Anual para 2026.",
-      "status": "Aguardando Recebimento",
-      "situacao_grupo": "Aguardando resposta",
+      "status": "Aguardando Elaboração do Parecer pelo(a) Relator(a)",
+      "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2643261"
     },
     {
