@@ -1,11 +1,11 @@
 {
-  "ultima_atualizacao": "04/09/2026 07:49",
+  "ultima_atualizacao": "05/09/2026 07:31",
   "fonte_temas": "oficial",
   "resumo": {
     "total_requerimentos": 167,
     "total_autores": 58,
     "total_temas": 12,
-    "total_comissoes": 3,
+    "total_comissoes": 2,
     "total_ativos": 21,
     "total_respondidos": 0,
     "total_aguardando": 0
@@ -126,8 +126,7 @@
     "Trabalho e Emprego": 1
   },
   "comissoes": {
-    "1VIPR": 3,
-    "MESA": 18,
+    "MESA": 21,
     "1SECM": 146
   },
   "situacoes": {
@@ -149,7 +148,7 @@
       "numero": 2411,
       "ano": 2026,
       "autor": "Dep. Gustavo Gayer (-)",
-      "comissao": "1VIPR",
+      "comissao": "MESA",
       "tema": "Finanças Públicas e Orçamento",
       "temas": [
         "Finanças Públicas e Orçamento",
@@ -157,7 +156,7 @@
       ],
       "tema_fonte": "oficial",
       "ementa": "Solicita informações ao Senhor Ministro do Planejamento e Orçamento, acerca da programação financeira da União para 2026, da insuficiência de limite para o pagamento de despesas não obrigatórias e da evolução dos restos a pagar.",
-      "status": "Aguardando Elaboração do Parecer pelo(a) Relator(a)",
+      "status": "Aguardando Despacho do Presidente da Câmara dos Deputados",
       "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2643692"
     },
@@ -174,14 +173,14 @@
       "numero": 2380,
       "ano": 2026,
       "autor": "Dep. José Medeiros (-)",
-      "comissao": "1VIPR",
+      "comissao": "MESA",
       "tema": "Finanças Públicas e Orçamento",
       "temas": [
         "Finanças Públicas e Orçamento"
       ],
       "tema_fonte": "oficial",
       "ementa": "Requer informações à Ministra de Estado do Planejamento e Orçamento acerca da distribuição dos limites de pagamento entre os órgãos do Poder Executivo Federal, da reprogramação financeira decorrente da restrição de aproximadamente R$ 105,5 bilhões identificada pela Consultoria de Orçamentos do Senado Federal e dos impactos específicos sobre as ações orçamentárias dos Ministérios da Saúde e da Educação.",
-      "status": "Aguardando Elaboração do Parecer pelo(a) Relator(a)",
+      "status": "Aguardando Despacho do Presidente da Câmara dos Deputados",
       "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2643029"
     },
@@ -198,7 +197,7 @@
       "numero": 2387,
       "ano": 2026,
       "autor": "Dep. Messias Donato (-)",
-      "comissao": "1VIPR",
+      "comissao": "MESA",
       "tema": "Finanças Públicas e Orçamento",
       "temas": [
         "Finanças Públicas e Orçamento",
@@ -206,7 +205,7 @@
       ],
       "tema_fonte": "oficial",
       "ementa": "Requer informações ao Ministério do Planejamento e Orçamento sobre a sustentabilidade da política fiscal e a trajetória da dívida pública, em face das projeções da Lei Orçamentária Anual para 2026.",
-      "status": "Aguardando Elaboração do Parecer pelo(a) Relator(a)",
+      "status": "Aguardando Despacho do Presidente da Câmara dos Deputados",
       "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2643261"
     },
