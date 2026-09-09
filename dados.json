@@ -1,16 +1,17 @@
 {
-  "ultima_atualizacao": "08/09/2026 12:24",
+  "ultima_atualizacao": "09/09/2026 13:06",
   "fonte_temas": "oficial",
   "resumo": {
-    "total_requerimentos": 167,
+    "total_requerimentos": 168,
     "total_autores": 58,
     "total_temas": 12,
-    "total_comissoes": 2,
-    "total_ativos": 21,
+    "total_comissoes": 3,
+    "total_ativos": 22,
     "total_respondidos": 0,
-    "total_aguardando": 0
+    "total_aguardando": 2
   },
   "timeline": {
+    "Set/26": 1,
     "Ago/26": 4,
     "Jul/26": 4,
     "Jun/26": 5,
@@ -52,7 +53,7 @@
     "Fev/23": 1
   },
   "autores": {
-    "Dep. Gustavo Gayer (-)": 22,
+    "Dep. Gustavo Gayer (-)": 23,
     "Dep. José Medeiros (-)": 1,
     "Dep. Messias Donato (-)": 5,
     "Dep. Nikolas Ferreira (-)": 12,
@@ -112,7 +113,7 @@
     "Dep. Aureo Ribeiro (-)": 1
   },
   "temas": {
-    "Finanças Públicas e Orçamento": 25,
+    "Finanças Públicas e Orçamento": 26,
     "Cidades e Desenvolvimento Urbano": 4,
     "Agricultura, Pecuária, Pesca e Extrativismo": 6,
     "Administração Pública": 105,
@@ -126,15 +127,39 @@
     "Trabalho e Emprego": 1
   },
   "comissoes": {
-    "MESA": 21,
-    "1SECM": 146
+    "MESA": 31,
+    "1SECM": 136,
+    "CFFC": 1
   },
   "situacoes": {
-    "Apresentado, não enviado": 17,
-    "Outros": 4,
-    "Arquivado": 146
+    "Apresentado, não enviado": 15,
+    "Outros": 5,
+    "Arquivado": 146,
+    "Aguardando resposta": 2
   },
   "lista_requerimentos": [
+    {
+      "data": "08/09/2026",
+      "data_iso": "2026-09-08",
+      "mes_ano": "Set/26",
+      "data_ult_mov_br": "—",
+      "data_ult_mov_iso": "",
+      "data_prazo_br": "—",
+      "data_prazo_iso": "",
+      "casa": "Câmara",
+      "sigla": "RIC",
+      "numero": 2570,
+      "ano": 2026,
+      "autor": "Dep. Gustavo Gayer (-)",
+      "comissao": "MESA",
+      "tema": "Finanças Públicas e Orçamento",
+      "temas": [],
+      "tema_fonte": "reserva",
+      "ementa": "Solicita informações ao Senhor Ministro do Planejamento e Orçamento, acerca dos impactos orçamentários e fiscais decorrentes da Lei Complementar nº 235, de 27 de agosto de 2026, especialmente sobre os recursos destinados à saúde e à educação, a antecipação de receitas e o espaço fiscal projetado para o exercício de 2027.",
+      "status": "Em Tramitação",
+      "situacao_grupo": "Apresentado, não enviado",
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2646218"
+    },
     {
       "data": "13/08/2026",
       "data_iso": "2026-08-13",
@@ -3817,7 +3842,7 @@
       "numero": 3216,
       "ano": 2023,
       "autor": "Dep. Amom Mandel (-)",
-      "comissao": "1SECM",
+      "comissao": "MESA",
       "tema": "Economia",
       "temas": [
         "Economia",
@@ -3834,10 +3859,10 @@
       "data": "24/11/2023",
       "data_iso": "2023-11-24",
       "mes_ano": "Nov/23",
-      "data_ult_mov_br": "—",
-      "data_ult_mov_iso": "",
-      "data_prazo_br": "—",
-      "data_prazo_iso": "",
+      "data_ult_mov_br": "24/11/2023",
+      "data_ult_mov_iso": "2023-11-24",
+      "data_prazo_br": "24/12/2023",
+      "data_prazo_iso": "2023-12-24",
       "casa": "Câmara",
       "sigla": "RIC",
       "numero": 2870,
@@ -3850,8 +3875,8 @@
       ],
       "tema_fonte": "oficial",
       "ementa": "Requer informações à Ministra do Planejamento e Orçamento, Sra. Simone Nassar Tebet, acerca dos documentos que justificaram o remanejamento de recursos realizado por meio da Portaria GM/MPO nº 310, de 30/10/2023.",
-      "status": "Aguardando Designação de Relator(a)",
-      "situacao_grupo": "Apresentado, não enviado",
+      "status": "Aguardando Recebimento",
+      "situacao_grupo": "Aguardando resposta",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2406479"
     },
     {
@@ -3916,7 +3941,7 @@
       "numero": 2613,
       "ano": 2023,
       "autor": "Dep. Comissão de Fiscalização Financeira e Controle (-)",
-      "comissao": "1SECM",
+      "comissao": "CFFC",
       "tema": "Administração Pública",
       "temas": [
         "Administração Pública",
@@ -3967,7 +3992,7 @@
       "numero": 2521,
       "ano": 2023,
       "autor": "Dep. Sargento Portugal (-)",
-      "comissao": "1SECM",
+      "comissao": "MESA",
       "tema": "Defesa e Segurança",
       "temas": [
         "Defesa e Segurança",
@@ -3993,7 +4018,7 @@
       "numero": 2383,
       "ano": 2023,
       "autor": "Dep. Eduardo da Fonte (-)",
-      "comissao": "1SECM",
+      "comissao": "MESA",
       "tema": "Cidades e Desenvolvimento Urbano",
       "temas": [
         "Cidades e Desenvolvimento Urbano",
@@ -4019,7 +4044,7 @@
       "numero": 2269,
       "ano": 2023,
       "autor": "Dep. Adriana Ventura (-)",
-      "comissao": "1SECM",
+      "comissao": "MESA",
       "tema": "Cidades e Desenvolvimento Urbano",
       "temas": [
         "Cidades e Desenvolvimento Urbano"
@@ -4034,10 +4059,10 @@
       "data": "29/08/2023",
       "data_iso": "2023-08-29",
       "mes_ano": "Ago/23",
-      "data_ult_mov_br": "—",
-      "data_ult_mov_iso": "",
-      "data_prazo_br": "—",
-      "data_prazo_iso": "",
+      "data_ult_mov_br": "29/08/2023",
+      "data_ult_mov_iso": "2023-08-29",
+      "data_prazo_br": "28/09/2023",
+      "data_prazo_iso": "2023-09-28",
       "casa": "Câmara",
       "sigla": "RIC",
       "numero": 2234,
@@ -4051,8 +4076,8 @@
       ],
       "tema_fonte": "oficial",
       "ementa": "Requer informações adicionais à Ministra do Planejamento e Orçamento, Sra. Simone Tebet, sobre a utilização de aeronaves do Comando da Aeronáutica para transporte aéreo nos dias em que especifica, tendo em vista o disposto no art. 6º do Decreto nº 10.267, de 5 de março de 2020.",
-      "status": "Aguardando Designação de Relator(a)",
-      "situacao_grupo": "Apresentado, não enviado",
+      "status": "Aguardando Recebimento",
+      "situacao_grupo": "Aguardando resposta",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2383750"
     },
     {
@@ -4068,7 +4093,7 @@
       "numero": 2180,
       "ano": 2023,
       "autor": "Dep. Cobalchini (-)",
-      "comissao": "1SECM",
+      "comissao": "MESA",
       "tema": "Administração Pública",
       "temas": [
         "Administração Pública",
@@ -4094,7 +4119,7 @@
       "numero": 2127,
       "ano": 2023,
       "autor": "Dep. Julio Lopes (-)",
-      "comissao": "1SECM",
+      "comissao": "MESA",
       "tema": "Saúde",
       "temas": [
         "Saúde"
@@ -4118,7 +4143,7 @@
       "numero": 1958,
       "ano": 2023,
       "autor": "Dep. Rosângela Moro (-)",
-      "comissao": "1SECM",
+      "comissao": "MESA",
       "tema": "Finanças Públicas e Orçamento",
       "temas": [
         "Finanças Públicas e Orçamento",
@@ -4143,7 +4168,7 @@
       "numero": 1879,
       "ano": 2023,
       "autor": "Dep. Rodrigo Valadares (-)",
-      "comissao": "1SECM",
+      "comissao": "MESA",
       "tema": "Finanças Públicas e Orçamento",
       "temas": [
         "Finanças Públicas e Orçamento"
@@ -4192,7 +4217,7 @@
       "numero": 1712,
       "ano": 2023,
       "autor": "Dep. Zé Vitor (-)",
-      "comissao": "1SECM",
+      "comissao": "MESA",
       "tema": "Trabalho e Emprego",
       "temas": [
         "Trabalho e Emprego"
@@ -4277,7 +4302,7 @@
       ],
       "tema_fonte": "oficial",
       "ementa": "Requer informações do Ministério do Planejamento e Orçamento a respeito de financiamento agrícola para povos indígenas.",
-      "status": "Em Tramitação",
+      "status": "Aguardando Deliberação",
       "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2351568"
     },
@@ -4285,8 +4310,8 @@
       "data": "14/02/2023",
       "data_iso": "2023-02-14",
       "mes_ano": "Fev/23",
-      "data_ult_mov_br": "—",
-      "data_ult_mov_iso": "",
+      "data_ult_mov_br": "24/05/2023",
+      "data_ult_mov_iso": "2023-05-24",
       "data_prazo_br": "—",
       "data_prazo_iso": "",
       "casa": "Câmara",
@@ -4304,7 +4329,7 @@
       "tema_fonte": "oficial",
       "ementa": "Requer informação ao Ministério do Planejamento e Orçamento a respeito dos valores proporcionais destinados à remuneração de homens e mulheres nos órgãos do Poder Executivo.",
       "status": "Em Tramitação",
-      "situacao_grupo": "Apresentado, não enviado",
+      "situacao_grupo": "Outros",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2348792"
     }
   ]
