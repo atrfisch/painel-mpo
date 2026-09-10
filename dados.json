@@ -1,5 +1,5 @@
 {
-  "ultima_atualizacao": "09/09/2026 13:06",
+  "ultima_atualizacao": "10/09/2026 08:06",
   "fonte_temas": "oficial",
   "resumo": {
     "total_requerimentos": 168,
@@ -153,10 +153,14 @@
       "autor": "Dep. Gustavo Gayer (-)",
       "comissao": "MESA",
       "tema": "Finanças Públicas e Orçamento",
-      "temas": [],
-      "tema_fonte": "reserva",
+      "temas": [
+        "Finanças Públicas e Orçamento",
+        "Saúde",
+        "Educação"
+      ],
+      "tema_fonte": "oficial",
       "ementa": "Solicita informações ao Senhor Ministro do Planejamento e Orçamento, acerca dos impactos orçamentários e fiscais decorrentes da Lei Complementar nº 235, de 27 de agosto de 2026, especialmente sobre os recursos destinados à saúde e à educação, a antecipação de receitas e o espaço fiscal projetado para o exercício de 2027.",
-      "status": "Em Tramitação",
+      "status": "Aguardando Designação de Relator(a)",
       "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2646218"
     },
