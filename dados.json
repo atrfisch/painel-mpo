@@ -1,5 +1,5 @@
 {
-  "ultima_atualizacao": "15/09/2026 09:06",
+  "ultima_atualizacao": "16/09/2026 13:04",
   "fonte_temas": "oficial",
   "resumo": {
     "total_requerimentos": 97,
@@ -80,8 +80,8 @@
     "Estrutura Fundiária": 1
   },
   "comissoes": {
-    "MESA": 14,
-    "1SECM": 83
+    "MESA": 13,
+    "1SECM": 84
   },
   "situacoes": {
     "Apresentado, não enviado": 11,
@@ -1054,30 +1054,6 @@
       "data_prazo_iso": "",
       "casa": "Câmara",
       "sigla": "RIC",
-      "numero": 8211,
-      "ano": 2025,
-      "autor": "Dep. Helio Lopes (-)",
-      "comissao": "1SECM",
-      "tema": "Administração Pública",
-      "temas": [
-        "Administração Pública"
-      ],
-      "tema_fonte": "oficial",
-      "ementa": "Solicita informações à Ministra de Estado do Planejamento e Orçamento sobre a disponibilização de bases de dados abertas e registros de participação social referentes às obras de infraestrutura no Estado do Pará e no Município de Belém, que totalizaram R$ 2,8 bilhões, conforme apontamentos de baixa transparência realizados pela Transparência Internacional – Brasil.",
-      "status": "Aguardando Remessa ao Arquivo",
-      "situacao_grupo": "Arquivado",
-      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2598892"
-    },
-    {
-      "data": "19/12/2025",
-      "data_iso": "2025-12-19",
-      "mes_ano": "Dez/25",
-      "data_ult_mov_br": "19/05/2026",
-      "data_ult_mov_iso": "2026-05-19",
-      "data_prazo_br": "—",
-      "data_prazo_iso": "",
-      "casa": "Câmara",
-      "sigla": "RIC",
       "numero": 8193,
       "ano": 2025,
       "autor": "Dep. Messias Donato (-)",
@@ -1092,6 +1068,30 @@
       "status": "Aguardando Remessa ao Arquivo",
       "situacao_grupo": "Arquivado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2598744"
+    },
+    {
+      "data": "19/12/2025",
+      "data_iso": "2025-12-19",
+      "mes_ano": "Dez/25",
+      "data_ult_mov_br": "19/05/2026",
+      "data_ult_mov_iso": "2026-05-19",
+      "data_prazo_br": "—",
+      "data_prazo_iso": "",
+      "casa": "Câmara",
+      "sigla": "RIC",
+      "numero": 8211,
+      "ano": 2025,
+      "autor": "Dep. Helio Lopes (-)",
+      "comissao": "1SECM",
+      "tema": "Administração Pública",
+      "temas": [
+        "Administração Pública"
+      ],
+      "tema_fonte": "oficial",
+      "ementa": "Solicita informações à Ministra de Estado do Planejamento e Orçamento sobre a disponibilização de bases de dados abertas e registros de participação social referentes às obras de infraestrutura no Estado do Pará e no Município de Belém, que totalizaram R$ 2,8 bilhões, conforme apontamentos de baixa transparência realizados pela Transparência Internacional – Brasil.",
+      "status": "Aguardando Remessa ao Arquivo",
+      "situacao_grupo": "Arquivado",
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2598892"
     },
     {
       "data": "16/12/2025",
@@ -1603,31 +1603,6 @@
       "data": "23/05/2025",
       "data_iso": "2025-05-23",
       "mes_ano": "Mai/25",
-      "data_ult_mov_br": "06/08/2025",
-      "data_ult_mov_iso": "2025-08-06",
-      "data_prazo_br": "—",
-      "data_prazo_iso": "",
-      "casa": "Câmara",
-      "sigla": "RIC",
-      "numero": 3006,
-      "ano": 2025,
-      "autor": "Dep. Luiz Philippe de Orleans e Bragança (-)",
-      "comissao": "1SECM",
-      "tema": "Administração Pública",
-      "temas": [
-        "Administração Pública",
-        "Relações Internacionais e Comércio Exterior"
-      ],
-      "tema_fonte": "oficial",
-      "ementa": "Solicita à Sra. Simone Tebet, Ministra do Planejamento e Orçamento, informações acerca da anunciada cooperação entre o Instituto Brasileiro de Geografia e Estatística (IBGE) e o Escritório Nacional de Estatísticas da China (NBS).",
-      "status": "Aguardando Remessa ao Arquivo",
-      "situacao_grupo": "Arquivado",
-      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2515981"
-    },
-    {
-      "data": "23/05/2025",
-      "data_iso": "2025-05-23",
-      "mes_ano": "Mai/25",
       "data_ult_mov_br": "04/08/2025",
       "data_ult_mov_iso": "2025-08-04",
       "data_prazo_br": "—",
@@ -1648,6 +1623,31 @@
       "status": "Aguardando Remessa ao Arquivo",
       "situacao_grupo": "Arquivado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2515854"
+    },
+    {
+      "data": "23/05/2025",
+      "data_iso": "2025-05-23",
+      "mes_ano": "Mai/25",
+      "data_ult_mov_br": "06/08/2025",
+      "data_ult_mov_iso": "2025-08-06",
+      "data_prazo_br": "—",
+      "data_prazo_iso": "",
+      "casa": "Câmara",
+      "sigla": "RIC",
+      "numero": 3006,
+      "ano": 2025,
+      "autor": "Dep. Luiz Philippe de Orleans e Bragança (-)",
+      "comissao": "1SECM",
+      "tema": "Administração Pública",
+      "temas": [
+        "Administração Pública",
+        "Relações Internacionais e Comércio Exterior"
+      ],
+      "tema_fonte": "oficial",
+      "ementa": "Solicita à Sra. Simone Tebet, Ministra do Planejamento e Orçamento, informações acerca da anunciada cooperação entre o Instituto Brasileiro de Geografia e Estatística (IBGE) e o Escritório Nacional de Estatísticas da China (NBS).",
+      "status": "Aguardando Remessa ao Arquivo",
+      "situacao_grupo": "Arquivado",
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2515981"
     },
     {
       "data": "21/05/2025",
@@ -1759,31 +1759,6 @@
       "data_prazo_iso": "",
       "casa": "Câmara",
       "sigla": "RIC",
-      "numero": 1936,
-      "ano": 2025,
-      "autor": "Dep. Rodrigo Valadares (-)",
-      "comissao": "1SECM",
-      "tema": "Administração Pública",
-      "temas": [
-        "Administração Pública",
-        "Ciências Sociais e Humanas"
-      ],
-      "tema_fonte": "oficial",
-      "ementa": "Requer informações a Ministra de Estado de Planejamento e Orçamento, Sra. Simone Nassar Tebet, informações acerca da confecção de mapas pelo Instituto Brasileiro de Geografia e Estatística – IBGE.",
-      "status": "Aguardando Remessa ao Arquivo",
-      "situacao_grupo": "Arquivado",
-      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2508224"
-    },
-    {
-      "data": "13/05/2025",
-      "data_iso": "2025-05-13",
-      "mes_ano": "Mai/25",
-      "data_ult_mov_br": "17/07/2025",
-      "data_ult_mov_iso": "2025-07-17",
-      "data_prazo_br": "—",
-      "data_prazo_iso": "",
-      "casa": "Câmara",
-      "sigla": "RIC",
       "numero": 1930,
       "ano": 2025,
       "autor": "Dep. Gustavo Gayer (-)",
@@ -1798,6 +1773,31 @@
       "status": "Aguardando Remessa ao Arquivo",
       "situacao_grupo": "Arquivado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2508198"
+    },
+    {
+      "data": "13/05/2025",
+      "data_iso": "2025-05-13",
+      "mes_ano": "Mai/25",
+      "data_ult_mov_br": "17/07/2025",
+      "data_ult_mov_iso": "2025-07-17",
+      "data_prazo_br": "—",
+      "data_prazo_iso": "",
+      "casa": "Câmara",
+      "sigla": "RIC",
+      "numero": 1936,
+      "ano": 2025,
+      "autor": "Dep. Rodrigo Valadares (-)",
+      "comissao": "1SECM",
+      "tema": "Administração Pública",
+      "temas": [
+        "Administração Pública",
+        "Ciências Sociais e Humanas"
+      ],
+      "tema_fonte": "oficial",
+      "ementa": "Requer informações a Ministra de Estado de Planejamento e Orçamento, Sra. Simone Nassar Tebet, informações acerca da confecção de mapas pelo Instituto Brasileiro de Geografia e Estatística – IBGE.",
+      "status": "Aguardando Remessa ao Arquivo",
+      "situacao_grupo": "Arquivado",
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2508224"
     },
     {
       "data": "12/05/2025",
@@ -1928,31 +1928,6 @@
       "data": "11/04/2025",
       "data_iso": "2025-04-11",
       "mes_ano": "Abr/25",
-      "data_ult_mov_br": "06/06/2025",
-      "data_ult_mov_iso": "2025-06-06",
-      "data_prazo_br": "—",
-      "data_prazo_iso": "",
-      "casa": "Câmara",
-      "sigla": "RIC",
-      "numero": 1239,
-      "ano": 2025,
-      "autor": "Dep. Comissão de Fiscalização Financeira e Controle (-)",
-      "comissao": "1SECM",
-      "tema": "Finanças Públicas e Orçamento",
-      "temas": [
-        "Finanças Públicas e Orçamento",
-        "Viação, Transporte e Mobilidade"
-      ],
-      "tema_fonte": "oficial",
-      "ementa": "Requer informações ao Ministério do Planejamento e Orçamento acerca dos aspectos financeiros, contábeis e orçamentários da construção de uma nova rodovia em Belém (PA), destinada à COP30, incluindo detalhamento dos recursos alocados, contratos firmados, fiscalização financeira, análise de custo-benefício e previsão orçamentária para manutenção, visando garantir transparência na aplicação dos recursos públicos.",
-      "status": "Aguardando Remessa ao Arquivo",
-      "situacao_grupo": "Arquivado",
-      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2497271"
-    },
-    {
-      "data": "11/04/2025",
-      "data_iso": "2025-04-11",
-      "mes_ano": "Abr/25",
       "data_ult_mov_br": "11/06/2025",
       "data_ult_mov_iso": "2025-06-11",
       "data_prazo_br": "—",
@@ -1975,29 +1950,29 @@
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2497241"
     },
     {
-      "data": "27/03/2025",
-      "data_iso": "2025-03-27",
-      "mes_ano": "Mar/25",
-      "data_ult_mov_br": "27/05/2025",
-      "data_ult_mov_iso": "2025-05-27",
+      "data": "11/04/2025",
+      "data_iso": "2025-04-11",
+      "mes_ano": "Abr/25",
+      "data_ult_mov_br": "06/06/2025",
+      "data_ult_mov_iso": "2025-06-06",
       "data_prazo_br": "—",
       "data_prazo_iso": "",
       "casa": "Câmara",
       "sigla": "RIC",
-      "numero": 1037,
+      "numero": 1239,
       "ano": 2025,
-      "autor": "Dep. Adriana Ventura (-)",
+      "autor": "Dep. Comissão de Fiscalização Financeira e Controle (-)",
       "comissao": "1SECM",
-      "tema": "Administração Pública",
+      "tema": "Finanças Públicas e Orçamento",
       "temas": [
-        "Administração Pública",
-        "Finanças Públicas e Orçamento"
+        "Finanças Públicas e Orçamento",
+        "Viação, Transporte e Mobilidade"
       ],
       "tema_fonte": "oficial",
-      "ementa": "Requer informações à Ministra do Planejamento e Orçamento, Sra. Simone Nassar Tebet, sobre a análise do Projeto de Lei Complementar nº 22/2025, transformado na Lei Complementar nº 215/2025.",
+      "ementa": "Requer informações ao Ministério do Planejamento e Orçamento acerca dos aspectos financeiros, contábeis e orçamentários da construção de uma nova rodovia em Belém (PA), destinada à COP30, incluindo detalhamento dos recursos alocados, contratos firmados, fiscalização financeira, análise de custo-benefício e previsão orçamentária para manutenção, visando garantir transparência na aplicação dos recursos públicos.",
       "status": "Aguardando Remessa ao Arquivo",
       "situacao_grupo": "Arquivado",
-      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2490493"
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2497271"
     },
     {
       "data": "27/03/2025",
@@ -2023,6 +1998,31 @@
       "status": "Aguardando Remessa ao Arquivo",
       "situacao_grupo": "Arquivado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2490452"
+    },
+    {
+      "data": "27/03/2025",
+      "data_iso": "2025-03-27",
+      "mes_ano": "Mar/25",
+      "data_ult_mov_br": "27/05/2025",
+      "data_ult_mov_iso": "2025-05-27",
+      "data_prazo_br": "—",
+      "data_prazo_iso": "",
+      "casa": "Câmara",
+      "sigla": "RIC",
+      "numero": 1037,
+      "ano": 2025,
+      "autor": "Dep. Adriana Ventura (-)",
+      "comissao": "1SECM",
+      "tema": "Administração Pública",
+      "temas": [
+        "Administração Pública",
+        "Finanças Públicas e Orçamento"
+      ],
+      "tema_fonte": "oficial",
+      "ementa": "Requer informações à Ministra do Planejamento e Orçamento, Sra. Simone Nassar Tebet, sobre a análise do Projeto de Lei Complementar nº 22/2025, transformado na Lei Complementar nº 215/2025.",
+      "status": "Aguardando Remessa ao Arquivo",
+      "situacao_grupo": "Arquivado",
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2490493"
     },
     {
       "data": "24/03/2025",
@@ -2052,6 +2052,31 @@
       "data": "21/03/2025",
       "data_iso": "2025-03-21",
       "mes_ano": "Mar/25",
+      "data_ult_mov_br": "23/05/2025",
+      "data_ult_mov_iso": "2025-05-23",
+      "data_prazo_br": "—",
+      "data_prazo_iso": "",
+      "casa": "Câmara",
+      "sigla": "RIC",
+      "numero": 965,
+      "ano": 2025,
+      "autor": "Dep. Laura Carneiro (-)",
+      "comissao": "1SECM",
+      "tema": "Finanças Públicas e Orçamento",
+      "temas": [
+        "Finanças Públicas e Orçamento",
+        "Saúde"
+      ],
+      "tema_fonte": "oficial",
+      "ementa": "Requeiro a V. Exª, com base no art. 50 da Constituição Federal, e na forma dos arts. 115 e 116 do Regimento Interno que, ouvida a Mesa, sejam solicitadas informações ao Ministro de Estado do Planejamento e Orçamento sobre a estimativa de impacto orçamentário e financeiro decorrente da aprovação do Projeto de Lei nº 2.543, de 2024, de autoria do Deputado Rafael Brito, que Institui a Política Nacional de Promoção ao Bem-Estar Coletivo e dá outras providências.",
+      "status": "Aguardando Remessa ao Arquivo",
+      "situacao_grupo": "Arquivado",
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2488502"
+    },
+    {
+      "data": "21/03/2025",
+      "data_iso": "2025-03-21",
+      "mes_ano": "Mar/25",
       "data_ult_mov_br": "12/05/2025",
       "data_ult_mov_iso": "2025-05-12",
       "data_prazo_br": "—",
@@ -2076,53 +2101,28 @@
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2488507"
     },
     {
-      "data": "21/03/2025",
-      "data_iso": "2025-03-21",
-      "mes_ano": "Mar/25",
-      "data_ult_mov_br": "23/05/2025",
-      "data_ult_mov_iso": "2025-05-23",
-      "data_prazo_br": "—",
-      "data_prazo_iso": "",
-      "casa": "Câmara",
-      "sigla": "RIC",
-      "numero": 965,
-      "ano": 2025,
-      "autor": "Dep. Laura Carneiro (-)",
-      "comissao": "1SECM",
-      "tema": "Finanças Públicas e Orçamento",
-      "temas": [
-        "Finanças Públicas e Orçamento",
-        "Saúde"
-      ],
-      "tema_fonte": "oficial",
-      "ementa": "Requeiro a V. Exª, com base no art. 50 da Constituição Federal, e na forma dos arts. 115 e 116 do Regimento Interno que, ouvida a Mesa, sejam solicitadas informações ao Ministro de Estado do Planejamento e Orçamento sobre a estimativa de impacto orçamentário e financeiro decorrente da aprovação do Projeto de Lei nº 2.543, de 2024, de autoria do Deputado Rafael Brito, que Institui a Política Nacional de Promoção ao Bem-Estar Coletivo e dá outras providências.",
-      "status": "Aguardando Remessa ao Arquivo",
-      "situacao_grupo": "Arquivado",
-      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2488502"
-    },
-    {
       "data": "19/03/2025",
       "data_iso": "2025-03-19",
       "mes_ano": "Mar/25",
-      "data_ult_mov_br": "15/05/2025",
-      "data_ult_mov_iso": "2025-05-15",
+      "data_ult_mov_br": "16/05/2025",
+      "data_ult_mov_iso": "2025-05-16",
       "data_prazo_br": "—",
       "data_prazo_iso": "",
       "casa": "Câmara",
       "sigla": "RIC",
-      "numero": 950,
+      "numero": 877,
       "ano": 2025,
-      "autor": "Dep. Clarissa Tércio (-)",
+      "autor": "Dep. Cabo Gilberto Silva (-)",
       "comissao": "1SECM",
-      "tema": "Finanças Públicas e Orçamento",
+      "tema": "Administração Pública",
       "temas": [
-        "Finanças Públicas e Orçamento"
+        "Administração Pública"
       ],
       "tema_fonte": "oficial",
-      "ementa": "Requer informações ao Ministério do Planejamento e Orçamento, sobre o ajuste na proposta orçamentária de 2025, que inclui um corte de R$ 7,7 bilhões no programa Bolsa Família.",
+      "ementa": "Requerimento de Informação à Ministra do Planejamento e Orçamento, Sra. Simone Tebet, sobre a destinação de R$ 750 milhões do Orçamento da União ao Movimento dos Trabalhadores Rurais Sem Terra (MST).",
       "status": "Aguardando Remessa ao Arquivo",
       "situacao_grupo": "Arquivado",
-      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2487973"
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2487602"
     },
     {
       "data": "19/03/2025",
@@ -2152,25 +2152,25 @@
       "data": "19/03/2025",
       "data_iso": "2025-03-19",
       "mes_ano": "Mar/25",
-      "data_ult_mov_br": "16/05/2025",
-      "data_ult_mov_iso": "2025-05-16",
+      "data_ult_mov_br": "15/05/2025",
+      "data_ult_mov_iso": "2025-05-15",
       "data_prazo_br": "—",
       "data_prazo_iso": "",
       "casa": "Câmara",
       "sigla": "RIC",
-      "numero": 877,
+      "numero": 950,
       "ano": 2025,
-      "autor": "Dep. Cabo Gilberto Silva (-)",
+      "autor": "Dep. Clarissa Tércio (-)",
       "comissao": "1SECM",
-      "tema": "Administração Pública",
+      "tema": "Finanças Públicas e Orçamento",
       "temas": [
-        "Administração Pública"
+        "Finanças Públicas e Orçamento"
       ],
       "tema_fonte": "oficial",
-      "ementa": "Requerimento de Informação à Ministra do Planejamento e Orçamento, Sra. Simone Tebet, sobre a destinação de R$ 750 milhões do Orçamento da União ao Movimento dos Trabalhadores Rurais Sem Terra (MST).",
+      "ementa": "Requer informações ao Ministério do Planejamento e Orçamento, sobre o ajuste na proposta orçamentária de 2025, que inclui um corte de R$ 7,7 bilhões no programa Bolsa Família.",
       "status": "Aguardando Remessa ao Arquivo",
       "situacao_grupo": "Arquivado",
-      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2487602"
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2487973"
     },
     {
       "data": "14/03/2025",
@@ -2376,6 +2376,30 @@
       "data": "11/02/2025",
       "data_iso": "2025-02-11",
       "mes_ano": "Fev/25",
+      "data_ult_mov_br": "15/04/2025",
+      "data_ult_mov_iso": "2025-04-15",
+      "data_prazo_br": "—",
+      "data_prazo_iso": "",
+      "casa": "Câmara",
+      "sigla": "RIC",
+      "numero": 334,
+      "ano": 2025,
+      "autor": "Dep. Filipe Barros (-)",
+      "comissao": "1SECM",
+      "tema": "Administração Pública",
+      "temas": [
+        "Administração Pública"
+      ],
+      "tema_fonte": "oficial",
+      "ementa": "Solicita o envio de expediente ao Ministro de Estado de Planejamento e orçamento.",
+      "status": "Aguardando Remessa ao Arquivo",
+      "situacao_grupo": "Arquivado",
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2483503"
+    },
+    {
+      "data": "11/02/2025",
+      "data_iso": "2025-02-11",
+      "mes_ano": "Fev/25",
       "data_ult_mov_br": "24/04/2025",
       "data_ult_mov_iso": "2025-04-24",
       "data_prazo_br": "—",
@@ -2397,30 +2421,6 @@
       "status": "Aguardando Remessa ao Arquivo",
       "situacao_grupo": "Arquivado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2483594"
-    },
-    {
-      "data": "11/02/2025",
-      "data_iso": "2025-02-11",
-      "mes_ano": "Fev/25",
-      "data_ult_mov_br": "15/04/2025",
-      "data_ult_mov_iso": "2025-04-15",
-      "data_prazo_br": "—",
-      "data_prazo_iso": "",
-      "casa": "Câmara",
-      "sigla": "RIC",
-      "numero": 334,
-      "ano": 2025,
-      "autor": "Dep. Filipe Barros (-)",
-      "comissao": "1SECM",
-      "tema": "Administração Pública",
-      "temas": [
-        "Administração Pública"
-      ],
-      "tema_fonte": "oficial",
-      "ementa": "Solicita o envio de expediente ao Ministro de Estado de Planejamento e orçamento.",
-      "status": "Aguardando Remessa ao Arquivo",
-      "situacao_grupo": "Arquivado",
-      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2483503"
     },
     {
       "data": "05/02/2025",
@@ -2450,6 +2450,31 @@
       "data": "03/02/2025",
       "data_iso": "2025-02-03",
       "mes_ano": "Fev/25",
+      "data_ult_mov_br": "08/04/2025",
+      "data_ult_mov_iso": "2025-04-08",
+      "data_prazo_br": "—",
+      "data_prazo_iso": "",
+      "casa": "Câmara",
+      "sigla": "RIC",
+      "numero": 73,
+      "ano": 2025,
+      "autor": "Dep. Gustavo Gayer (-)",
+      "comissao": "1SECM",
+      "tema": "Economia",
+      "temas": [
+        "Economia",
+        "Finanças Públicas e Orçamento"
+      ],
+      "tema_fonte": "oficial",
+      "ementa": "Solicita informações a Sr.ª Ministra do Planejamento e Orçamento, a respeito da notícia que o orçamento Publicitário do Banco Nacional de Desenvolvimento Econômico e Social (BNDES) sextuplicou, gerando discussões sobre a destinação dos recursos.",
+      "status": "Aguardando Remessa ao Arquivo",
+      "situacao_grupo": "Arquivado",
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2482337"
+    },
+    {
+      "data": "03/02/2025",
+      "data_iso": "2025-02-03",
+      "mes_ano": "Fev/25",
       "data_ult_mov_br": "24/04/2025",
       "data_ult_mov_iso": "2025-04-24",
       "data_prazo_br": "—",
@@ -2469,31 +2494,6 @@
       "status": "Aguardando Remessa ao Arquivo",
       "situacao_grupo": "Arquivado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2482345"
-    },
-    {
-      "data": "03/02/2025",
-      "data_iso": "2025-02-03",
-      "mes_ano": "Fev/25",
-      "data_ult_mov_br": "08/04/2025",
-      "data_ult_mov_iso": "2025-04-08",
-      "data_prazo_br": "—",
-      "data_prazo_iso": "",
-      "casa": "Câmara",
-      "sigla": "RIC",
-      "numero": 73,
-      "ano": 2025,
-      "autor": "Dep. Gustavo Gayer (-)",
-      "comissao": "MESA",
-      "tema": "Economia",
-      "temas": [
-        "Economia",
-        "Finanças Públicas e Orçamento"
-      ],
-      "tema_fonte": "oficial",
-      "ementa": "Solicita informações a Sr.ª Ministra do Planejamento e Orçamento, a respeito da notícia que o orçamento Publicitário do Banco Nacional de Desenvolvimento Econômico e Social (BNDES) sextuplicou, gerando discussões sobre a destinação dos recursos.",
-      "status": "Aguardando Remessa ao Arquivo",
-      "situacao_grupo": "Arquivado",
-      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2482337"
     },
     {
       "data": "02/02/2025",
