@@ -1,17 +1,17 @@
 {
-  "ultima_atualizacao": "18/09/2026 08:04",
+  "ultima_atualizacao": "19/09/2026 07:54",
   "fonte_temas": "oficial",
   "resumo": {
-    "total_requerimentos": 169,
+    "total_requerimentos": 170,
     "total_autores": 58,
     "total_temas": 12,
     "total_comissoes": 2,
-    "total_ativos": 23,
+    "total_ativos": 24,
     "total_respondidos": 0,
     "total_aguardando": 0
   },
   "timeline": {
-    "Set/26": 2,
+    "Set/26": 3,
     "Ago/26": 4,
     "Jul/26": 4,
     "Jun/26": 5,
@@ -53,8 +53,8 @@
     "Fev/23": 1
   },
   "autores": {
+    "Dep. Gustavo Gayer (-)": 24,
     "Dep. Messias Donato (-)": 6,
-    "Dep. Gustavo Gayer (-)": 23,
     "Dep. José Medeiros (-)": 1,
     "Dep. Nikolas Ferreira (-)": 12,
     "Dep. Duda Salabert (-)": 1,
@@ -113,7 +113,7 @@
     "Dep. Aureo Ribeiro (-)": 1
   },
   "temas": {
-    "Finanças Públicas e Orçamento": 27,
+    "Finanças Públicas e Orçamento": 28,
     "Cidades e Desenvolvimento Urbano": 4,
     "Agricultura, Pecuária, Pesca e Extrativismo": 6,
     "Administração Pública": 105,
@@ -127,15 +127,37 @@
     "Trabalho e Emprego": 1
   },
   "comissoes": {
-    "MESA": 23,
+    "MESA": 24,
     "1SECM": 146
   },
   "situacoes": {
-    "Apresentado, não enviado": 19,
+    "Apresentado, não enviado": 20,
     "Outros": 4,
     "Arquivado": 146
   },
   "lista_requerimentos": [
+    {
+      "data": "18/09/2026",
+      "data_iso": "2026-09-18",
+      "mes_ano": "Set/26",
+      "data_ult_mov_br": "—",
+      "data_ult_mov_iso": "",
+      "data_prazo_br": "—",
+      "data_prazo_iso": "",
+      "casa": "Câmara",
+      "sigla": "RIC",
+      "numero": 2647,
+      "ano": 2026,
+      "autor": "Dep. Gustavo Gayer (-)",
+      "comissao": "MESA",
+      "tema": "Finanças Públicas e Orçamento",
+      "temas": [],
+      "tema_fonte": "reserva",
+      "ementa": "Solicita informações ao Senhor Ministro do Planejamento e Orçamento, acerca da revisão metodológica do Produto Interno Bruto – PIB, e da implantação da nova série do Sistema de Contas Nacionais, com ano de referência 2021, especialmente quanto à eventual inclusão ou ampliação da mensuração de apostas, atividades ilícitas, corrupção, contrabando e outras atividades econômicas.",
+      "status": "Em Tramitação",
+      "situacao_grupo": "Apresentado, não enviado",
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2646670"
+    },
     {
       "data": "16/09/2026",
       "data_iso": "2026-09-16",
