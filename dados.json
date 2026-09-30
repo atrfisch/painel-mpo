@@ -1,5 +1,5 @@
 {
-  "ultima_atualizacao": "29/09/2026 09:34",
+  "ultima_atualizacao": "30/09/2026 09:26",
   "fonte_temas": "oficial",
   "resumo": {
     "total_requerimentos": 170,
@@ -173,8 +173,12 @@
       "autor": "Dep. Messias Donato (-)",
       "comissao": "MESA",
       "tema": "Finanças Públicas e Orçamento",
-      "temas": [],
-      "tema_fonte": "reserva",
+      "temas": [
+        "Finanças Públicas e Orçamento",
+        "Administração Pública",
+        "Economia"
+      ],
+      "tema_fonte": "oficial",
       "ementa": "Requer informações ao Senhor Ministro de Estado do Planejamento e Orçamento sobre a revisão metodológica do Sistema de Contas Nacionais pelo IBGE, a mensuração de estimativas de atividades econômicas ilícitas e seus impactos na apuração do Produto Interno Bruto (PIB) e nas metas de responsabilidade fiscal.",
       "status": "Em Tramitação",
       "situacao_grupo": "Apresentado, não enviado",
