@@ -1,16 +1,17 @@
 {
-  "ultima_atualizacao": "20/10/2026 08:17",
+  "ultima_atualizacao": "21/10/2026 08:25",
   "fonte_temas": "oficial",
   "resumo": {
-    "total_requerimentos": 170,
-    "total_autores": 58,
+    "total_requerimentos": 171,
+    "total_autores": 59,
     "total_temas": 12,
     "total_comissoes": 2,
-    "total_ativos": 24,
+    "total_ativos": 25,
     "total_respondidos": 0,
     "total_aguardando": 0
   },
   "timeline": {
+    "Out/26": 1,
     "Set/26": 3,
     "Ago/26": 4,
     "Jul/26": 4,
@@ -53,6 +54,7 @@
     "Fev/23": 1
   },
   "autores": {
+    "Dep. Coronel Fernanda (-)": 1,
     "Dep. Gustavo Gayer (-)": 24,
     "Dep. Messias Donato (-)": 6,
     "Dep. José Medeiros (-)": 1,
@@ -113,7 +115,7 @@
     "Dep. Aureo Ribeiro (-)": 1
   },
   "temas": {
-    "Finanças Públicas e Orçamento": 28,
+    "Finanças Públicas e Orçamento": 29,
     "Cidades e Desenvolvimento Urbano": 4,
     "Agricultura, Pecuária, Pesca e Extrativismo": 6,
     "Administração Pública": 105,
@@ -127,15 +129,41 @@
     "Trabalho e Emprego": 1
   },
   "comissoes": {
-    "MESA": 24,
+    "MESA": 25,
     "1SECM": 146
   },
   "situacoes": {
-    "Apresentado, não enviado": 20,
+    "Apresentado, não enviado": 21,
     "Outros": 4,
     "Arquivado": 146
   },
   "lista_requerimentos": [
+    {
+      "data": "20/10/2026",
+      "data_iso": "2026-10-20",
+      "mes_ano": "Out/26",
+      "data_ult_mov_br": "—",
+      "data_ult_mov_iso": "",
+      "data_prazo_br": "—",
+      "data_prazo_iso": "",
+      "casa": "Câmara",
+      "sigla": "RIC",
+      "numero": 2783,
+      "ano": 2026,
+      "autor": "Dep. Coronel Fernanda (-)",
+      "comissao": "MESA",
+      "tema": "Finanças Públicas e Orçamento",
+      "temas": [
+        "Finanças Públicas e Orçamento",
+        "Energia, Recursos Hídricos e Minerais",
+        "Economia"
+      ],
+      "tema_fonte": "oficial",
+      "ementa": "Requer informações ao Senhor Bruno Moretti, Ministro de Estado do Planejamento e Orçamento, acerca dos aspectos orçamentários e financeiros da subvenção econômica ao óleo diesel autorizada pela Medida Provisória nº 1.391, de 11 de setembro de 2026, em especial do valor adicional concedido exclusivamente aos importadores pela Portaria MF nº 3.082, de 13 de outubro de 2026.",
+      "status": "Aguardando Designação de Relator(a)",
+      "situacao_grupo": "Apresentado, não enviado",
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2648523"
+    },
     {
       "data": "18/09/2026",
       "data_iso": "2026-09-18",
