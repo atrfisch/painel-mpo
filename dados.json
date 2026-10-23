@@ -1,11 +1,11 @@
 {
-  "ultima_atualizacao": "22/10/2026 08:24",
+  "ultima_atualizacao": "23/10/2026 08:21",
   "fonte_temas": "oficial",
   "resumo": {
     "total_requerimentos": 171,
     "total_autores": 59,
     "total_temas": 12,
-    "total_comissoes": 3,
+    "total_comissoes": 2,
     "total_ativos": 25,
     "total_respondidos": 0,
     "total_aguardando": 0
@@ -129,8 +129,7 @@
     "Trabalho e Emprego": 1
   },
   "comissoes": {
-    "1VIPR": 1,
-    "MESA": 24,
+    "MESA": 25,
     "1SECM": 146
   },
   "situacoes": {
@@ -152,7 +151,7 @@
       "numero": 2783,
       "ano": 2026,
       "autor": "Dep. Coronel Fernanda (-)",
-      "comissao": "1VIPR",
+      "comissao": "MESA",
       "tema": "Finanças Públicas e Orçamento",
       "temas": [
         "Finanças Públicas e Orçamento",
@@ -161,7 +160,7 @@
       ],
       "tema_fonte": "oficial",
       "ementa": "Requer informações ao Senhor Bruno Moretti, Ministro de Estado do Planejamento e Orçamento, acerca dos aspectos orçamentários e financeiros da subvenção econômica ao óleo diesel autorizada pela Medida Provisória nº 1.391, de 11 de setembro de 2026, em especial do valor adicional concedido exclusivamente aos importadores pela Portaria MF nº 3.082, de 13 de outubro de 2026.",
-      "status": "Aguardando Elaboração do Parecer pelo(a) Relator(a)",
+      "status": "Em Tramitação",
       "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2648523"
     },
