@@ -1,17 +1,17 @@
 {
-  "ultima_atualizacao": "26/10/2026 08:38",
+  "ultima_atualizacao": "27/10/2026 08:44",
   "fonte_temas": "oficial",
   "resumo": {
-    "total_requerimentos": 171,
+    "total_requerimentos": 172,
     "total_autores": 59,
-    "total_temas": 12,
+    "total_temas": 13,
     "total_comissoes": 2,
-    "total_ativos": 25,
+    "total_ativos": 26,
     "total_respondidos": 0,
     "total_aguardando": 0
   },
   "timeline": {
-    "Out/26": 1,
+    "Out/26": 2,
     "Set/26": 3,
     "Ago/26": 4,
     "Jul/26": 4,
@@ -54,11 +54,11 @@
     "Fev/23": 1
   },
   "autores": {
+    "Dep. Nikolas Ferreira (-)": 13,
     "Dep. Coronel Fernanda (-)": 1,
     "Dep. Gustavo Gayer (-)": 24,
     "Dep. Messias Donato (-)": 6,
     "Dep. José Medeiros (-)": 1,
-    "Dep. Nikolas Ferreira (-)": 12,
     "Dep. Duda Salabert (-)": 1,
     "Dep. Adriana Ventura (-)": 14,
     "Dep. Chris Tonietto (-)": 4,
@@ -115,6 +115,7 @@
     "Dep. Aureo Ribeiro (-)": 1
   },
   "temas": {
+    "Viação, Transporte e Mobilidade": 1,
     "Finanças Públicas e Orçamento": 29,
     "Cidades e Desenvolvimento Urbano": 4,
     "Agricultura, Pecuária, Pesca e Extrativismo": 6,
@@ -129,15 +130,41 @@
     "Trabalho e Emprego": 1
   },
   "comissoes": {
-    "MESA": 25,
+    "MESA": 26,
     "1SECM": 146
   },
   "situacoes": {
-    "Apresentado, não enviado": 21,
+    "Apresentado, não enviado": 22,
     "Outros": 4,
     "Arquivado": 146
   },
   "lista_requerimentos": [
+    {
+      "data": "26/10/2026",
+      "data_iso": "2026-10-26",
+      "mes_ano": "Out/26",
+      "data_ult_mov_br": "—",
+      "data_ult_mov_iso": "",
+      "data_prazo_br": "—",
+      "data_prazo_iso": "",
+      "casa": "Câmara",
+      "sigla": "RIC",
+      "numero": 2804,
+      "ano": 2026,
+      "autor": "Dep. Nikolas Ferreira (-)",
+      "comissao": "MESA",
+      "tema": "Viação, Transporte e Mobilidade",
+      "temas": [
+        "Viação, Transporte e Mobilidade",
+        "Finanças Públicas e Orçamento",
+        "Administração Pública"
+      ],
+      "tema_fonte": "oficial",
+      "ementa": "Requer informações ao Ministério do Planejamento e Orçamento acerca dos estudos técnicos, impactos orçamentários e critérios de financiamento da proposta de emenda à Constituição destinada à implementação da tarifa zero no transporte público coletivo.",
+      "status": "Em Tramitação",
+      "situacao_grupo": "Apresentado, não enviado",
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2648830"
+    },
     {
       "data": "20/10/2026",
       "data_iso": "2026-10-20",
@@ -160,7 +187,7 @@
       ],
       "tema_fonte": "oficial",
       "ementa": "Requer informações ao Senhor Bruno Moretti, Ministro de Estado do Planejamento e Orçamento, acerca dos aspectos orçamentários e financeiros da subvenção econômica ao óleo diesel autorizada pela Medida Provisória nº 1.391, de 11 de setembro de 2026, em especial do valor adicional concedido exclusivamente aos importadores pela Portaria MF nº 3.082, de 13 de outubro de 2026.",
-      "status": "Em Tramitação",
+      "status": "Aguardando Despacho do Presidente da Câmara dos Deputados",
       "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2648523"
     },
@@ -338,7 +365,7 @@
       ],
       "tema_fonte": "oficial",
       "ementa": "Solicita ao Ministro de Estado do Planejamento e Orçamento informações sobre as medidas anunciadas pelo Poder Executivo relativas à ampliação do programa Minha Casa Minha Vida e à reformulação do programa Reforma Casa Brasil, especialmente no que diz respeito à sua compatibilidade com o ordenamento orçamentário e fiscal vigente.",
-      "status": "Aguardando Despacho do Presidente da Câmara dos Deputados",
+      "status": "Em Tramitação",
       "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2641889"
     },
