@@ -1,11 +1,11 @@
 {
-  "ultima_atualizacao": "28/10/2026 09:25",
+  "ultima_atualizacao": "29/10/2026 09:31",
   "fonte_temas": "oficial",
   "resumo": {
     "total_requerimentos": 172,
     "total_autores": 59,
     "total_temas": 13,
-    "total_comissoes": 2,
+    "total_comissoes": 3,
     "total_ativos": 26,
     "total_respondidos": 0,
     "total_aguardando": 0
@@ -130,8 +130,9 @@
     "Trabalho e Emprego": 1
   },
   "comissoes": {
-    "MESA": 26,
-    "1SECM": 146
+    "1VIPR": 1,
+    "MESA": 18,
+    "1SECM": 153
   },
   "situacoes": {
     "Apresentado, não enviado": 22,
@@ -152,7 +153,7 @@
       "numero": 2804,
       "ano": 2026,
       "autor": "Dep. Nikolas Ferreira (-)",
-      "comissao": "MESA",
+      "comissao": "1VIPR",
       "tema": "Viação, Transporte e Mobilidade",
       "temas": [
         "Viação, Transporte e Mobilidade",
@@ -161,7 +162,7 @@
       ],
       "tema_fonte": "oficial",
       "ementa": "Requer informações ao Ministério do Planejamento e Orçamento acerca dos estudos técnicos, impactos orçamentários e critérios de financiamento da proposta de emenda à Constituição destinada à implementação da tarifa zero no transporte público coletivo.",
-      "status": "Aguardando Designação de Relator(a)",
+      "status": "Aguardando Elaboração do Parecer pelo(a) Relator(a)",
       "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2648830"
     },
@@ -204,7 +205,7 @@
       "numero": 2647,
       "ano": 2026,
       "autor": "Dep. Gustavo Gayer (-)",
-      "comissao": "MESA",
+      "comissao": "1SECM",
       "tema": "Finanças Públicas e Orçamento",
       "temas": [
         "Finanças Públicas e Orçamento",
@@ -213,7 +214,7 @@
       ],
       "tema_fonte": "oficial",
       "ementa": "Solicita informações ao Senhor Ministro do Planejamento e Orçamento, acerca da revisão metodológica do Produto Interno Bruto – PIB, e da implantação da nova série do Sistema de Contas Nacionais, com ano de referência 2021, especialmente quanto à eventual inclusão ou ampliação da mensuração de apostas, atividades ilícitas, corrupção, contrabando e outras atividades econômicas.",
-      "status": "Em Tramitação",
+      "status": "Aguardando Envio ao Executivo",
       "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2646670"
     },
@@ -230,7 +231,7 @@
       "numero": 2628,
       "ano": 2026,
       "autor": "Dep. Messias Donato (-)",
-      "comissao": "MESA",
+      "comissao": "1SECM",
       "tema": "Finanças Públicas e Orçamento",
       "temas": [
         "Finanças Públicas e Orçamento",
@@ -239,7 +240,7 @@
       ],
       "tema_fonte": "oficial",
       "ementa": "Requer informações ao Senhor Ministro de Estado do Planejamento e Orçamento sobre a revisão metodológica do Sistema de Contas Nacionais pelo IBGE, a mensuração de estimativas de atividades econômicas ilícitas e seus impactos na apuração do Produto Interno Bruto (PIB) e nas metas de responsabilidade fiscal.",
-      "status": "Em Tramitação",
+      "status": "Aguardando Envio ao Executivo",
       "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2646508"
     },
@@ -256,7 +257,7 @@
       "numero": 2570,
       "ano": 2026,
       "autor": "Dep. Gustavo Gayer (-)",
-      "comissao": "MESA",
+      "comissao": "1SECM",
       "tema": "Finanças Públicas e Orçamento",
       "temas": [
         "Finanças Públicas e Orçamento",
@@ -265,7 +266,7 @@
       ],
       "tema_fonte": "oficial",
       "ementa": "Solicita informações ao Senhor Ministro do Planejamento e Orçamento, acerca dos impactos orçamentários e fiscais decorrentes da Lei Complementar nº 235, de 27 de agosto de 2026, especialmente sobre os recursos destinados à saúde e à educação, a antecipação de receitas e o espaço fiscal projetado para o exercício de 2027.",
-      "status": "Em Tramitação",
+      "status": "Aguardando Envio ao Executivo",
       "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2646218"
     },
@@ -282,7 +283,7 @@
       "numero": 2411,
       "ano": 2026,
       "autor": "Dep. Gustavo Gayer (-)",
-      "comissao": "MESA",
+      "comissao": "1SECM",
       "tema": "Finanças Públicas e Orçamento",
       "temas": [
         "Finanças Públicas e Orçamento",
@@ -290,7 +291,7 @@
       ],
       "tema_fonte": "oficial",
       "ementa": "Solicita informações ao Senhor Ministro do Planejamento e Orçamento, acerca da programação financeira da União para 2026, da insuficiência de limite para o pagamento de despesas não obrigatórias e da evolução dos restos a pagar.",
-      "status": "Em Tramitação",
+      "status": "Aguardando Envio ao Executivo",
       "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2643692"
     },
@@ -307,14 +308,14 @@
       "numero": 2380,
       "ano": 2026,
       "autor": "Dep. José Medeiros (-)",
-      "comissao": "MESA",
+      "comissao": "1SECM",
       "tema": "Finanças Públicas e Orçamento",
       "temas": [
         "Finanças Públicas e Orçamento"
       ],
       "tema_fonte": "oficial",
       "ementa": "Requer informações à Ministra de Estado do Planejamento e Orçamento acerca da distribuição dos limites de pagamento entre os órgãos do Poder Executivo Federal, da reprogramação financeira decorrente da restrição de aproximadamente R$ 105,5 bilhões identificada pela Consultoria de Orçamentos do Senado Federal e dos impactos específicos sobre as ações orçamentárias dos Ministérios da Saúde e da Educação.",
-      "status": "Em Tramitação",
+      "status": "Aguardando Envio ao Executivo",
       "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2643029"
     },
@@ -331,7 +332,7 @@
       "numero": 2387,
       "ano": 2026,
       "autor": "Dep. Messias Donato (-)",
-      "comissao": "MESA",
+      "comissao": "1SECM",
       "tema": "Finanças Públicas e Orçamento",
       "temas": [
         "Finanças Públicas e Orçamento",
@@ -339,7 +340,7 @@
       ],
       "tema_fonte": "oficial",
       "ementa": "Requer informações ao Ministério do Planejamento e Orçamento sobre a sustentabilidade da política fiscal e a trajetória da dívida pública, em face das projeções da Lei Orçamentária Anual para 2026.",
-      "status": "Em Tramitação",
+      "status": "Aguardando Envio ao Executivo",
       "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2643261"
     },
@@ -356,7 +357,7 @@
       "numero": 2300,
       "ano": 2026,
       "autor": "Dep. Nikolas Ferreira (-)",
-      "comissao": "MESA",
+      "comissao": "1SECM",
       "tema": "Finanças Públicas e Orçamento",
       "temas": [
         "Finanças Públicas e Orçamento",
@@ -365,7 +366,7 @@
       ],
       "tema_fonte": "oficial",
       "ementa": "Solicita ao Ministro de Estado do Planejamento e Orçamento informações sobre as medidas anunciadas pelo Poder Executivo relativas à ampliação do programa Minha Casa Minha Vida e à reformulação do programa Reforma Casa Brasil, especialmente no que diz respeito à sua compatibilidade com o ordenamento orçamentário e fiscal vigente.",
-      "status": "Em Tramitação",
+      "status": "Aguardando Envio ao Executivo",
       "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2641889"
     },
