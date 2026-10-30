@@ -1,17 +1,17 @@
 {
-  "ultima_atualizacao": "29/10/2026 09:31",
+  "ultima_atualizacao": "30/10/2026 09:45",
   "fonte_temas": "oficial",
   "resumo": {
-    "total_requerimentos": 172,
+    "total_requerimentos": 173,
     "total_autores": 59,
     "total_temas": 13,
-    "total_comissoes": 3,
-    "total_ativos": 26,
+    "total_comissoes": 2,
+    "total_ativos": 27,
     "total_respondidos": 0,
     "total_aguardando": 0
   },
   "timeline": {
-    "Out/26": 2,
+    "Out/26": 3,
     "Set/26": 3,
     "Ago/26": 4,
     "Jul/26": 4,
@@ -54,6 +54,7 @@
     "Fev/23": 1
   },
   "autores": {
+    "Dep. Capitão Alden (-)": 2,
     "Dep. Nikolas Ferreira (-)": 13,
     "Dep. Coronel Fernanda (-)": 1,
     "Dep. Gustavo Gayer (-)": 24,
@@ -90,7 +91,6 @@
     "Dep. Carlos Jordy (-)": 3,
     "Dep. Clarissa Tércio (-)": 1,
     "Dep. Filipe Barros (-)": 2,
-    "Dep. Capitão Alden (-)": 1,
     "Dep. André Figueiredo (-)": 1,
     "Dep. Sâmia Bomfim (-)": 1,
     "Dep. Chico Alencar (-)": 1,
@@ -115,8 +115,8 @@
     "Dep. Aureo Ribeiro (-)": 1
   },
   "temas": {
+    "Finanças Públicas e Orçamento": 30,
     "Viação, Transporte e Mobilidade": 1,
-    "Finanças Públicas e Orçamento": 29,
     "Cidades e Desenvolvimento Urbano": 4,
     "Agricultura, Pecuária, Pesca e Extrativismo": 6,
     "Administração Pública": 105,
@@ -130,16 +130,40 @@
     "Trabalho e Emprego": 1
   },
   "comissoes": {
-    "1VIPR": 1,
-    "MESA": 18,
+    "MESA": 20,
     "1SECM": 153
   },
   "situacoes": {
-    "Apresentado, não enviado": 22,
+    "Apresentado, não enviado": 23,
     "Outros": 4,
     "Arquivado": 146
   },
   "lista_requerimentos": [
+    {
+      "data": "29/10/2026",
+      "data_iso": "2026-10-29",
+      "mes_ano": "Out/26",
+      "data_ult_mov_br": "—",
+      "data_ult_mov_iso": "",
+      "data_prazo_br": "—",
+      "data_prazo_iso": "",
+      "casa": "Câmara",
+      "sigla": "RIC",
+      "numero": 2849,
+      "ano": 2026,
+      "autor": "Dep. Capitão Alden (-)",
+      "comissao": "MESA",
+      "tema": "Finanças Públicas e Orçamento",
+      "temas": [
+        "Finanças Públicas e Orçamento",
+        "Administração Pública"
+      ],
+      "tema_fonte": "oficial",
+      "ementa": "Requer informações ao Ministro de Estado do Planejamento e Orçamento acerca dos fundamentos técnicos, econômicos, fiscais e administrativos da Portaria GM/MPO nº 485, de 27 de outubro de 2026, especialmente quanto ao cancelamento de dotações orçamentárias no valor de R$ 5.166.437.497,00.",
+      "status": "Em Tramitação",
+      "situacao_grupo": "Apresentado, não enviado",
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2649536"
+    },
     {
       "data": "26/10/2026",
       "data_iso": "2026-10-26",
@@ -153,7 +177,7 @@
       "numero": 2804,
       "ano": 2026,
       "autor": "Dep. Nikolas Ferreira (-)",
-      "comissao": "1VIPR",
+      "comissao": "MESA",
       "tema": "Viação, Transporte e Mobilidade",
       "temas": [
         "Viação, Transporte e Mobilidade",
@@ -162,7 +186,7 @@
       ],
       "tema_fonte": "oficial",
       "ementa": "Requer informações ao Ministério do Planejamento e Orçamento acerca dos estudos técnicos, impactos orçamentários e critérios de financiamento da proposta de emenda à Constituição destinada à implementação da tarifa zero no transporte público coletivo.",
-      "status": "Aguardando Elaboração do Parecer pelo(a) Relator(a)",
+      "status": "Em Tramitação",
       "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2648830"
     },
@@ -418,7 +442,7 @@
       ],
       "tema_fonte": "oficial",
       "ementa": "Requer informações do Sr. Bruno Moretti, Ministro de Estado do Planejamento e Orçamento, sobre as condições de regulação e fiscalização pela União da exportação marítima comercial de bovinos vivos para abate no exterior.",
-      "status": "Aguardando Despacho do Presidente da Câmara dos Deputados",
+      "status": "Em Tramitação",
       "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2637622"
     },
@@ -443,7 +467,7 @@
       ],
       "tema_fonte": "oficial",
       "ementa": "Requer informações ao Ministro de Estado do Planejamento e Orçamento, Sr. Bruno Moretti, sobre bloqueios, contingenciamentos, limites de movimentação e empenho, programação financeira e riscos à capacidade fiscalizatória das agências reguladoras federais em 2026.",
-      "status": "Aguardando Despacho do Presidente da Câmara dos Deputados",
+      "status": "Em Tramitação",
       "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2636496"
     },
@@ -467,7 +491,7 @@
       ],
       "tema_fonte": "oficial",
       "ementa": "Requer informações ao Ministro de Estado do Planejamento e Orçamento, Sr. Bruno Moretti, sobre processos de dispensa e designação, critérios de chefia, manifestações recebidas e riscos à independência técnica do IBGE.",
-      "status": "Aguardando Despacho do Presidente da Câmara dos Deputados",
+      "status": "Em Tramitação",
       "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2636504"
     },
@@ -491,7 +515,7 @@
       ],
       "tema_fonte": "oficial",
       "ementa": "Solicita informações ao Ministro do Planejamento e Orçamento, Senhor Bruno Moretti, acerca do suposto atraso na divulgação dos microdados da amostra do Censo Demográfico 2022 pelo Instituto Brasileiro de Geografia e Estatística (IBGE).",
-      "status": "Aguardando Despacho do Presidente da Câmara dos Deputados",
+      "status": "Em Tramitação",
       "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2634666"
     },
@@ -517,7 +541,7 @@
       ],
       "tema_fonte": "oficial",
       "ementa": "Solicita informações ao Senhor Ministro do Planejamento e Orçamento, acerca dos critérios técnicos, impactos setoriais e medidas de planejamento relacionadas ao bloqueio de R$ 24 bilhões no Orçamento Geral da União de 2026, destinado à acomodação da expansão das despesas obrigatórias e ao cumprimento das regras fiscais vigentes.",
-      "status": "Aguardando Despacho do Presidente da Câmara dos Deputados",
+      "status": "Em Tramitação",
       "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2633313"
     },
@@ -544,7 +568,7 @@
       ],
       "tema_fonte": "oficial",
       "ementa": "Requer informações ao Senhor Ministro de Estado do Planejamento e Orçamento acerca do planejamento orçamentário e das medidas de preparação do Governo Federal para enfrentamento dos impactos decorrentes da previsão de ocorrência de um fenômeno de forte intensidade do El Niño (“Super El Niño”), com especial enfoque no Estado do Espírito Santo.",
-      "status": "Aguardando Despacho do Presidente da Câmara dos Deputados",
+      "status": "Em Tramitação",
       "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2633394"
     },
