@@ -1,16 +1,17 @@
 {
-  "ultima_atualizacao": "09/11/2026 11:01",
+  "ultima_atualizacao": "10/11/2026 11:16",
   "fonte_temas": "oficial",
   "resumo": {
-    "total_requerimentos": 173,
-    "total_autores": 59,
+    "total_requerimentos": 174,
+    "total_autores": 60,
     "total_temas": 13,
     "total_comissoes": 2,
-    "total_ativos": 27,
+    "total_ativos": 28,
     "total_respondidos": 0,
     "total_aguardando": 0
   },
   "timeline": {
+    "Nov/26": 1,
     "Out/26": 3,
     "Set/26": 3,
     "Ago/26": 4,
@@ -54,10 +55,11 @@
     "Fev/23": 1
   },
   "autores": {
+    "Dep. Bacelar (-)": 1,
     "Dep. Capitão Alden (-)": 2,
     "Dep. Nikolas Ferreira (-)": 13,
     "Dep. Coronel Fernanda (-)": 1,
-    "Dep. Gustavo Gayer (-)": 24,
+    "Dep. Gustavo Gayer (-)": 23,
     "Dep. Messias Donato (-)": 6,
     "Dep. José Medeiros (-)": 1,
     "Dep. Duda Salabert (-)": 1,
@@ -77,7 +79,7 @@
     "Dep. Dr. Frederico (-)": 1,
     "Dep. Helio Lopes (-)": 2,
     "Dep. Capitão Alberto Neto (-)": 8,
-    "Dep. Comissão de Fiscalização Financeira e Controle (-)": 9,
+    "Dep. Comissão de Fiscalização Financeira e Controle (-)": 8,
     "Dep. Zucco (-)": 1,
     "Dep. Laura Carneiro (-)": 7,
     "Dep. Geraldo Resende (-)": 1,
@@ -98,8 +100,8 @@
     "Dep. Benedita da Silva (-)": 1,
     "Dep. Silvia Waiãpi (-)": 2,
     "Dep. Prof. Reginaldo Veras (-)": 2,
+    "Dep. Desconhecido": 3,
     "Dep. Celso Russomanno (-)": 1,
-    "Dep. Fernanda Melchionna (-)": 1,
     "Dep. Paulo Guedes (-)": 1,
     "Dep. Adilson Barroso (-)": 1,
     "Dep. Marcos Pollon (-)": 1,
@@ -115,11 +117,11 @@
     "Dep. Aureo Ribeiro (-)": 1
   },
   "temas": {
-    "Finanças Públicas e Orçamento": 30,
+    "Finanças Públicas e Orçamento": 33,
     "Viação, Transporte e Mobilidade": 1,
     "Cidades e Desenvolvimento Urbano": 4,
     "Agricultura, Pecuária, Pesca e Extrativismo": 6,
-    "Administração Pública": 105,
+    "Administração Pública": 103,
     "Economia": 11,
     "Educação": 5,
     "Direitos Humanos e Minorias": 4,
@@ -130,15 +132,37 @@
     "Trabalho e Emprego": 1
   },
   "comissoes": {
-    "MESA": 14,
+    "MESA": 15,
     "1SECM": 159
   },
   "situacoes": {
-    "Apresentado, não enviado": 23,
+    "Apresentado, não enviado": 24,
     "Outros": 4,
     "Arquivado": 146
   },
   "lista_requerimentos": [
+    {
+      "data": "09/11/2026",
+      "data_iso": "2026-11-09",
+      "mes_ano": "Nov/26",
+      "data_ult_mov_br": "—",
+      "data_ult_mov_iso": "",
+      "data_prazo_br": "—",
+      "data_prazo_iso": "",
+      "casa": "Câmara",
+      "sigla": "RIC",
+      "numero": 2910,
+      "ano": 2026,
+      "autor": "Dep. Bacelar (-)",
+      "comissao": "MESA",
+      "tema": "Finanças Públicas e Orçamento",
+      "temas": [],
+      "tema_fonte": "reserva",
+      "ementa": "Requer informações ao Ministro de Estado do Planejamento e Orçamento sobre os dados populacionais de Salvador e de municípios da Bahia produzidos pelo Instituto Brasileiro de Geografia e Estatística (IBGE).",
+      "status": "Aguardando Designação de Relator(a)",
+      "situacao_grupo": "Apresentado, não enviado",
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2651341"
+    },
     {
       "data": "29/10/2026",
       "data_iso": "2026-10-29",
@@ -3298,13 +3322,11 @@
       "sigla": "RIC",
       "numero": 3492,
       "ano": 2024,
-      "autor": "Dep. Gustavo Gayer (-)",
+      "autor": "Dep. Desconhecido",
       "comissao": "1SECM",
-      "tema": "Administração Pública",
-      "temas": [
-        "Administração Pública"
-      ],
-      "tema_fonte": "oficial",
+      "tema": "Finanças Públicas e Orçamento",
+      "temas": [],
+      "tema_fonte": "reserva",
       "ementa": "Solicita informações a Sr.ª Ministra do Planejamento e Orçamento, a respeito da notícia que os servidores do instituto brasileiro de geografia e estatística (IBGE), pedem a exoneração do presidente da instituição, devido a alegações de abusos e má gestão.",
       "status": "Aguardando Remessa ao Arquivo",
       "situacao_grupo": "Arquivado",
@@ -3750,13 +3772,11 @@
       "sigla": "RIC",
       "numero": 1155,
       "ano": 2024,
-      "autor": "Dep. Comissão de Fiscalização Financeira e Controle (-)",
+      "autor": "Dep. Desconhecido",
       "comissao": "1SECM",
-      "tema": "Administração Pública",
-      "temas": [
-        "Administração Pública"
-      ],
-      "tema_fonte": "oficial",
+      "tema": "Finanças Públicas e Orçamento",
+      "temas": [],
+      "tema_fonte": "reserva",
       "ementa": "Solicita que seja encaminhado pedido de informação ao Ministério do Planejamento e Orçamento, a respeito dos indícios de irregularidades na gestão dos precatórios pelo atual governo, presidido por Luiz Inácio Lula da Silva.",
       "status": "Aguardando Remessa ao Arquivo",
       "situacao_grupo": "Arquivado",
@@ -3800,7 +3820,7 @@
       "sigla": "RIC",
       "numero": 1093,
       "ano": 2024,
-      "autor": "Dep. Fernanda Melchionna (-)",
+      "autor": "Dep. Desconhecido",
       "comissao": "1SECM",
       "tema": "Educação",
       "temas": [
