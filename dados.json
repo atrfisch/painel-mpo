@@ -1,11 +1,11 @@
 {
-  "ultima_atualizacao": "12/11/2026 10:46",
+  "ultima_atualizacao": "13/11/2026 10:41",
   "fonte_temas": "oficial",
   "resumo": {
     "total_requerimentos": 174,
     "total_autores": 60,
     "total_temas": 13,
-    "total_comissoes": 3,
+    "total_comissoes": 2,
     "total_ativos": 28,
     "total_respondidos": 0,
     "total_aguardando": 7
@@ -132,8 +132,7 @@
     "Trabalho e Emprego": 1
   },
   "comissoes": {
-    "1VIPR": 1,
-    "MESA": 14,
+    "MESA": 15,
     "1SECM": 159
   },
   "situacoes": {
@@ -156,14 +155,14 @@
       "numero": 2910,
       "ano": 2026,
       "autor": "Dep. Bacelar (-)",
-      "comissao": "1VIPR",
+      "comissao": "MESA",
       "tema": "Administração Pública",
       "temas": [
         "Administração Pública"
       ],
       "tema_fonte": "oficial",
       "ementa": "Requer informações ao Ministro de Estado do Planejamento e Orçamento sobre os dados populacionais de Salvador e de municípios da Bahia produzidos pelo Instituto Brasileiro de Geografia e Estatística (IBGE).",
-      "status": "Aguardando Elaboração do Parecer pelo(a) Relator(a)",
+      "status": "Aguardando Despacho do Presidente da Câmara dos Deputados",
       "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2651341"
     },
