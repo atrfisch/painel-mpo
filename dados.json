@@ -1,5 +1,5 @@
 {
-  "ultima_atualizacao": "13/11/2026 10:41",
+  "ultima_atualizacao": "14/11/2026 09:57",
   "fonte_temas": "oficial",
   "resumo": {
     "total_requerimentos": 174,
@@ -132,8 +132,8 @@
     "Trabalho e Emprego": 1
   },
   "comissoes": {
-    "MESA": 15,
-    "1SECM": 159
+    "MESA": 40,
+    "1SECM": 134
   },
   "situacoes": {
     "Apresentado, não enviado": 17,
@@ -2739,7 +2739,7 @@
       "numero": 4673,
       "ano": 2024,
       "autor": "Dep. Carlos Jordy (-)",
-      "comissao": "1SECM",
+      "comissao": "MESA",
       "tema": "Administração Pública",
       "temas": [
         "Administração Pública"
@@ -2763,7 +2763,7 @@
       "numero": 4629,
       "ano": 2024,
       "autor": "Dep. Rodrigo Valadares (-)",
-      "comissao": "1SECM",
+      "comissao": "MESA",
       "tema": "Administração Pública",
       "temas": [
         "Administração Pública"
@@ -2787,7 +2787,7 @@
       "numero": 4621,
       "ano": 2024,
       "autor": "Dep. André Figueiredo (-)",
-      "comissao": "1SECM",
+      "comissao": "MESA",
       "tema": "Administração Pública",
       "temas": [
         "Administração Pública"
@@ -2811,7 +2811,7 @@
       "numero": 4595,
       "ano": 2024,
       "autor": "Dep. Sâmia Bomfim (-)",
-      "comissao": "1SECM",
+      "comissao": "MESA",
       "tema": "Administração Pública",
       "temas": [
         "Administração Pública"
@@ -2835,7 +2835,7 @@
       "numero": 4551,
       "ano": 2024,
       "autor": "Dep. Gustavo Gayer (-)",
-      "comissao": "1SECM",
+      "comissao": "MESA",
       "tema": "Administração Pública",
       "temas": [
         "Administração Pública"
@@ -2856,19 +2856,19 @@
       "data_prazo_iso": "",
       "casa": "Câmara",
       "sigla": "RIC",
-      "numero": 4220,
+      "numero": 4222,
       "ano": 2024,
-      "autor": "Dep. Chico Alencar (-)",
-      "comissao": "1SECM",
-      "tema": "Administração Pública",
+      "autor": "Dep. Laura Carneiro (-)",
+      "comissao": "MESA",
+      "tema": "Finanças Públicas e Orçamento",
       "temas": [
-        "Administração Pública"
+        "Finanças Públicas e Orçamento"
       ],
       "tema_fonte": "oficial",
-      "ementa": "Requer informações à Sra. Simone Tebet, Ministra de Estado do Planejamento e Orçamento a respeito da criação da Fundação IBGE+.",
+      "ementa": "Requeiro a V. Exª., com base no art. 50 da Constituição Federal, e na forma dos arts. 115 e 116 do Regimento Interno que, ouvida a Mesa, sejam solicitadas informações à Ministra do Planejamento e Orçamento estimativa de impacto orçamentário e financeiro decorrente da aprovação do Projeto de Lei nº 3.760/2021, que institui o mês “ABRIL AZUL” como o mês da família acolhedora, como forma de conscientização e incentivo ao acolhimento familiar de crianças e adolescentes, e do substitutivo ao projeto de lei, adotado pela Comissão de Previdência, Assistência Social, Infância, Adolescência e Família.",
       "status": "Aguardando Remessa ao Arquivo",
       "situacao_grupo": "Arquivado",
-      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2470898"
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2470912"
     },
     {
       "data": "21/11/2024",
@@ -2880,19 +2880,19 @@
       "data_prazo_iso": "",
       "casa": "Câmara",
       "sigla": "RIC",
-      "numero": 4222,
+      "numero": 4220,
       "ano": 2024,
-      "autor": "Dep. Laura Carneiro (-)",
-      "comissao": "1SECM",
-      "tema": "Finanças Públicas e Orçamento",
+      "autor": "Dep. Chico Alencar (-)",
+      "comissao": "MESA",
+      "tema": "Administração Pública",
       "temas": [
-        "Finanças Públicas e Orçamento"
+        "Administração Pública"
       ],
       "tema_fonte": "oficial",
-      "ementa": "Requeiro a V. Exª., com base no art. 50 da Constituição Federal, e na forma dos arts. 115 e 116 do Regimento Interno que, ouvida a Mesa, sejam solicitadas informações à Ministra do Planejamento e Orçamento estimativa de impacto orçamentário e financeiro decorrente da aprovação do Projeto de Lei nº 3.760/2021, que institui o mês “ABRIL AZUL” como o mês da família acolhedora, como forma de conscientização e incentivo ao acolhimento familiar de crianças e adolescentes, e do substitutivo ao projeto de lei, adotado pela Comissão de Previdência, Assistência Social, Infância, Adolescência e Família.",
+      "ementa": "Requer informações à Sra. Simone Tebet, Ministra de Estado do Planejamento e Orçamento a respeito da criação da Fundação IBGE+.",
       "status": "Aguardando Remessa ao Arquivo",
       "situacao_grupo": "Arquivado",
-      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2470912"
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2470898"
     },
     {
       "data": "18/11/2024",
@@ -2907,7 +2907,7 @@
       "numero": 4191,
       "ano": 2024,
       "autor": "Dep. Nikolas Ferreira (-)",
-      "comissao": "1SECM",
+      "comissao": "MESA",
       "tema": "Administração Pública",
       "temas": [
         "Administração Pública",
@@ -2933,7 +2933,7 @@
       "numero": 4061,
       "ano": 2024,
       "autor": "Dep. Nikolas Ferreira (-)",
-      "comissao": "1SECM",
+      "comissao": "MESA",
       "tema": "Administração Pública",
       "temas": [
         "Administração Pública",
@@ -2998,6 +2998,30 @@
       "data": "16/10/2024",
       "data_iso": "2024-10-16",
       "mes_ano": "Out/24",
+      "data_ult_mov_br": "02/12/2024",
+      "data_ult_mov_iso": "2024-12-02",
+      "data_prazo_br": "—",
+      "data_prazo_iso": "",
+      "casa": "Câmara",
+      "sigla": "RIC",
+      "numero": 3705,
+      "ano": 2024,
+      "autor": "Dep. Capitão Alberto Neto (-)",
+      "comissao": "1SECM",
+      "tema": "Finanças Públicas e Orçamento",
+      "temas": [
+        "Finanças Públicas e Orçamento"
+      ],
+      "tema_fonte": "oficial",
+      "ementa": "Requer da Excelentíssima Ministra do Planejamento e Orçamento, Senhora Simone Tebet, informações acerca dos gastos públicos no Brasil.",
+      "status": "Aguardando Remessa ao Arquivo",
+      "situacao_grupo": "Arquivado",
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2462735"
+    },
+    {
+      "data": "16/10/2024",
+      "data_iso": "2024-10-16",
+      "mes_ano": "Out/24",
       "data_ult_mov_br": "05/12/2024",
       "data_ult_mov_iso": "2024-12-05",
       "data_prazo_br": "—",
@@ -3018,30 +3042,6 @@
       "status": "Aguardando Remessa ao Arquivo",
       "situacao_grupo": "Arquivado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2462714"
-    },
-    {
-      "data": "16/10/2024",
-      "data_iso": "2024-10-16",
-      "mes_ano": "Out/24",
-      "data_ult_mov_br": "02/12/2024",
-      "data_ult_mov_iso": "2024-12-02",
-      "data_prazo_br": "—",
-      "data_prazo_iso": "",
-      "casa": "Câmara",
-      "sigla": "RIC",
-      "numero": 3705,
-      "ano": 2024,
-      "autor": "Dep. Capitão Alberto Neto (-)",
-      "comissao": "1SECM",
-      "tema": "Finanças Públicas e Orçamento",
-      "temas": [
-        "Finanças Públicas e Orçamento"
-      ],
-      "tema_fonte": "oficial",
-      "ementa": "Requer da Excelentíssima Ministra do Planejamento e Orçamento, Senhora Simone Tebet, informações acerca dos gastos públicos no Brasil.",
-      "status": "Aguardando Remessa ao Arquivo",
-      "situacao_grupo": "Arquivado",
-      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2462735"
     },
     {
       "data": "10/10/2024",
@@ -3097,49 +3097,26 @@
       "data": "03/10/2024",
       "data_iso": "2024-10-03",
       "mes_ano": "Out/24",
-      "data_ult_mov_br": "—",
-      "data_ult_mov_iso": "",
-      "data_prazo_br": "—",
-      "data_prazo_iso": "",
-      "casa": "Câmara",
-      "sigla": "RIC",
-      "numero": 3552,
-      "ano": 2024,
-      "autor": "Dep. Nikolas Ferreira (-)",
-      "comissao": "MESA",
-      "tema": "Administração Pública",
-      "temas": [
-        "Administração Pública"
-      ],
-      "tema_fonte": "oficial",
-      "ementa": "Solicita à Ministra de Estado do Planejamento e Orçamento informações sobre a viagem da Primeira-Dama ao Catar, realizada em setembro de 2024.",
-      "status": "Aguardando Designação de Relator(a)",
-      "situacao_grupo": "Apresentado, não enviado",
-      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2459856"
-    },
-    {
-      "data": "03/10/2024",
-      "data_iso": "2024-10-03",
-      "mes_ano": "Out/24",
       "data_ult_mov_br": "02/12/2024",
       "data_ult_mov_iso": "2024-12-02",
       "data_prazo_br": "—",
       "data_prazo_iso": "",
       "casa": "Câmara",
       "sigla": "RIC",
-      "numero": 3553,
+      "numero": 3561,
       "ano": 2024,
       "autor": "Dep. Nikolas Ferreira (-)",
       "comissao": "1SECM",
       "tema": "Administração Pública",
       "temas": [
-        "Administração Pública"
+        "Administração Pública",
+        "Finanças Públicas e Orçamento"
       ],
       "tema_fonte": "oficial",
-      "ementa": "Solicita à Ministra de Estado do Planejamento e Orçamento informações sobre os gastos realizados pelo governo federal nas comemorações do 7 de Setembro de 2024, realizada na Esplanada dos Ministérios.",
+      "ementa": "Solicita à Ministra de Estado do Planejamento e Orçamento informações sobre a solicitação de R$ 201,3 milhões para o Itamaraty, incluindo R$ 8,5 milhões para a viagem presidencial à ONU, em meio à crise financeira decorrente dos cortes orçamentários.",
       "status": "Aguardando Remessa ao Arquivo",
       "situacao_grupo": "Arquivado",
-      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2459857"
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2459868"
     },
     {
       "data": "03/10/2024",
@@ -3175,44 +3152,43 @@
       "data_prazo_iso": "",
       "casa": "Câmara",
       "sigla": "RIC",
-      "numero": 3561,
+      "numero": 3553,
       "ano": 2024,
       "autor": "Dep. Nikolas Ferreira (-)",
       "comissao": "1SECM",
       "tema": "Administração Pública",
       "temas": [
-        "Administração Pública",
-        "Finanças Públicas e Orçamento"
+        "Administração Pública"
       ],
       "tema_fonte": "oficial",
-      "ementa": "Solicita à Ministra de Estado do Planejamento e Orçamento informações sobre a solicitação de R$ 201,3 milhões para o Itamaraty, incluindo R$ 8,5 milhões para a viagem presidencial à ONU, em meio à crise financeira decorrente dos cortes orçamentários.",
+      "ementa": "Solicita à Ministra de Estado do Planejamento e Orçamento informações sobre os gastos realizados pelo governo federal nas comemorações do 7 de Setembro de 2024, realizada na Esplanada dos Ministérios.",
       "status": "Aguardando Remessa ao Arquivo",
       "situacao_grupo": "Arquivado",
-      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2459868"
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2459857"
     },
     {
-      "data": "02/10/2024",
-      "data_iso": "2024-10-02",
+      "data": "03/10/2024",
+      "data_iso": "2024-10-03",
       "mes_ano": "Out/24",
-      "data_ult_mov_br": "02/12/2024",
-      "data_ult_mov_iso": "2024-12-02",
+      "data_ult_mov_br": "—",
+      "data_ult_mov_iso": "",
       "data_prazo_br": "—",
       "data_prazo_iso": "",
       "casa": "Câmara",
       "sigla": "RIC",
-      "numero": 3541,
+      "numero": 3552,
       "ano": 2024,
-      "autor": "Dep. Silvia Waiãpi (-)",
-      "comissao": "1SECM",
-      "tema": "Finanças Públicas e Orçamento",
+      "autor": "Dep. Nikolas Ferreira (-)",
+      "comissao": "MESA",
+      "tema": "Administração Pública",
       "temas": [
-        "Finanças Públicas e Orçamento"
+        "Administração Pública"
       ],
       "tema_fonte": "oficial",
-      "ementa": "Requer informações do Ministério do Planejamento e Orçamento, sobre a trajetória da dívida brasileira sob o governo Lula.",
-      "status": "Aguardando Remessa ao Arquivo",
-      "situacao_grupo": "Arquivado",
-      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2459780"
+      "ementa": "Solicita à Ministra de Estado do Planejamento e Orçamento informações sobre a viagem da Primeira-Dama ao Catar, realizada em setembro de 2024.",
+      "status": "Aguardando Designação de Relator(a)",
+      "situacao_grupo": "Apresentado, não enviado",
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2459856"
     },
     {
       "data": "02/10/2024",
@@ -3238,6 +3214,30 @@
       "status": "Aguardando Remessa ao Arquivo",
       "situacao_grupo": "Arquivado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2459825"
+    },
+    {
+      "data": "02/10/2024",
+      "data_iso": "2024-10-02",
+      "mes_ano": "Out/24",
+      "data_ult_mov_br": "02/12/2024",
+      "data_ult_mov_iso": "2024-12-02",
+      "data_prazo_br": "—",
+      "data_prazo_iso": "",
+      "casa": "Câmara",
+      "sigla": "RIC",
+      "numero": 3541,
+      "ano": 2024,
+      "autor": "Dep. Silvia Waiãpi (-)",
+      "comissao": "1SECM",
+      "tema": "Finanças Públicas e Orçamento",
+      "temas": [
+        "Finanças Públicas e Orçamento"
+      ],
+      "tema_fonte": "oficial",
+      "ementa": "Requer informações do Ministério do Planejamento e Orçamento, sobre a trajetória da dívida brasileira sob o governo Lula.",
+      "status": "Aguardando Remessa ao Arquivo",
+      "situacao_grupo": "Arquivado",
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2459780"
     },
     {
       "data": "26/09/2024",
@@ -3274,19 +3274,19 @@
       "data_prazo_iso": "",
       "casa": "Câmara",
       "sigla": "RIC",
-      "numero": 3488,
+      "numero": 3492,
       "ano": 2024,
-      "autor": "Dep. Luiz Philippe de Orleans e Bragança (-)",
+      "autor": "Dep. Gustavo Gayer (-)",
       "comissao": "1SECM",
       "tema": "Administração Pública",
       "temas": [
         "Administração Pública"
       ],
       "tema_fonte": "oficial",
-      "ementa": "Solicita à Sra. Simone Tebet, Ministra do Planejamento e Orçamento, informações acerca da criação da Fundação IBGE+.",
+      "ementa": "Solicita informações a Sr.ª Ministra do Planejamento e Orçamento, a respeito da notícia que os servidores do instituto brasileiro de geografia e estatística (IBGE), pedem a exoneração do presidente da instituição, devido a alegações de abusos e má gestão.",
       "status": "Aguardando Remessa ao Arquivo",
       "situacao_grupo": "Arquivado",
-      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2459139"
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2459189"
     },
     {
       "data": "25/09/2024",
@@ -3323,19 +3323,19 @@
       "data_prazo_iso": "",
       "casa": "Câmara",
       "sigla": "RIC",
-      "numero": 3492,
+      "numero": 3488,
       "ano": 2024,
-      "autor": "Dep. Gustavo Gayer (-)",
+      "autor": "Dep. Luiz Philippe de Orleans e Bragança (-)",
       "comissao": "1SECM",
       "tema": "Administração Pública",
       "temas": [
         "Administração Pública"
       ],
       "tema_fonte": "oficial",
-      "ementa": "Solicita informações a Sr.ª Ministra do Planejamento e Orçamento, a respeito da notícia que os servidores do instituto brasileiro de geografia e estatística (IBGE), pedem a exoneração do presidente da instituição, devido a alegações de abusos e má gestão.",
+      "ementa": "Solicita à Sra. Simone Tebet, Ministra do Planejamento e Orçamento, informações acerca da criação da Fundação IBGE+.",
       "status": "Aguardando Remessa ao Arquivo",
       "situacao_grupo": "Arquivado",
-      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2459189"
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2459139"
     },
     {
       "data": "19/09/2024",
@@ -3366,30 +3366,6 @@
       "data": "03/09/2024",
       "data_iso": "2024-09-03",
       "mes_ano": "Set/24",
-      "data_ult_mov_br": "—",
-      "data_ult_mov_iso": "",
-      "data_prazo_br": "—",
-      "data_prazo_iso": "",
-      "casa": "Câmara",
-      "sigla": "RIC",
-      "numero": 3341,
-      "ano": 2024,
-      "autor": "Dep. Amom Mandel (-)",
-      "comissao": "MESA",
-      "tema": "Administração Pública",
-      "temas": [
-        "Administração Pública"
-      ],
-      "tema_fonte": "oficial",
-      "ementa": "Requer informações ao Ministério do Planejamento e Orçamento acerca das medidas adotadas em resposta à paralisação dos analistas de infraestrutura, bem como as negociações em curso para a reestruturação e valorização da carreira desses profissionais.",
-      "status": "Aguardando Designação de Relator(a)",
-      "situacao_grupo": "Apresentado, não enviado",
-      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2456440"
-    },
-    {
-      "data": "03/09/2024",
-      "data_iso": "2024-09-03",
-      "mes_ano": "Set/24",
       "data_ult_mov_br": "05/12/2024",
       "data_ult_mov_iso": "2024-12-05",
       "data_prazo_br": "—",
@@ -3409,6 +3385,30 @@
       "status": "Aguardando Remessa ao Arquivo",
       "situacao_grupo": "Arquivado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2456442"
+    },
+    {
+      "data": "03/09/2024",
+      "data_iso": "2024-09-03",
+      "mes_ano": "Set/24",
+      "data_ult_mov_br": "—",
+      "data_ult_mov_iso": "",
+      "data_prazo_br": "—",
+      "data_prazo_iso": "",
+      "casa": "Câmara",
+      "sigla": "RIC",
+      "numero": 3341,
+      "ano": 2024,
+      "autor": "Dep. Amom Mandel (-)",
+      "comissao": "MESA",
+      "tema": "Administração Pública",
+      "temas": [
+        "Administração Pública"
+      ],
+      "tema_fonte": "oficial",
+      "ementa": "Requer informações ao Ministério do Planejamento e Orçamento acerca das medidas adotadas em resposta à paralisação dos analistas de infraestrutura, bem como as negociações em curso para a reestruturação e valorização da carreira desses profissionais.",
+      "status": "Aguardando Designação de Relator(a)",
+      "situacao_grupo": "Apresentado, não enviado",
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2456440"
     },
     {
       "data": "26/08/2024",
@@ -3474,7 +3474,7 @@
       "numero": 2225,
       "ano": 2024,
       "autor": "Dep. Capitão Alberto Neto (-)",
-      "comissao": "1SECM",
+      "comissao": "MESA",
       "tema": "Administração Pública",
       "temas": [
         "Administração Pública",
@@ -3500,7 +3500,7 @@
       "numero": 2111,
       "ano": 2024,
       "autor": "Dep. Adriana Ventura (-)",
-      "comissao": "1SECM",
+      "comissao": "MESA",
       "tema": "Administração Pública",
       "temas": [
         "Administração Pública",
@@ -3525,7 +3525,7 @@
       "numero": 1999,
       "ano": 2024,
       "autor": "Dep. Celso Russomanno (-)",
-      "comissao": "1SECM",
+      "comissao": "MESA",
       "tema": "Administração Pública",
       "temas": [
         "Administração Pública",
@@ -3547,19 +3547,19 @@
       "data_prazo_iso": "",
       "casa": "Câmara",
       "sigla": "RIC",
-      "numero": 1978,
+      "numero": 1979,
       "ano": 2024,
       "autor": "Dep. Nikolas Ferreira (-)",
-      "comissao": "1SECM",
-      "tema": "Educação",
+      "comissao": "MESA",
+      "tema": "Previdência e Assistência Social",
       "temas": [
-        "Educação"
+        "Previdência e Assistência Social"
       ],
       "tema_fonte": "oficial",
-      "ementa": "Solicita à Ministra de Estado do Planejamento e Orçamento esclarecimentos sobre o novo Atlas Geográfico Escolar publicado neste ano pelo Instituto Brasileiro de Geografia e Estatística (IBGE).",
+      "ementa": "Solicita a Sra. Ministra de Estado do Planejamento e Orçamento, Simone Tebet, informações sobre a alteração dos dados da Previdência Social para reduzir a projeção de despesas com benefícios em cerca de R$12 bilhões.",
       "status": "Aguardando Remessa ao Arquivo",
       "situacao_grupo": "Arquivado",
-      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2443601"
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2443603"
     },
     {
       "data": "26/06/2024",
@@ -3571,19 +3571,19 @@
       "data_prazo_iso": "",
       "casa": "Câmara",
       "sigla": "RIC",
-      "numero": 1979,
+      "numero": 1978,
       "ano": 2024,
       "autor": "Dep. Nikolas Ferreira (-)",
-      "comissao": "1SECM",
-      "tema": "Previdência e Assistência Social",
+      "comissao": "MESA",
+      "tema": "Educação",
       "temas": [
-        "Previdência e Assistência Social"
+        "Educação"
       ],
       "tema_fonte": "oficial",
-      "ementa": "Solicita a Sra. Ministra de Estado do Planejamento e Orçamento, Simone Tebet, informações sobre a alteração dos dados da Previdência Social para reduzir a projeção de despesas com benefícios em cerca de R$12 bilhões.",
+      "ementa": "Solicita à Ministra de Estado do Planejamento e Orçamento esclarecimentos sobre o novo Atlas Geográfico Escolar publicado neste ano pelo Instituto Brasileiro de Geografia e Estatística (IBGE).",
       "status": "Aguardando Remessa ao Arquivo",
       "situacao_grupo": "Arquivado",
-      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2443603"
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2443601"
     },
     {
       "data": "25/06/2024",
@@ -3598,7 +3598,7 @@
       "numero": 1929,
       "ano": 2024,
       "autor": "Dep. Amom Mandel (-)",
-      "comissao": "1SECM",
+      "comissao": "MESA",
       "tema": "Administração Pública",
       "temas": [
         "Administração Pública",
@@ -3623,7 +3623,7 @@
       "numero": 1682,
       "ano": 2024,
       "autor": "Dep. Gustavo Gayer (-)",
-      "comissao": "1SECM",
+      "comissao": "MESA",
       "tema": "Administração Pública",
       "temas": [
         "Administração Pública",
@@ -3673,7 +3673,7 @@
       "numero": 1417,
       "ano": 2024,
       "autor": "Dep. Gustavo Gayer (-)",
-      "comissao": "1SECM",
+      "comissao": "MESA",
       "tema": "Cidades e Desenvolvimento Urbano",
       "temas": [
         "Cidades e Desenvolvimento Urbano",
@@ -3699,7 +3699,7 @@
       "numero": 1409,
       "ano": 2024,
       "autor": "Dep. Amom Mandel (-)",
-      "comissao": "1SECM",
+      "comissao": "MESA",
       "tema": "Administração Pública",
       "temas": [
         "Administração Pública",
@@ -3725,7 +3725,7 @@
       "numero": 1207,
       "ano": 2024,
       "autor": "Dep. Chris Tonietto (-)",
-      "comissao": "1SECM",
+      "comissao": "MESA",
       "tema": "Defesa e Segurança",
       "temas": [
         "Defesa e Segurança",
@@ -3753,7 +3753,7 @@
       "numero": 1180,
       "ano": 2024,
       "autor": "Dep. Adriana Ventura (-)",
-      "comissao": "1SECM",
+      "comissao": "MESA",
       "tema": "Administração Pública",
       "temas": [
         "Administração Pública",
@@ -3778,7 +3778,7 @@
       "numero": 1155,
       "ano": 2024,
       "autor": "Dep. Comissão de Fiscalização Financeira e Controle (-)",
-      "comissao": "1SECM",
+      "comissao": "MESA",
       "tema": "Administração Pública",
       "temas": [
         "Administração Pública"
@@ -3799,36 +3799,10 @@
       "data_prazo_iso": "",
       "casa": "Câmara",
       "sigla": "RIC",
-      "numero": 1089,
-      "ano": 2024,
-      "autor": "Dep. Capitão Alberto Neto (-)",
-      "comissao": "1SECM",
-      "tema": "Administração Pública",
-      "temas": [
-        "Administração Pública",
-        "Defesa e Segurança",
-        "Finanças Públicas e Orçamento"
-      ],
-      "tema_fonte": "oficial",
-      "ementa": "Requer da Ministra de Estado do Planejamento e Orçamento, Senhora Simone Tebet, informações a respeito do corte orçamentário na Polícia Federal.",
-      "status": "Aguardando Remessa ao Arquivo",
-      "situacao_grupo": "Arquivado",
-      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2428528"
-    },
-    {
-      "data": "22/04/2024",
-      "data_iso": "2024-04-22",
-      "mes_ano": "Abr/24",
-      "data_ult_mov_br": "05/11/2024",
-      "data_ult_mov_iso": "2024-11-05",
-      "data_prazo_br": "—",
-      "data_prazo_iso": "",
-      "casa": "Câmara",
-      "sigla": "RIC",
       "numero": 1093,
       "ano": 2024,
       "autor": "Dep. Fernanda Melchionna (-)",
-      "comissao": "1SECM",
+      "comissao": "MESA",
       "tema": "Educação",
       "temas": [
         "Educação",
@@ -3840,6 +3814,32 @@
       "status": "Aguardando Remessa ao Arquivo",
       "situacao_grupo": "Arquivado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2428538"
+    },
+    {
+      "data": "22/04/2024",
+      "data_iso": "2024-04-22",
+      "mes_ano": "Abr/24",
+      "data_ult_mov_br": "05/11/2024",
+      "data_ult_mov_iso": "2024-11-05",
+      "data_prazo_br": "—",
+      "data_prazo_iso": "",
+      "casa": "Câmara",
+      "sigla": "RIC",
+      "numero": 1089,
+      "ano": 2024,
+      "autor": "Dep. Capitão Alberto Neto (-)",
+      "comissao": "MESA",
+      "tema": "Administração Pública",
+      "temas": [
+        "Administração Pública",
+        "Defesa e Segurança",
+        "Finanças Públicas e Orçamento"
+      ],
+      "tema_fonte": "oficial",
+      "ementa": "Requer da Ministra de Estado do Planejamento e Orçamento, Senhora Simone Tebet, informações a respeito do corte orçamentário na Polícia Federal.",
+      "status": "Aguardando Remessa ao Arquivo",
+      "situacao_grupo": "Arquivado",
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2428528"
     },
     {
       "data": "01/04/2024",
@@ -3854,7 +3854,7 @@
       "numero": 781,
       "ano": 2024,
       "autor": "Dep. Paulo Guedes (-)",
-      "comissao": "1SECM",
+      "comissao": "MESA",
       "tema": "Defesa e Segurança",
       "temas": [
         "Defesa e Segurança",
@@ -3901,31 +3901,6 @@
       "data_prazo_iso": "",
       "casa": "Câmara",
       "sigla": "RIC",
-      "numero": 426,
-      "ano": 2024,
-      "autor": "Dep. Gustavo Gayer (-)",
-      "comissao": "1SECM",
-      "tema": "Administração Pública",
-      "temas": [
-        "Administração Pública",
-        "Economia"
-      ],
-      "tema_fonte": "oficial",
-      "ementa": "Solicita informações ao Sr.ª Ministra do Planejamento e Orçamento, a respeito da denúncia que R$ 93 Bilhões em precatórios foram vendidos para bancos pelo Presidente da República Lula, com até 50% de deságio.",
-      "status": "Aguardando Remessa ao Arquivo",
-      "situacao_grupo": "Arquivado",
-      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2419430"
-    },
-    {
-      "data": "06/03/2024",
-      "data_iso": "2024-03-06",
-      "mes_ano": "Mar/24",
-      "data_ult_mov_br": "23/05/2024",
-      "data_ult_mov_iso": "2024-05-23",
-      "data_prazo_br": "—",
-      "data_prazo_iso": "",
-      "casa": "Câmara",
-      "sigla": "RIC",
       "numero": 461,
       "ano": 2024,
       "autor": "Dep. Daniela Reinehr (-)",
@@ -3940,6 +3915,31 @@
       "status": "Aguardando Remessa ao Arquivo",
       "situacao_grupo": "Arquivado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2419717"
+    },
+    {
+      "data": "06/03/2024",
+      "data_iso": "2024-03-06",
+      "mes_ano": "Mar/24",
+      "data_ult_mov_br": "23/05/2024",
+      "data_ult_mov_iso": "2024-05-23",
+      "data_prazo_br": "—",
+      "data_prazo_iso": "",
+      "casa": "Câmara",
+      "sigla": "RIC",
+      "numero": 426,
+      "ano": 2024,
+      "autor": "Dep. Gustavo Gayer (-)",
+      "comissao": "1SECM",
+      "tema": "Administração Pública",
+      "temas": [
+        "Administração Pública",
+        "Economia"
+      ],
+      "tema_fonte": "oficial",
+      "ementa": "Solicita informações ao Sr.ª Ministra do Planejamento e Orçamento, a respeito da denúncia que R$ 93 Bilhões em precatórios foram vendidos para bancos pelo Presidente da República Lula, com até 50% de deságio.",
+      "status": "Aguardando Remessa ao Arquivo",
+      "situacao_grupo": "Arquivado",
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2419430"
     },
     {
       "data": "05/03/2024",
@@ -3979,7 +3979,7 @@
       "numero": 24,
       "ano": 2024,
       "autor": "Dep. Adriana Ventura (-)",
-      "comissao": "1SECM",
+      "comissao": "MESA",
       "tema": "Administração Pública",
       "temas": [
         "Administração Pública"
