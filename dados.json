@@ -1,9 +1,9 @@
 {
-  "ultima_atualizacao": "19/11/2026 11:24",
+  "ultima_atualizacao": "20/11/2026 11:02",
   "fonte_temas": "oficial",
   "resumo": {
     "total_requerimentos": 174,
-    "total_autores": 61,
+    "total_autores": 60,
     "total_temas": 13,
     "total_comissoes": 2,
     "total_ativos": 28,
@@ -59,7 +59,7 @@
     "Dep. Capitão Alden (-)": 2,
     "Dep. Nikolas Ferreira (-)": 13,
     "Dep. Coronel Fernanda (-)": 1,
-    "Dep. Gustavo Gayer (-)": 23,
+    "Dep. Gustavo Gayer (-)": 24,
     "Dep. Messias Donato (-)": 6,
     "Dep. José Medeiros (-)": 1,
     "Dep. Duda Salabert (-)": 1,
@@ -76,7 +76,6 @@
     "Dep. Julia Zanatta (-)": 1,
     "Dep. Luiz Carlos Hauly (-)": 3,
     "Dep. Cabo Gilberto Silva (-)": 4,
-    "Dep. Desconhecido": 1,
     "Dep. Dr. Frederico (-)": 1,
     "Dep. Helio Lopes (-)": 2,
     "Dep. Capitão Alberto Neto (-)": 8,
@@ -118,8 +117,8 @@
     "Dep. Aureo Ribeiro (-)": 1
   },
   "temas": {
-    "Administração Pública": 105,
-    "Finanças Públicas e Orçamento": 31,
+    "Administração Pública": 106,
+    "Finanças Públicas e Orçamento": 30,
     "Viação, Transporte e Mobilidade": 1,
     "Cidades e Desenvolvimento Urbano": 4,
     "Agricultura, Pecuária, Pesca e Extrativismo": 6,
@@ -1186,7 +1185,7 @@
       "sigla": "RIC",
       "numero": 13,
       "ano": 2026,
-      "autor": "Dep. Desconhecido",
+      "autor": "Dep. Gustavo Gayer (-)",
       "comissao": "1SECM",
       "tema": "Administração Pública",
       "temas": [
@@ -1215,9 +1214,12 @@
       "ano": 2026,
       "autor": "Dep. Gustavo Gayer (-)",
       "comissao": "1SECM",
-      "tema": "Finanças Públicas e Orçamento",
-      "temas": [],
-      "tema_fonte": "reserva",
+      "tema": "Administração Pública",
+      "temas": [
+        "Administração Pública",
+        "Finanças Públicas e Orçamento"
+      ],
+      "tema_fonte": "oficial",
       "ementa": "Solicita a Sr.ª Ministra do Planejamento e Orçamento, informações, estudos técnicos, projeções fiscais e documentos oficiais relativos à rigidez orçamentária, à evolução das despesas obrigatórias, aos investimentos públicos federais e à sustentabilidade do Novo Arcabouço Fiscal.",
       "status": "Aguardando Remessa ao Arquivo",
       "situacao_grupo": "Arquivado",
