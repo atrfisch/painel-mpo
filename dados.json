@@ -1,17 +1,17 @@
 {
-  "ultima_atualizacao": "24/11/2026 13:23",
+  "ultima_atualizacao": "25/11/2026 12:16",
   "fonte_temas": "oficial",
   "resumo": {
-    "total_requerimentos": 174,
-    "total_autores": 60,
+    "total_requerimentos": 175,
+    "total_autores": 61,
     "total_temas": 13,
     "total_comissoes": 2,
-    "total_ativos": 28,
+    "total_ativos": 29,
     "total_respondidos": 0,
     "total_aguardando": 7
   },
   "timeline": {
-    "Nov/26": 1,
+    "Nov/26": 2,
     "Out/26": 3,
     "Set/26": 3,
     "Ago/26": 4,
@@ -55,6 +55,7 @@
     "Fev/23": 1
   },
   "autores": {
+    "Dep. André Fernandes (-)": 1,
     "Dep. Bacelar (-)": 1,
     "Dep. Capitão Alden (-)": 2,
     "Dep. Nikolas Ferreira (-)": 13,
@@ -117,8 +118,8 @@
     "Dep. Aureo Ribeiro (-)": 1
   },
   "temas": {
+    "Finanças Públicas e Orçamento": 31,
     "Administração Pública": 106,
-    "Finanças Públicas e Orçamento": 30,
     "Viação, Transporte e Mobilidade": 1,
     "Cidades e Desenvolvimento Urbano": 4,
     "Agricultura, Pecuária, Pesca e Extrativismo": 6,
@@ -132,16 +133,41 @@
     "Trabalho e Emprego": 1
   },
   "comissoes": {
-    "MESA": 15,
+    "MESA": 16,
     "1SECM": 159
   },
   "situacoes": {
-    "Apresentado, não enviado": 17,
+    "Apresentado, não enviado": 18,
     "Aguardando resposta": 7,
     "Outros": 4,
     "Arquivado": 146
   },
   "lista_requerimentos": [
+    {
+      "data": "24/11/2026",
+      "data_iso": "2026-11-24",
+      "mes_ano": "Nov/26",
+      "data_ult_mov_br": "—",
+      "data_ult_mov_iso": "",
+      "data_prazo_br": "—",
+      "data_prazo_iso": "",
+      "casa": "Câmara",
+      "sigla": "RIC",
+      "numero": 3052,
+      "ano": 2026,
+      "autor": "Dep. André Fernandes (-)",
+      "comissao": "MESA",
+      "tema": "Finanças Públicas e Orçamento",
+      "temas": [
+        "Finanças Públicas e Orçamento",
+        "Economia"
+      ],
+      "tema_fonte": "oficial",
+      "ementa": "Requer que o Ministério do Planejamento e Orçamento preste esclarecimentos sobre a real capacidade do Projeto de Lei Complementar nº 299/2026, denominado “Plano Moretti”, de conter o avanço da dívida pública, bem como apresente os estudos, as projeções e os cálculos que sustentam as medidas propostas, esclarecendo se o Governo Federal pretende adotar novas medidas de ajuste fiscal e quais serão seus possíveis impactos sobre a população brasileira.",
+      "status": "Aguardando Designação de Relator(a)",
+      "situacao_grupo": "Apresentado, não enviado",
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2659242"
+    },
     {
       "data": "09/11/2026",
       "data_iso": "2026-11-09",
