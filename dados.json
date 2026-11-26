@@ -1,11 +1,11 @@
 {
-  "ultima_atualizacao": "25/11/2026 12:16",
+  "ultima_atualizacao": "26/11/2026 12:03",
   "fonte_temas": "oficial",
   "resumo": {
     "total_requerimentos": 175,
     "total_autores": 61,
     "total_temas": 13,
-    "total_comissoes": 2,
+    "total_comissoes": 3,
     "total_ativos": 29,
     "total_respondidos": 0,
     "total_aguardando": 7
@@ -75,8 +75,8 @@
     "Dep. Rodolfo Nogueira (-)": 2,
     "Dep. Roberto Monteiro Pai (-)": 1,
     "Dep. Julia Zanatta (-)": 1,
-    "Dep. Luiz Carlos Hauly (-)": 3,
     "Dep. Cabo Gilberto Silva (-)": 4,
+    "Dep. Luiz Carlos Hauly (-)": 3,
     "Dep. Dr. Frederico (-)": 1,
     "Dep. Helio Lopes (-)": 2,
     "Dep. Capitão Alberto Neto (-)": 8,
@@ -133,7 +133,8 @@
     "Trabalho e Emprego": 1
   },
   "comissoes": {
-    "MESA": 16,
+    "1VIPR": 1,
+    "MESA": 15,
     "1SECM": 159
   },
   "situacoes": {
@@ -156,7 +157,7 @@
       "numero": 3052,
       "ano": 2026,
       "autor": "Dep. André Fernandes (-)",
-      "comissao": "MESA",
+      "comissao": "1VIPR",
       "tema": "Finanças Públicas e Orçamento",
       "temas": [
         "Finanças Públicas e Orçamento",
@@ -164,7 +165,7 @@
       ],
       "tema_fonte": "oficial",
       "ementa": "Requer que o Ministério do Planejamento e Orçamento preste esclarecimentos sobre a real capacidade do Projeto de Lei Complementar nº 299/2026, denominado “Plano Moretti”, de conter o avanço da dívida pública, bem como apresente os estudos, as projeções e os cálculos que sustentam as medidas propostas, esclarecendo se o Governo Federal pretende adotar novas medidas de ajuste fiscal e quais serão seus possíveis impactos sobre a população brasileira.",
-      "status": "Aguardando Designação de Relator(a)",
+      "status": "Aguardando Elaboração do Parecer pelo(a) Relator(a)",
       "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2659242"
     },
@@ -382,30 +383,6 @@
       "data_prazo_iso": "2026-12-11",
       "casa": "Câmara",
       "sigla": "RIC",
-      "numero": 2380,
-      "ano": 2026,
-      "autor": "Dep. José Medeiros (-)",
-      "comissao": "1SECM",
-      "tema": "Finanças Públicas e Orçamento",
-      "temas": [
-        "Finanças Públicas e Orçamento"
-      ],
-      "tema_fonte": "oficial",
-      "ementa": "Requer informações à Ministra de Estado do Planejamento e Orçamento acerca da distribuição dos limites de pagamento entre os órgãos do Poder Executivo Federal, da reprogramação financeira decorrente da restrição de aproximadamente R$ 105,5 bilhões identificada pela Consultoria de Orçamentos do Senado Federal e dos impactos específicos sobre as ações orçamentárias dos Ministérios da Saúde e da Educação.",
-      "status": "Aguardando Resposta",
-      "situacao_grupo": "Aguardando resposta",
-      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2643029"
-    },
-    {
-      "data": "12/08/2026",
-      "data_iso": "2026-08-12",
-      "mes_ano": "Ago/26",
-      "data_ult_mov_br": "11/11/2026",
-      "data_ult_mov_iso": "2026-11-11",
-      "data_prazo_br": "11/12/2026",
-      "data_prazo_iso": "2026-12-11",
-      "casa": "Câmara",
-      "sigla": "RIC",
       "numero": 2387,
       "ano": 2026,
       "autor": "Dep. Messias Donato (-)",
@@ -420,6 +397,30 @@
       "status": "Aguardando Resposta",
       "situacao_grupo": "Aguardando resposta",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2643261"
+    },
+    {
+      "data": "12/08/2026",
+      "data_iso": "2026-08-12",
+      "mes_ano": "Ago/26",
+      "data_ult_mov_br": "11/11/2026",
+      "data_ult_mov_iso": "2026-11-11",
+      "data_prazo_br": "11/12/2026",
+      "data_prazo_iso": "2026-12-11",
+      "casa": "Câmara",
+      "sigla": "RIC",
+      "numero": 2380,
+      "ano": 2026,
+      "autor": "Dep. José Medeiros (-)",
+      "comissao": "1SECM",
+      "tema": "Finanças Públicas e Orçamento",
+      "temas": [
+        "Finanças Públicas e Orçamento"
+      ],
+      "tema_fonte": "oficial",
+      "ementa": "Requer informações à Ministra de Estado do Planejamento e Orçamento acerca da distribuição dos limites de pagamento entre os órgãos do Poder Executivo Federal, da reprogramação financeira decorrente da restrição de aproximadamente R$ 105,5 bilhões identificada pela Consultoria de Orçamentos do Senado Federal e dos impactos específicos sobre as ações orçamentárias dos Ministérios da Saúde e da Educação.",
+      "status": "Aguardando Resposta",
+      "situacao_grupo": "Aguardando resposta",
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2643029"
     },
     {
       "data": "04/08/2026",
@@ -509,6 +510,30 @@
       "data_prazo_iso": "",
       "casa": "Câmara",
       "sigla": "RIC",
+      "numero": 2089,
+      "ano": 2026,
+      "autor": "Dep. Adriana Ventura (-)",
+      "comissao": "1SECM",
+      "tema": "Administração Pública",
+      "temas": [
+        "Administração Pública"
+      ],
+      "tema_fonte": "oficial",
+      "ementa": "Requer informações ao Ministro de Estado do Planejamento e Orçamento, Sr. Bruno Moretti, sobre processos de dispensa e designação, critérios de chefia, manifestações recebidas e riscos à independência técnica do IBGE.",
+      "status": "Aguardando Envio ao Executivo",
+      "situacao_grupo": "Apresentado, não enviado",
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2636504"
+    },
+    {
+      "data": "01/07/2026",
+      "data_iso": "2026-07-01",
+      "mes_ano": "Jul/26",
+      "data_ult_mov_br": "—",
+      "data_ult_mov_iso": "",
+      "data_prazo_br": "—",
+      "data_prazo_iso": "",
+      "casa": "Câmara",
+      "sigla": "RIC",
       "numero": 2081,
       "ano": 2026,
       "autor": "Dep. Adriana Ventura (-)",
@@ -523,30 +548,6 @@
       "status": "Aguardando Envio ao Executivo",
       "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2636496"
-    },
-    {
-      "data": "01/07/2026",
-      "data_iso": "2026-07-01",
-      "mes_ano": "Jul/26",
-      "data_ult_mov_br": "—",
-      "data_ult_mov_iso": "",
-      "data_prazo_br": "—",
-      "data_prazo_iso": "",
-      "casa": "Câmara",
-      "sigla": "RIC",
-      "numero": 2089,
-      "ano": 2026,
-      "autor": "Dep. Adriana Ventura (-)",
-      "comissao": "1SECM",
-      "tema": "Administração Pública",
-      "temas": [
-        "Administração Pública"
-      ],
-      "tema_fonte": "oficial",
-      "ementa": "Requer informações ao Ministro de Estado do Planejamento e Orçamento, Sr. Bruno Moretti, sobre processos de dispensa e designação, critérios de chefia, manifestações recebidas e riscos à independência técnica do IBGE.",
-      "status": "Aguardando Envio ao Executivo",
-      "situacao_grupo": "Apresentado, não enviado",
-      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2636504"
     },
     {
       "data": "22/06/2026",
@@ -582,32 +583,6 @@
       "data_prazo_iso": "",
       "casa": "Câmara",
       "sigla": "RIC",
-      "numero": 1853,
-      "ano": 2026,
-      "autor": "Dep. Gustavo Gayer (-)",
-      "comissao": "1SECM",
-      "tema": "Administração Pública",
-      "temas": [
-        "Administração Pública",
-        "Economia",
-        "Finanças Públicas e Orçamento"
-      ],
-      "tema_fonte": "oficial",
-      "ementa": "Solicita informações ao Senhor Ministro do Planejamento e Orçamento, acerca dos critérios técnicos, impactos setoriais e medidas de planejamento relacionadas ao bloqueio de R$ 24 bilhões no Orçamento Geral da União de 2026, destinado à acomodação da expansão das despesas obrigatórias e ao cumprimento das regras fiscais vigentes.",
-      "status": "Aguardando Envio ao Executivo",
-      "situacao_grupo": "Apresentado, não enviado",
-      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2633313"
-    },
-    {
-      "data": "17/06/2026",
-      "data_iso": "2026-06-17",
-      "mes_ano": "Jun/26",
-      "data_ult_mov_br": "—",
-      "data_ult_mov_iso": "",
-      "data_prazo_br": "—",
-      "data_prazo_iso": "",
-      "casa": "Câmara",
-      "sigla": "RIC",
       "numero": 1859,
       "ano": 2026,
       "autor": "Dep. Evair Vieira de Melo (-)",
@@ -624,6 +599,32 @@
       "status": "Aguardando Envio ao Executivo",
       "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2633394"
+    },
+    {
+      "data": "17/06/2026",
+      "data_iso": "2026-06-17",
+      "mes_ano": "Jun/26",
+      "data_ult_mov_br": "—",
+      "data_ult_mov_iso": "",
+      "data_prazo_br": "—",
+      "data_prazo_iso": "",
+      "casa": "Câmara",
+      "sigla": "RIC",
+      "numero": 1853,
+      "ano": 2026,
+      "autor": "Dep. Gustavo Gayer (-)",
+      "comissao": "1SECM",
+      "tema": "Administração Pública",
+      "temas": [
+        "Administração Pública",
+        "Economia",
+        "Finanças Públicas e Orçamento"
+      ],
+      "tema_fonte": "oficial",
+      "ementa": "Solicita informações ao Senhor Ministro do Planejamento e Orçamento, acerca dos critérios técnicos, impactos setoriais e medidas de planejamento relacionadas ao bloqueio de R$ 24 bilhões no Orçamento Geral da União de 2026, destinado à acomodação da expansão das despesas obrigatórias e ao cumprimento das regras fiscais vigentes.",
+      "status": "Aguardando Envio ao Executivo",
+      "situacao_grupo": "Apresentado, não enviado",
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2633313"
     },
     {
       "data": "03/06/2026",
@@ -711,31 +712,6 @@
       "data_prazo_iso": "",
       "casa": "Câmara",
       "sigla": "RIC",
-      "numero": 1414,
-      "ano": 2026,
-      "autor": "Dep. Comissão Especial destinada a proferir parecer à Proposta de Emenda à Constituição nº 221, de 2019, do Senhor Reginaldo Lopes, que \"altera o Art. 7º inciso XII da constituição Federal, reduzindo a jornada de trabalho a 36 horas semanais em 10 anos\", e apensada (-)",
-      "comissao": "1SECM",
-      "tema": "Administração Pública",
-      "temas": [
-        "Administração Pública",
-        "Trabalho e Emprego"
-      ],
-      "tema_fonte": "oficial",
-      "ementa": "Requer o encaminhamento de solicitação de informações ao Ministério do Planejamento e Orçamento por meio do Instituto Brasileiro de Geografia e Estatística acerca de dados estatísticos sobre jornada de trabalho e\nestrutura ocupacional no Brasil.",
-      "status": "Aguardando Remessa ao Arquivo",
-      "situacao_grupo": "Arquivado",
-      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2626316"
-    },
-    {
-      "data": "20/05/2026",
-      "data_iso": "2026-05-20",
-      "mes_ano": "Mai/26",
-      "data_ult_mov_br": "23/07/2026",
-      "data_ult_mov_iso": "2026-07-23",
-      "data_prazo_br": "—",
-      "data_prazo_iso": "",
-      "casa": "Câmara",
-      "sigla": "RIC",
       "numero": 1415,
       "ano": 2026,
       "autor": "Dep. Comissão Especial destinada a proferir parecer à Proposta de Emenda à Constituição nº 221, de 2019, do Senhor Reginaldo Lopes, que \"altera o Art. 7º inciso XII da constituição Federal, reduzindo a jornada de trabalho a 36 horas semanais em 10 anos\", e apensada (-)",
@@ -750,6 +726,31 @@
       "status": "Aguardando Remessa ao Arquivo",
       "situacao_grupo": "Arquivado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2626317"
+    },
+    {
+      "data": "20/05/2026",
+      "data_iso": "2026-05-20",
+      "mes_ano": "Mai/26",
+      "data_ult_mov_br": "23/07/2026",
+      "data_ult_mov_iso": "2026-07-23",
+      "data_prazo_br": "—",
+      "data_prazo_iso": "",
+      "casa": "Câmara",
+      "sigla": "RIC",
+      "numero": 1414,
+      "ano": 2026,
+      "autor": "Dep. Comissão Especial destinada a proferir parecer à Proposta de Emenda à Constituição nº 221, de 2019, do Senhor Reginaldo Lopes, que \"altera o Art. 7º inciso XII da constituição Federal, reduzindo a jornada de trabalho a 36 horas semanais em 10 anos\", e apensada (-)",
+      "comissao": "1SECM",
+      "tema": "Administração Pública",
+      "temas": [
+        "Administração Pública",
+        "Trabalho e Emprego"
+      ],
+      "tema_fonte": "oficial",
+      "ementa": "Requer o encaminhamento de solicitação de informações ao Ministério do Planejamento e Orçamento por meio do Instituto Brasileiro de Geografia e Estatística acerca de dados estatísticos sobre jornada de trabalho e\nestrutura ocupacional no Brasil.",
+      "status": "Aguardando Remessa ao Arquivo",
+      "situacao_grupo": "Arquivado",
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2626316"
     },
     {
       "data": "18/05/2026",
@@ -786,31 +787,6 @@
       "data_prazo_iso": "",
       "casa": "Câmara",
       "sigla": "RIC",
-      "numero": 1251,
-      "ano": 2026,
-      "autor": "Dep. Zé Trovão (-)",
-      "comissao": "1SECM",
-      "tema": "Administração Pública",
-      "temas": [
-        "Administração Pública",
-        "Finanças Públicas e Orçamento"
-      ],
-      "tema_fonte": "oficial",
-      "ementa": "Requer informações ao Ministério do Planejamento e Orçamento acerca da análise de impacto regulatório e dos efeitos sistêmicos das propostas de alteração da jornada de trabalho.",
-      "status": "Aguardando Remessa ao Arquivo",
-      "situacao_grupo": "Arquivado",
-      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2623530"
-    },
-    {
-      "data": "11/05/2026",
-      "data_iso": "2026-05-11",
-      "mes_ano": "Mai/26",
-      "data_ult_mov_br": "30/06/2026",
-      "data_ult_mov_iso": "2026-06-30",
-      "data_prazo_br": "—",
-      "data_prazo_iso": "",
-      "casa": "Câmara",
-      "sigla": "RIC",
       "numero": 1253,
       "ano": 2026,
       "autor": "Dep. Zé Trovão (-)",
@@ -828,8 +804,8 @@
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2623532"
     },
     {
-      "data": "08/05/2026",
-      "data_iso": "2026-05-08",
+      "data": "11/05/2026",
+      "data_iso": "2026-05-11",
       "mes_ano": "Mai/26",
       "data_ult_mov_br": "30/06/2026",
       "data_ult_mov_iso": "2026-06-30",
@@ -837,21 +813,20 @@
       "data_prazo_iso": "",
       "casa": "Câmara",
       "sigla": "RIC",
-      "numero": 1239,
+      "numero": 1251,
       "ano": 2026,
-      "autor": "Dep. Comissão Especial destinada a proferir parecer à Proposta de Emenda à Constituição nº 221, de 2019, do Senhor Reginaldo Lopes, que \"altera o Art. 7º inciso XII da constituição Federal, reduzindo a jornada de trabalho a 36 horas semanais em 10 anos\", e apensada (-)",
+      "autor": "Dep. Zé Trovão (-)",
       "comissao": "1SECM",
-      "tema": "Economia",
+      "tema": "Administração Pública",
       "temas": [
-        "Economia",
-        "Finanças Públicas e Orçamento",
-        "Trabalho e Emprego"
+        "Administração Pública",
+        "Finanças Públicas e Orçamento"
       ],
       "tema_fonte": "oficial",
-      "ementa": "Requer ao Ministério do Planejamento e Orçamento solicitação de dados ao IBGE relativos à renda real do trabalhador, ao endividamento das famílias, ao crédito e à inflação, para subsidiar os trabalhos da Comissão Especial.",
+      "ementa": "Requer informações ao Ministério do Planejamento e Orçamento acerca da análise de impacto regulatório e dos efeitos sistêmicos das propostas de alteração da jornada de trabalho.",
       "status": "Aguardando Remessa ao Arquivo",
       "situacao_grupo": "Arquivado",
-      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2623287"
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2623530"
     },
     {
       "data": "08/05/2026",
@@ -878,6 +853,32 @@
       "status": "Aguardando Remessa ao Arquivo",
       "situacao_grupo": "Arquivado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2623288"
+    },
+    {
+      "data": "08/05/2026",
+      "data_iso": "2026-05-08",
+      "mes_ano": "Mai/26",
+      "data_ult_mov_br": "30/06/2026",
+      "data_ult_mov_iso": "2026-06-30",
+      "data_prazo_br": "—",
+      "data_prazo_iso": "",
+      "casa": "Câmara",
+      "sigla": "RIC",
+      "numero": 1239,
+      "ano": 2026,
+      "autor": "Dep. Comissão Especial destinada a proferir parecer à Proposta de Emenda à Constituição nº 221, de 2019, do Senhor Reginaldo Lopes, que \"altera o Art. 7º inciso XII da constituição Federal, reduzindo a jornada de trabalho a 36 horas semanais em 10 anos\", e apensada (-)",
+      "comissao": "1SECM",
+      "tema": "Economia",
+      "temas": [
+        "Economia",
+        "Finanças Públicas e Orçamento",
+        "Trabalho e Emprego"
+      ],
+      "tema_fonte": "oficial",
+      "ementa": "Requer ao Ministério do Planejamento e Orçamento solicitação de dados ao IBGE relativos à renda real do trabalhador, ao endividamento das famílias, ao crédito e à inflação, para subsidiar os trabalhos da Comissão Especial.",
+      "status": "Aguardando Remessa ao Arquivo",
+      "situacao_grupo": "Arquivado",
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2623287"
     },
     {
       "data": "30/04/2026",
@@ -963,6 +964,30 @@
       "data_prazo_iso": "",
       "casa": "Câmara",
       "sigla": "RIC",
+      "numero": 354,
+      "ano": 2026,
+      "autor": "Dep. Gustavo Gayer (-)",
+      "comissao": "1SECM",
+      "tema": "Administração Pública",
+      "temas": [
+        "Administração Pública"
+      ],
+      "tema_fonte": "oficial",
+      "ementa": "Solicita informações a Senhora Ministra do Planejamento e Orçamento, acerca de recentes reestruturações administrativas, exonerações, alegações de represálias internas e medidas de governança adotadas no âmbito do Instituto Brasileiro de Geografia e Estatística (IBGE), bem como esclarecimentos sobre os critérios de nomeação da Presidência da autarquia.",
+      "status": "Aguardando Remessa ao Arquivo",
+      "situacao_grupo": "Arquivado",
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2605342"
+    },
+    {
+      "data": "27/02/2026",
+      "data_iso": "2026-02-27",
+      "mes_ano": "Fev/26",
+      "data_ult_mov_br": "26/05/2026",
+      "data_ult_mov_iso": "2026-05-26",
+      "data_prazo_br": "—",
+      "data_prazo_iso": "",
+      "casa": "Câmara",
+      "sigla": "RIC",
       "numero": 348,
       "ano": 2026,
       "autor": "Dep. Roberto Monteiro Pai (-)",
@@ -977,30 +1002,6 @@
       "status": "Aguardando Remessa ao Arquivo",
       "situacao_grupo": "Arquivado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2605293"
-    },
-    {
-      "data": "27/02/2026",
-      "data_iso": "2026-02-27",
-      "mes_ano": "Fev/26",
-      "data_ult_mov_br": "26/05/2026",
-      "data_ult_mov_iso": "2026-05-26",
-      "data_prazo_br": "—",
-      "data_prazo_iso": "",
-      "casa": "Câmara",
-      "sigla": "RIC",
-      "numero": 354,
-      "ano": 2026,
-      "autor": "Dep. Gustavo Gayer (-)",
-      "comissao": "1SECM",
-      "tema": "Administração Pública",
-      "temas": [
-        "Administração Pública"
-      ],
-      "tema_fonte": "oficial",
-      "ementa": "Solicita informações a Senhora Ministra do Planejamento e Orçamento, acerca de recentes reestruturações administrativas, exonerações, alegações de represálias internas e medidas de governança adotadas no âmbito do Instituto Brasileiro de Geografia e Estatística (IBGE), bem como esclarecimentos sobre os critérios de nomeação da Presidência da autarquia.",
-      "status": "Aguardando Remessa ao Arquivo",
-      "situacao_grupo": "Arquivado",
-      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2605342"
     },
     {
       "data": "13/02/2026",
@@ -1036,30 +1037,6 @@
       "data_prazo_iso": "",
       "casa": "Câmara",
       "sigla": "RIC",
-      "numero": 206,
-      "ano": 2026,
-      "autor": "Dep. Messias Donato (-)",
-      "comissao": "1SECM",
-      "tema": "Administração Pública",
-      "temas": [
-        "Administração Pública"
-      ],
-      "tema_fonte": "oficial",
-      "ementa": "Requer informações a Excelentíssima Senhora Ministra de Estado do Planejamento e Orçamento acerca das recentes mudanças (demissões, exonerações e pedidos de desligamento) ocorridas no Instituto Brasileiro de Geografia e Estatística (IBGE), especialmente em áreas diretamente relacionadas às Contas Nacionais, responsáveis pelo cálculo do PIB, às vésperas da divulgação do resultado do Produto Interno Bruto (PIB) do Brasil de 2025.",
-      "status": "Aguardando Remessa ao Arquivo",
-      "situacao_grupo": "Arquivado",
-      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2602919"
-    },
-    {
-      "data": "12/02/2026",
-      "data_iso": "2026-02-12",
-      "mes_ano": "Fev/26",
-      "data_ult_mov_br": "26/05/2026",
-      "data_ult_mov_iso": "2026-05-26",
-      "data_prazo_br": "—",
-      "data_prazo_iso": "",
-      "casa": "Câmara",
-      "sigla": "RIC",
       "numero": 209,
       "ano": 2026,
       "autor": "Dep. Messias Donato (-)",
@@ -1074,6 +1051,30 @@
       "status": "Aguardando Remessa ao Arquivo",
       "situacao_grupo": "Arquivado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2602940"
+    },
+    {
+      "data": "12/02/2026",
+      "data_iso": "2026-02-12",
+      "mes_ano": "Fev/26",
+      "data_ult_mov_br": "26/05/2026",
+      "data_ult_mov_iso": "2026-05-26",
+      "data_prazo_br": "—",
+      "data_prazo_iso": "",
+      "casa": "Câmara",
+      "sigla": "RIC",
+      "numero": 206,
+      "ano": 2026,
+      "autor": "Dep. Messias Donato (-)",
+      "comissao": "1SECM",
+      "tema": "Administração Pública",
+      "temas": [
+        "Administração Pública"
+      ],
+      "tema_fonte": "oficial",
+      "ementa": "Requer informações a Excelentíssima Senhora Ministra de Estado do Planejamento e Orçamento acerca das recentes mudanças (demissões, exonerações e pedidos de desligamento) ocorridas no Instituto Brasileiro de Geografia e Estatística (IBGE), especialmente em áreas diretamente relacionadas às Contas Nacionais, responsáveis pelo cálculo do PIB, às vésperas da divulgação do resultado do Produto Interno Bruto (PIB) do Brasil de 2025.",
+      "status": "Aguardando Remessa ao Arquivo",
+      "situacao_grupo": "Arquivado",
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2602919"
     },
     {
       "data": "06/02/2026",
@@ -1133,6 +1134,31 @@
       "data_prazo_iso": "",
       "casa": "Câmara",
       "sigla": "RIC",
+      "numero": 91,
+      "ano": 2026,
+      "autor": "Dep. Cabo Gilberto Silva (-)",
+      "comissao": "1SECM",
+      "tema": "Administração Pública",
+      "temas": [
+        "Administração Pública",
+        "Finanças Públicas e Orçamento"
+      ],
+      "tema_fonte": "oficial",
+      "ementa": "Requerimento de Informação à Ministra do Planejamento e Orçamento, Sra. Simone Tebet, sobre a crise institucional no IBGE.",
+      "status": "Aguardando Remessa ao Arquivo",
+      "situacao_grupo": "Arquivado",
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2600685"
+    },
+    {
+      "data": "03/02/2026",
+      "data_iso": "2026-02-03",
+      "mes_ano": "Fev/26",
+      "data_ult_mov_br": "19/05/2026",
+      "data_ult_mov_iso": "2026-05-19",
+      "data_prazo_br": "—",
+      "data_prazo_iso": "",
+      "casa": "Câmara",
+      "sigla": "RIC",
       "numero": 71,
       "ano": 2026,
       "autor": "Dep. Luiz Carlos Hauly (-)",
@@ -1150,8 +1176,8 @@
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2600366"
     },
     {
-      "data": "03/02/2026",
-      "data_iso": "2026-02-03",
+      "data": "02/02/2026",
+      "data_iso": "2026-02-02",
       "mes_ano": "Fev/26",
       "data_ult_mov_br": "19/05/2026",
       "data_ult_mov_iso": "2026-05-19",
@@ -1159,9 +1185,9 @@
       "data_prazo_iso": "",
       "casa": "Câmara",
       "sigla": "RIC",
-      "numero": 91,
+      "numero": 69,
       "ano": 2026,
-      "autor": "Dep. Cabo Gilberto Silva (-)",
+      "autor": "Dep. Dr. Frederico (-)",
       "comissao": "1SECM",
       "tema": "Administração Pública",
       "temas": [
@@ -1169,10 +1195,10 @@
         "Finanças Públicas e Orçamento"
       ],
       "tema_fonte": "oficial",
-      "ementa": "Requerimento de Informação à Ministra do Planejamento e Orçamento, Sra. Simone Tebet, sobre a crise institucional no IBGE.",
+      "ementa": "Requer informações à Exma. Sra. Ministra de Estado do Planejamento e Orçamento acerca da crise institucional no Instituto Brasileiro de Geografia e Estatística (IBGE), suas motivações, consequências e possíveis impactos na produção e divulgação de dados estatísticos oficiais, em especial do Produto Interno Bruto (PIB).",
       "status": "Aguardando Remessa ao Arquivo",
       "situacao_grupo": "Arquivado",
-      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2600685"
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2600318"
     },
     {
       "data": "02/02/2026",
@@ -1184,20 +1210,20 @@
       "data_prazo_iso": "",
       "casa": "Câmara",
       "sigla": "RIC",
-      "numero": 2,
+      "numero": 25,
       "ano": 2026,
       "autor": "Dep. Gustavo Gayer (-)",
       "comissao": "1SECM",
-      "tema": "Educação",
+      "tema": "Administração Pública",
       "temas": [
-        "Educação",
+        "Administração Pública",
         "Finanças Públicas e Orçamento"
       ],
       "tema_fonte": "oficial",
-      "ementa": "Solicita informações a Sr.ª Ministra do Planejamento e Orçamento, acerca dos critérios, estudos técnicos, decisões de alocação e remanejamento orçamentário que resultaram na redução de recursos destinados às políticas de alfabetização e ensino em tempo integral, concomitantemente à ampliação expressiva do Programa Pé-de-Meia no orçamento do Ministério da Educação.",
+      "ementa": "Solicita a Sr.ª Ministra do Planejamento e Orçamento, informações, estudos técnicos, projeções fiscais e documentos oficiais relativos à rigidez orçamentária, à evolução das despesas obrigatórias, aos investimentos públicos federais e à sustentabilidade do Novo Arcabouço Fiscal.",
       "status": "Aguardando Remessa ao Arquivo",
       "situacao_grupo": "Arquivado",
-      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2599967"
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2600013"
     },
     {
       "data": "02/02/2026",
@@ -1236,45 +1262,20 @@
       "data_prazo_iso": "",
       "casa": "Câmara",
       "sigla": "RIC",
-      "numero": 25,
+      "numero": 2,
       "ano": 2026,
       "autor": "Dep. Gustavo Gayer (-)",
       "comissao": "1SECM",
-      "tema": "Administração Pública",
+      "tema": "Educação",
       "temas": [
-        "Administração Pública",
+        "Educação",
         "Finanças Públicas e Orçamento"
       ],
       "tema_fonte": "oficial",
-      "ementa": "Solicita a Sr.ª Ministra do Planejamento e Orçamento, informações, estudos técnicos, projeções fiscais e documentos oficiais relativos à rigidez orçamentária, à evolução das despesas obrigatórias, aos investimentos públicos federais e à sustentabilidade do Novo Arcabouço Fiscal.",
+      "ementa": "Solicita informações a Sr.ª Ministra do Planejamento e Orçamento, acerca dos critérios, estudos técnicos, decisões de alocação e remanejamento orçamentário que resultaram na redução de recursos destinados às políticas de alfabetização e ensino em tempo integral, concomitantemente à ampliação expressiva do Programa Pé-de-Meia no orçamento do Ministério da Educação.",
       "status": "Aguardando Remessa ao Arquivo",
       "situacao_grupo": "Arquivado",
-      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2600013"
-    },
-    {
-      "data": "02/02/2026",
-      "data_iso": "2026-02-02",
-      "mes_ano": "Fev/26",
-      "data_ult_mov_br": "19/05/2026",
-      "data_ult_mov_iso": "2026-05-19",
-      "data_prazo_br": "—",
-      "data_prazo_iso": "",
-      "casa": "Câmara",
-      "sigla": "RIC",
-      "numero": 69,
-      "ano": 2026,
-      "autor": "Dep. Dr. Frederico (-)",
-      "comissao": "1SECM",
-      "tema": "Administração Pública",
-      "temas": [
-        "Administração Pública",
-        "Finanças Públicas e Orçamento"
-      ],
-      "tema_fonte": "oficial",
-      "ementa": "Requer informações à Exma. Sra. Ministra de Estado do Planejamento e Orçamento acerca da crise institucional no Instituto Brasileiro de Geografia e Estatística (IBGE), suas motivações, consequências e possíveis impactos na produção e divulgação de dados estatísticos oficiais, em especial do Produto Interno Bruto (PIB).",
-      "status": "Aguardando Remessa ao Arquivo",
-      "situacao_grupo": "Arquivado",
-      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2600318"
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2599967"
     },
     {
       "data": "19/12/2025",
