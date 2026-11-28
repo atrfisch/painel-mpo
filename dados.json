@@ -1,17 +1,17 @@
 {
-  "ultima_atualizacao": "27/11/2026 11:53",
+  "ultima_atualizacao": "28/11/2026 11:29",
   "fonte_temas": "oficial",
   "resumo": {
-    "total_requerimentos": 175,
+    "total_requerimentos": 176,
     "total_autores": 61,
     "total_temas": 13,
     "total_comissoes": 2,
-    "total_ativos": 29,
+    "total_ativos": 30,
     "total_respondidos": 0,
     "total_aguardando": 7
   },
   "timeline": {
-    "Nov/26": 2,
+    "Nov/26": 3,
     "Out/26": 3,
     "Set/26": 3,
     "Ago/26": 4,
@@ -55,12 +55,12 @@
     "Fev/23": 1
   },
   "autores": {
+    "Dep. Gustavo Gayer (-)": 25,
     "Dep. André Fernandes (-)": 1,
     "Dep. Bacelar (-)": 1,
     "Dep. Capitão Alden (-)": 2,
     "Dep. Nikolas Ferreira (-)": 13,
     "Dep. Coronel Fernanda (-)": 1,
-    "Dep. Gustavo Gayer (-)": 24,
     "Dep. Messias Donato (-)": 6,
     "Dep. José Medeiros (-)": 1,
     "Dep. Duda Salabert (-)": 1,
@@ -118,7 +118,7 @@
     "Dep. Aureo Ribeiro (-)": 1
   },
   "temas": {
-    "Finanças Públicas e Orçamento": 31,
+    "Finanças Públicas e Orçamento": 32,
     "Administração Pública": 106,
     "Viação, Transporte e Mobilidade": 1,
     "Cidades e Desenvolvimento Urbano": 4,
@@ -133,16 +133,38 @@
     "Trabalho e Emprego": 1
   },
   "comissoes": {
-    "MESA": 16,
+    "MESA": 17,
     "1SECM": 159
   },
   "situacoes": {
-    "Apresentado, não enviado": 18,
+    "Apresentado, não enviado": 19,
     "Aguardando resposta": 7,
     "Outros": 4,
     "Arquivado": 146
   },
   "lista_requerimentos": [
+    {
+      "data": "27/11/2026",
+      "data_iso": "2026-11-27",
+      "mes_ano": "Nov/26",
+      "data_ult_mov_br": "—",
+      "data_ult_mov_iso": "",
+      "data_prazo_br": "—",
+      "data_prazo_iso": "",
+      "casa": "Câmara",
+      "sigla": "RIC",
+      "numero": 3076,
+      "ano": 2026,
+      "autor": "Dep. Gustavo Gayer (-)",
+      "comissao": "MESA",
+      "tema": "Finanças Públicas e Orçamento",
+      "temas": [],
+      "tema_fonte": "reserva",
+      "ementa": "Solicita informações ao Senhor Ministro do Planejamento e Orçamento, acerca da trajetória da dívida pública, das projeções fiscais para 2027 e dos efeitos esperados das medidas de ajuste previstas no Projeto de Lei Complementar nº 299/2026.",
+      "status": "Em Tramitação",
+      "situacao_grupo": "Apresentado, não enviado",
+      "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2660372"
+    },
     {
       "data": "24/11/2026",
       "data_iso": "2026-11-24",
@@ -239,7 +261,7 @@
       ],
       "tema_fonte": "oficial",
       "ementa": "Requer informações ao Ministério do Planejamento e Orçamento acerca dos estudos técnicos, impactos orçamentários e critérios de financiamento da proposta de emenda à Constituição destinada à implementação da tarifa zero no transporte público coletivo.",
-      "status": "Aguardando Despacho do Presidente da Câmara dos Deputados",
+      "status": "Em Tramitação",
       "situacao_grupo": "Apresentado, não enviado",
       "link": "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=2648830"
     },
